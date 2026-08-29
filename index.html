@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -62,14 +61,14 @@
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex justify-between items-center mb-3">
                 
-                <!-- LEFT SIDE: Hamburger & Logo -->
-                <div class="flex items-center gap-1 md:gap-3 shrink-0">
+                <!-- LEFT SIDE: Hamburger & Circular Logo -->
+                <div class="flex items-center gap-2 md:gap-3 shrink-0">
                     <button id="menu-btn" class="p-1 md:p-2 text-brandBlue hover:bg-gray-100 rounded-lg transition">
                         <i class="fa-solid fa-bars text-2xl md:text-3xl"></i>
                     </button>
                     
-                    <a href="#home" class="flex items-center gap-1.5 md:gap-2 cursor-pointer">
-                        <img src="logo.png" alt="Logo" class="h-8 md:h-10 w-auto object-contain" onerror="this.src='https://via.placeholder.com/50x50/ffffff/0f4c81?text=ST'">
+                    <a href="#home" class="flex items-center gap-2 cursor-pointer">
+                        <img src="logo.png" alt="Logo" class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.src='https://via.placeholder.com/150/ffffff/0f4c81?text=ST'">
                         <div class="flex flex-col leading-none shrink-0">
                             <span class="font-bold text-[16px] md:text-xl text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
                             <span class="text-[7px] md:text-[9px] text-gray-500 font-bold tracking-widest uppercase">Computer Education</span>
@@ -83,7 +82,7 @@
                         <i class="fa-regular fa-bell text-xl"></i>
                         <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                     </button>
-                    <button id="profile-btn" class="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center">
+                    <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center">
                         <i class="fa-solid fa-user text-brandBlue text-sm md:text-lg"></i>
                     </button>
                 </div>
@@ -100,22 +99,22 @@
         </div>
     </header>
 
-    <!-- PROFILE DROPDOWN -->
+    <!-- PROFILE DROPDOWN (Dynamic User Display) -->
     <div id="profile-dropdown" class="absolute right-4 top-16 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
         <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue">
-                <i class="fa-solid fa-user"></i>
+            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden">
+                <img src="logo.png" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/50'">
             </div>
             <div>
-                <h4 class="font-bold text-base leading-none">Student Portal</h4>
-                <p class="text-[10px] text-blue-200 mt-1 uppercase tracking-wider">Smart Tech</p>
+                <h4 id="user-display-name" class="font-bold text-sm leading-tight truncate max-w-[140px]">Guest User</h4>
+                <p class="text-[10px] text-blue-200 mt-0.5 uppercase tracking-wider">Smart Tech</p>
             </div>
         </div>
         <ul class="py-1 text-gray-700 font-medium text-[13px]">
             <li><a href="login.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 font-bold text-brandBlue"><i class="fa-solid fa-right-to-bracket w-4 text-center"></i> Login / Register</a></li>
             <li><a href="offline-dashboard.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-id-card text-brandGold w-4 text-center"></i> Offline Dashboard</a></li>
             <li><a href="my-courses.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code text-brandBlue w-4 text-center"></i> My Courses (Paid)</a></li>
-            <li class="border-t border-gray-50"><a href="#" class="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</a></li>
+            <li class="border-t border-gray-50"><button id="logout-dropdown-btn" class="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
         </ul>
     </div>
 
@@ -124,7 +123,7 @@
     <aside id="sidebar" class="fixed top-0 left-0 w-[80%] max-w-sm h-full bg-white z-50 shadow-2xl -translate-x-full overflow-y-auto flex flex-col">
         <div class="p-4 flex justify-between items-center border-b border-gray-100 bg-[#f8fafc]">
             <a href="#home" class="flex items-center gap-2">
-                <img src="logo.png" alt="Logo" class="h-8 w-auto object-contain" onerror="this.src='https://via.placeholder.com/50x50/ffffff/0f4c81?text=ST'">
+                <img src="logo.png" alt="Logo" class="h-9 w-9 rounded-full object-cover border border-brandGold" onerror="this.src='https://via.placeholder.com/50'">
                 <div class="flex flex-col leading-none">
                     <span class="font-bold text-[15px] text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
                     <span class="text-[7px] text-gray-500 font-bold tracking-widest uppercase">Education</span>
@@ -144,7 +143,7 @@
                 <li><a href="register-offline.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
                 <li><a href="verify.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
                 <li class="border-t border-gray-100 mt-2 pt-2">
-                    <a href="#" class="flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</a>
+                    <button id="logout-sidebar-btn" class="w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
                 </li>
             </ul>
         </div>
@@ -159,7 +158,7 @@
                         <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 opacity-20 mix-blend-overlay">
                         <div class="relative z-10 px-6 md:px-16 text-white w-full">
                             <span class="bg-red-600 text-[9px] md:text-xs font-bold px-2.5 py-1 rounded-full w-max mb-3 animate-pulse uppercase block">Admission Open 2026</span>
-                            <h2 class="text-xl md:text-5xl font-bold mb-3 leading-tight">Start Your IT Career<br><span class="text-brandGold">Today!</span></h2>
+                            <h2 class="text-xl md:text-5xl font-bold mb-3 leading-tight">Start Your IT Career<br><span class="text-brandGold" id="welcome-banner-name">Today!</span></h2>
                             <a href="register-offline.html" class="inline-block bg-brandGold text-brandBlue px-4 py-2 md:px-6 md:py-3 rounded-full font-bold hover:scale-105 transition text-[11px] md:text-sm">Register Offline</a>
                         </div>
                     </div>
@@ -221,7 +220,6 @@
                         <p class="course-desc text-xs text-gray-500 mb-4 flex-grow line-clamp-2">Complete MS Office, Tally ERP, Photoshop & basics.</p>
                         <div class="flex items-center justify-between mt-auto border-t border-gray-50 pt-3">
                             <span class="text-base font-bold text-brandBlue">₹3,499</span>
-                            <!-- Buy Now Triggers Login Check -->
                             <a href="payment.html?id=adca" onclick="requireLogin(event, this.href)" class="bg-brandBlue text-white text-[11px] font-semibold px-4 py-2 rounded-lg hover:bg-blue-800 transition">Buy Now</a>
                         </div>
                     </div>
@@ -286,7 +284,7 @@
         </section>
     </main>
 
-    <!-- PROPER REDIRECT FOOTER WITH SPECIFICATIONS -->
+    <!-- FOOTER -->
     <footer class="bg-[#1e293b] text-white pt-12 pb-24 md:pb-8 border-t-4 border-brandGold">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 border-b border-gray-700 pb-8">
@@ -294,7 +292,7 @@
                 <!-- Brand -->
                 <div>
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="logo.png" alt="Smart Tech" class="h-8 w-auto object-contain bg-white rounded p-1" onerror="this.src='https://via.placeholder.com/50x50/ffffff/0f4c81?text=ST'">
+                        <img src="logo.png" alt="Smart Tech" class="h-9 w-9 rounded-full object-cover bg-white border border-brandGold p-0.5" onerror="this.src='https://via.placeholder.com/50'">
                         <span class="font-bold text-xl text-white tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
                     </div>
                     <p class="text-gray-400 text-xs mb-4 leading-relaxed">
@@ -314,7 +312,7 @@
                     </div>
                 </div>
 
-                <!-- Corrected Links -->
+                <!-- Quick Links -->
                 <div>
                     <h4 class="font-bold text-sm mb-4 text-white">Quick Links</h4>
                     <ul class="space-y-3 text-xs text-gray-400">
@@ -335,7 +333,7 @@
                     </ul>
                 </div>
 
-                <!-- FEATURES (4 SPECIFICATIONS ADDED HERE) -->
+                <!-- Facilities -->
                 <div>
                     <h4 class="font-bold text-sm mb-4 text-white">Our Facilities</h4>
                     <ul class="space-y-3">
@@ -393,23 +391,51 @@
         </a>
     </div>
 
-    <!-- JAVASCRIPT FOR SMART SEARCH, MENUS & LOGIN CHECK -->
-    <script>
-        /* --- LOGIN CHECK LOGIC --- */
-        function requireLogin(event, targetUrl) {
-            event.preventDefault();
-            
-            // Dummy logic: Check if user is logged in (Change this to Firebase Auth logic later)
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; 
-            
-            if(!isLoggedIn) {
-                alert("Please Login / Register first to access this feature.");
-                window.location.href = "login.html"; // Redirects to login page
+    <!-- FIREBASE AUTH & JAVASCRIPT LOGIC -->
+    <script type="module">
+        import { auth } from './firebase-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        // 1. Check Auth State & Render Dynamic User Name
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const displayName = user.displayName || user.email.split('@')[0];
+                document.getElementById('user-display-name').textContent = displayName;
+                document.getElementById('welcome-banner-name').textContent = `${displayName}!`;
+                window.isUserLoggedIn = true;
             } else {
-                window.location.href = targetUrl; // Proceeds to the page if logged in
+                document.getElementById('user-display-name').textContent = 'Guest User';
+                document.getElementById('welcome-banner-name').textContent = 'Today!';
+                window.isUserLoggedIn = false;
+            }
+        });
+
+        // 2. Protected Route Handler
+        window.requireLogin = function(event, targetUrl) {
+            event.preventDefault();
+            if(!window.isUserLoggedIn) {
+                alert("Please Login / Register first to access this feature.");
+                window.location.href = "login.html";
+            } else {
+                window.location.href = targetUrl;
             }
         }
 
+        // 3. Logout Handlers
+        function handleLogout() {
+            signOut(auth).then(() => {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'login.html';
+            }).catch((error) => {
+                console.error('Logout Error:', error);
+            });
+        }
+
+        document.getElementById('logout-dropdown-btn').addEventListener('click', handleLogout);
+        document.getElementById('logout-sidebar-btn').addEventListener('click', handleLogout);
+    </script>
+
+    <script>
         /* --- SMART LIVE SEARCH --- */
         const searchInput = document.getElementById('search-input');
         const searchForm = document.getElementById('search-form');
