@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,52 +30,53 @@
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
         .input-field { transition: all 0.3s ease; }
         .input-field:focus { border-color: #0f4c81; box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1); }
-        
-        /* Form Transitions */
         .form-section { display: none; opacity: 0; transition: opacity 0.4s ease; }
         .form-section.active { display: block; opacity: 1; }
     </style>
 </head>
 <body class="h-screen w-full flex overflow-hidden">
 
-    <!-- LEFT SIDE: Cinematic Branding (Hidden on small screens) -->
+    <!-- CUSTOM PREMIUM MODAL POPUP -->
+    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-80 text-center transform scale-95 transition-all duration-300" id="modal-content">
+            <div id="modal-icon" class="w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4"></div>
+            <h3 id="modal-title" class="text-xl font-bold text-gray-800 mb-2"></h3>
+            <p id="modal-message" class="text-sm text-gray-500 mb-6"></p>
+            <button onclick="closeModal()" class="w-full bg-brandBlue text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-800 transition">OK</button>
+        </div>
+    </div>
+
+    <!-- LEFT SIDE: Cinematic Branding -->
     <div class="hidden lg:flex w-1/2 bg-brandBlue relative items-center justify-center overflow-hidden">
         <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200')] opacity-20 bg-cover bg-center mix-blend-overlay"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-brandBlue via-transparent to-transparent opacity-90"></div>
         
         <div class="relative z-10 text-center px-12 text-white">
-            <!-- CIRCULAR LOGO FOR DESKTOP -->
             <img src="logo.png" alt="Smart Tech Logo" class="w-28 h-28 mx-auto rounded-full border-4 border-brandGold object-cover bg-white shadow-2xl mb-6" onerror="this.src='https://via.placeholder.com/150/ffffff/0f4c81?text=ST'">
-            
             <h1 class="text-5xl font-bold mb-4">Welcome to <br><span class="text-brandGold">Smart Tech.</span></h1>
             <p class="text-blue-200 text-lg max-w-md mx-auto">Access your premium courses, offline dashboard, and certificates all in one place.</p>
         </div>
     </div>
 
-    <!-- RIGHT SIDE: Auth Forms -->
+    <!-- RIGHT SIDE: Auth Forms (Added pb-24 so buttons never cut off) -->
     <div class="w-full lg:w-1/2 flex items-center justify-center relative bg-white overflow-y-auto">
-        <!-- JUST ARROW FOR BACK BUTTON -->
-        <a href="index.html" aria-label="Go Back" class="absolute top-6 left-6 text-gray-400 hover:text-brandBlue transition p-2 text-2xl">
+        <a href="index.html" aria-label="Go Back" class="absolute top-6 left-6 text-gray-400 hover:text-brandBlue transition p-2 text-2xl z-20">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
 
-        <div class="w-full max-w-md px-8 py-12">
+        <div class="w-full max-w-md px-8 py-12 pb-24">
             
-            <!-- CIRCULAR LOGO FOR MOBILE -->
             <div class="lg:hidden text-center mb-8 mt-4">
                 <img src="logo.png" alt="Smart Tech Logo" class="w-20 h-20 mx-auto rounded-full border-2 border-brandGold object-cover bg-white shadow-lg mb-3" onerror="this.src='https://via.placeholder.com/150/ffffff/0f4c81?text=ST'">
                 <h2 class="text-2xl font-bold text-brandBlue">Smart Tech</h2>
             </div>
 
-            <!-- TOGGLE BUTTONS (Login / Register) -->
             <div class="flex bg-gray-100 p-1 rounded-xl mb-8">
                 <button id="btn-show-login" class="w-1/2 py-2.5 rounded-lg text-sm font-bold bg-white text-brandBlue shadow-sm transition-all">Login</button>
                 <button id="btn-show-register" class="w-1/2 py-2.5 rounded-lg text-sm font-bold text-gray-500 hover:text-brandBlue transition-all">Register</button>
             </div>
 
-            <!-- ===================== -->
-            <!-- 1. EMAIL LOGIN FORM -->
-            <!-- ===================== -->
+            <!-- 1. EMAIL LOGIN -->
             <div id="login-form" class="form-section active">
                 <h3 class="text-2xl font-bold text-gray-800 mb-2">Welcome Back!</h3>
                 <p class="text-sm text-gray-500 mb-6">Please enter your details to sign in.</p>
@@ -86,14 +86,14 @@
                         <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Email Address</label>
                         <div class="relative">
                             <i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                            <input type="email" id="login-email" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5" placeholder="student@example.com">
+                            <input type="email" id="login-email" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-10 p-3.5" placeholder="student@example.com">
                         </div>
                     </div>
                     <div class="mb-2">
                         <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Password</label>
                         <div class="relative">
                             <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                            <input type="password" id="login-password" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5" placeholder="••••••••">
+                            <input type="password" id="login-password" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-10 p-3.5" placeholder="••••••••">
                         </div>
                     </div>
                     
@@ -105,9 +105,7 @@
                 </form>
             </div>
 
-            <!-- ===================== -->
-            <!-- 2. REGISTER FORM -->
-            <!-- ===================== -->
+            <!-- 2. REGISTER -->
             <div id="register-form" class="form-section">
                 <h3 class="text-2xl font-bold text-gray-800 mb-2">Create Account</h3>
                 <p class="text-sm text-gray-500 mb-6">Join Smart Tech to start learning.</p>
@@ -139,9 +137,7 @@
                 </form>
             </div>
 
-            <!-- ===================== -->
-            <!-- 3. PHONE OTP FORM -->
-            <!-- ===================== -->
+            <!-- 3. PHONE OTP -->
             <div id="phone-form" class="form-section">
                 <h3 class="text-2xl font-bold text-gray-800 mb-2">Mobile Login</h3>
                 <p class="text-sm text-gray-500 mb-6">We will send you an OTP.</p>
@@ -189,9 +185,37 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- FIREBASE AUTHENTICATION LOGIC (MODULE)     -->
-    <!-- ========================================== -->
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // Premium Modal Functions
+        function showNotification(title, message, isSuccess = true) {
+            const modal = document.getElementById('custom-modal');
+            const icon = document.getElementById('modal-icon');
+            const titleEl = document.getElementById('modal-title');
+            const msgEl = document.getElementById('modal-message');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            if(isSuccess) {
+                icon.className = "w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4 bg-green-100 text-green-600";
+                icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+            } else {
+                icon.className = "w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4 bg-red-100 text-red-600";
+                icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+            if(window.redirectAfterModal) {
+                window.location.href = window.redirectAfterModal;
+            }
+        }
+    </script>
+
     <script type="module">
         import { app, auth } from './firebase-config.js';
         import { 
@@ -203,7 +227,6 @@
             signInWithPhoneNumber
         } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        // ================= UI TOGGLE LOGIC =================
         const btnLogin = document.getElementById('btn-show-login');
         const btnRegister = document.getElementById('btn-show-register');
         const btnPhone = document.getElementById('btn-show-phone');
@@ -237,8 +260,7 @@
             formPhone.classList.add('active');
         });
 
-        // ================= FIREBASE LOGIC =================
-
+        // 1. Email Register
         document.getElementById('firebase-register-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('reg-email').value;
@@ -247,15 +269,16 @@
 
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    alert("Account Created Successfully! Welcome " + name);
                     localStorage.setItem('isLoggedIn', 'true');
-                    window.location.href = "index.html";
+                    window.redirectAfterModal = "index.html";
+                    showNotification("Success!", "Account Created Successfully! Welcome " + name, true);
                 })
                 .catch((error) => {
-                    alert("Error: " + error.message);
+                    showNotification("Registration Failed", error.message, false);
                 });
         });
 
+        // 2. Email Login
         document.getElementById('firebase-login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -263,27 +286,29 @@
 
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    alert("Login Successful!");
                     localStorage.setItem('isLoggedIn', 'true');
-                    window.location.href = "index.html"; 
+                    window.redirectAfterModal = "index.html";
+                    showNotification("Success!", "Login Successful!", true);
                 })
                 .catch((error) => {
-                    alert("Invalid Credentials. " + error.message);
+                    showNotification("Login Failed", "Invalid Credentials. " + error.message, false);
                 });
         });
 
+        // 3. Google Login
         document.getElementById('google-login-btn').addEventListener('click', () => {
             const provider = new GoogleAuthProvider();
             signInWithPopup(auth, provider)
                 .then((result) => {
-                    alert("Google Login Successful!");
                     localStorage.setItem('isLoggedIn', 'true');
-                    window.location.href = "index.html";
+                    window.redirectAfterModal = "index.html";
+                    showNotification("Success!", "Google Login Successful!", true);
                 }).catch((error) => {
-                    alert("Google Login Failed: " + error.message);
+                    showNotification("Google Login Failed", error.message, false);
                 });
         });
 
+        // 4. Mobile OTP
         let confirmationResult; 
         
         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
@@ -298,11 +323,11 @@
             signInWithPhoneNumber(auth, phoneNumber, appVerifier)
                 .then((result) => {
                     confirmationResult = result;
-                    alert("OTP Sent Successfully!");
+                    showNotification("OTP Sent", "OTP Sent Successfully to " + phoneNumber, true);
                     document.getElementById('phone-input-section').classList.add('hidden');
                     document.getElementById('otp-input-section').classList.remove('hidden');
                 }).catch((error) => {
-                    alert("Error sending OTP: " + error.message);
+                    showNotification("OTP Error", error.message, false);
                     window.recaptchaVerifier.render().then(function(widgetId) {
                         grecaptcha.reset(widgetId);
                     });
@@ -312,11 +337,11 @@
         document.getElementById('verify-otp-btn').addEventListener('click', () => {
             const code = document.getElementById('otp-code').value;
             confirmationResult.confirm(code).then((result) => {
-                alert("Mobile Verification Successful!");
                 localStorage.setItem('isLoggedIn', 'true');
-                window.location.href = "index.html";
+                window.redirectAfterModal = "index.html";
+                showNotification("Success!", "Mobile Verification Successful!", true);
             }).catch((error) => {
-                alert("Invalid OTP! Try again.");
+                showNotification("Verification Failed", "Invalid OTP! Try again.", false);
             });
         });
 
