@@ -1,1 +1,145 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .payment-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 350px;
+            width: 100%;
+        }
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+        }
+        .qr-code img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .timer {
+            font-size: 28px;
+            font-weight: bold;
+            color: #dc2626;
+            margin: 15px 0;
+        }
+        .utr-section {
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            width: 85%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            text-align: center;
+        }
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 90%;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="payment-card">
+        <h2>Scan & Pay</h2>
+        <p>Pay <strong>₹499</strong> within 5 minutes</p>
+
+        <!-- Yahan baad mein aap apna asli QR code lagayenge -->
+        <div class="qr-code" id="qr-container">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=dummy@upi&pn=DummyName&am=499" alt="Dummy QR Code">
+        </div>
+
+        <div class="timer" id="time-display">05:00</div>
+        <p id="timer-message" style="color: #6b7280; font-size: 14px;">Do not refresh or press back</p>
+
+        <!-- UTR Input Section -->
+        <div class="utr-section">
+            <input type="text" id="utr-input" placeholder="Enter 12-digit UTR Number" maxlength="12">
+            <button onclick="verifyPayment()" id="submit-btn">Verify Payment</button>
+        </div>
+    </div>
+
+    <script>
+        // 5 Minute Timer (300 seconds)
+        let timeInSeconds = 300;
+        const timerDisplay = document.getElementById('time-display');
+        const timerMessage = document.getElementById('timer-message');
+        const submitBtn = document.getElementById('submit-btn');
+        const utrInput = document.getElementById('utr-input');
+        const qrContainer = document.getElementById('qr-container');
+
+        const countdown = setInterval(() => {
+            if (timeInSeconds <= 0) {
+                // Timer 0 hone par kya hoga
+                clearInterval(countdown);
+                timerDisplay.textContent = "Expired!";
+                timerDisplay.style.color = "#9ca3af";
+                timerMessage.textContent = "Please refresh to try again.";
+                
+                // Button aur input band kar do
+                submitBtn.disabled = true;
+                submitBtn.style.background = "#9ca3af";
+                utrInput.disabled = true;
+                
+                // QR code ko dhundhla kar do
+                qrContainer.style.opacity = "0.2"; 
+            } else {
+                let minutes = Math.floor(timeInSeconds / 60);
+                let seconds = timeInSeconds % 60;
+                
+                // 04:09 format ke liye
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+                
+                timerDisplay.textContent = `${minutes}:${seconds}`;
+                timeInSeconds--;
+            }
+        }, 1000);
+
+        // Dummy Submit Function
+        function verifyPayment() {
+            const utrValue = utrInput.value;
+            if (utrValue.length === 12 && !isNaN(utrValue)) {
+                alert("UTR " + utrValue + " submitted successfully!\n\n(Baad mein yahan form submit karke database me save karne ka code aayega)");
+            } else {
+                alert("Please enter a valid 12-digit numbers only.");
+            }
+        }
+    </script>
+
+</body>
+</html>
