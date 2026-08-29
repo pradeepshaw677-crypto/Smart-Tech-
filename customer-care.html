@@ -1,1 +1,175 @@
 
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Care & Terms | Smart Tech</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'], },
+                    colors: {
+                        brandBlue: '#0f4c81', 
+                        brandGold: '#f59e0b', 
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col font-sans">
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <img src="logo.png" alt="Smart Tech Logo" class="h-10 w-10 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.src='https://via.placeholder.com/150/ffffff/0f4c81?text=ST'">
+                <span class="font-bold text-xl text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="#terms-section" class="text-xs font-semibold text-brandBlue hover:underline hidden sm:inline">Terms & Conditions ↓</a>
+                <a href="index.html" class="text-sm font-semibold text-gray-600 hover:text-brandBlue transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-10 space-y-16">
+        
+        <!-- SECTION 1: CUSTOMER CARE & SUPPORT -->
+        <section id="support-section">
+            <div class="text-center mb-10">
+                <span class="bg-brandGold/10 text-brandGold font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">24/7 Support</span>
+                <h1 class="text-3xl sm:text-4xl font-bold text-brandBlue">Customer Care & Helpdesk</h1>
+                <p class="text-sm text-gray-500 mt-2 max-w-lg mx-auto">Have questions regarding admissions, courses, or technical issues? Reach out to our support team instantly.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                
+                <!-- Phone Support -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 text-center hover:shadow-md transition">
+                    <div class="w-14 h-14 bg-blue-50 text-brandBlue rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                        <i class="fa-solid fa-phone-volume"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg mb-1">Call Support</h3>
+                    <p class="text-xs text-gray-500 mb-4">Mon-Sat (9 AM - 7 PM)</p>
+                    <a href="tel:9661356309" class="text-brandBlue font-bold text-sm hover:underline block">+91 96613 56309</a>
+                    <a href="tel:7004499194" class="text-brandBlue font-bold text-sm hover:underline block mt-1">+91 70044 99194</a>
+                </div>
+
+                <!-- WhatsApp Support -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 text-center hover:shadow-md transition">
+                    <div class="w-14 h-14 bg-green-50 text-green-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg mb-1">WhatsApp Chat</h3>
+                    <p class="text-xs text-gray-500 mb-4">Instant response on chat</p>
+                    <a href="https://wa.me/919661356309" target="_blank" class="inline-block bg-[#25D366] text-white font-bold text-xs px-5 py-2.5 rounded-full shadow hover:bg-green-600 transition">Chat on WhatsApp</a>
+                </div>
+
+                <!-- Centre Address -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 text-center hover:shadow-md transition">
+                    <div class="w-14 h-14 bg-yellow-50 text-brandGold rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg mb-1">Centre Location</h3>
+                    <p class="text-xs text-gray-500 mb-4">Visit our offline branch</p>
+                    <p class="text-gray-700 text-xs font-medium">Near College Road, Baharagora, Jharkhand - 833104</p>
+                </div>
+
+            </div>
+
+            <!-- Support Message Form -->
+            <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 sm:p-10 max-w-2xl mx-auto">
+                <h3 class="text-xl font-bold text-brandBlue mb-2">Send us a Message</h3>
+                <p class="text-xs text-gray-500 mb-6">Fill out this quick form and our support executive will get back to you.</p>
+
+                <form onsubmit="event.preventDefault(); alert('Your message has been submitted to Smart Tech Support!'); this.reset();" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">Your Name</label>
+                        <input type="text" required class="w-full bg-gray-50 border border-gray-200 text-sm rounded-xl p-3.5 outline-none focus:border-brandBlue transition" placeholder="Enter your name">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">Mobile Number</label>
+                        <input type="tel" required class="w-full bg-gray-50 border border-gray-200 text-sm rounded-xl p-3.5 outline-none focus:border-brandBlue transition" placeholder="Enter your mobile number">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">Message / Issue</label>
+                        <textarea rows="3" required class="w-full bg-gray-50 border border-gray-200 text-sm rounded-xl p-3.5 outline-none focus:border-brandBlue transition" placeholder="Describe your query..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brandBlue text-white font-bold py-3.5 rounded-xl shadow hover:bg-blue-800 transition text-sm">Submit Query</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- DIVIDER -->
+        <div class="border-t border-gray-200 my-8"></div>
+
+        <!-- SECTION 2: TERMS & CONDITIONS -->
+        <section id="terms-section" class="scroll-mt-24">
+            <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 sm:p-12">
+                
+                <div class="mb-8 border-b border-gray-100 pb-6 text-center sm:text-left">
+                    <span class="bg-brandBlue/10 text-brandBlue font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">Legal Agreement</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-brandBlue">Terms & Conditions</h2>
+                    <p class="text-xs text-gray-400 mt-1">Last updated: June 2026</p>
+                </div>
+
+                <div class="space-y-6 text-gray-600 text-sm leading-relaxed">
+                    
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-base mb-2">1. Introduction</h3>
+                        <p>Welcome to Smart Tech Computer Education Centre, Baharagora. By accessing our website or enrolling in our offline and online courses, you agree to comply with and be bound by the following terms and conditions.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-base mb-2">2. Admissions & Registrations</h3>
+                        <p>All offline registrations and seat bookings made via our platform are subject to verification. Providing incorrect contact information or personal details may lead to cancellation of your admission seat.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-base mb-2">3. Fee Payment & Refund Policy</h3>
+                        <p>Course fees paid for offline or online modules must be cleared as per the agreed schedule. Fees once paid are strictly non-refundable under normal circumstances, except where approved by centre management.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-base mb-2">4. Code of Conduct</h3>
+                        <p>Students enrolled at our physical centre or using digital portals must maintain discipline. Misbehavior, damage to lab equipment, or violation of centre rules will result in immediate termination of enrollment without any fee refund.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-base mb-2">5. Intellectual Property</h3>
+                        <p>All content, logos, course material, and graphics displayed on this website are the intellectual property of Smart Tech. Unauthorized copying, distribution, or commercial use is strictly prohibited.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-base mb-2">6. Governing Law</h3>
+                        <p>These terms shall be governed by and construed in accordance with the laws of India, and any disputes relating to these terms will be subject to the exclusive jurisdiction of the courts in Jharkhand.</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-400 mt-12">
+        &copy; 2026 Smart Tech Computer Education. All rights reserved.
+    </footer>
+
+</body>
+</html>
