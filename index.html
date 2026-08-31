@@ -123,7 +123,7 @@
         </div>
     </header>
 
-    <!-- SIDEBAR NAVIGATION (With auto-close on link clicks) -->
+    <!-- SIDEBAR NAVIGATION -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-50 hidden opacity-0 transition-opacity duration-300"></div>
     <aside id="sidebar" class="fixed top-0 left-0 w-[80%] max-w-sm h-full bg-white z-50 shadow-2xl -translate-x-full overflow-y-auto flex flex-col">
         <div class="p-4 flex justify-between items-center border-b border-gray-100 bg-[#f8fafc]">
@@ -359,46 +359,96 @@
 
         let studentEmail = '';
 
-        // 1. Auth State Check & Auto-detect User Name, Email, Photo & UI State Management
-        onAuthStateChanged(auth, async (user) => {
-            const loginNavItem = document.getElementById('login-nav-item');
-            
-            if (user) {
-                const displayName = user.displayName || user.email.split('@')[0];
-                document.getElementById('user-display-name').textContent = displayName;
-                if(document.getElementById('user-display-email')) {
-                    document.getElementById('user-display-email').textContent = user.email;
-                }
-                document.getElementById('welcome-banner-name').textContent = `${displayName}!`;
-                
-                // Hide Login option from dropdown since user is logged in
-                if(loginNavItem) loginNavItem.style.display = 'none';
+        // Instant UI Update from LocalStorage on page load if available
+        function applyLocalUserSession() {
+            const savedName = localStorage.getItem('student_name');
+            const savedEmail = localStorage.getItem('student_email');
+            const savedPhoto = localStorage.getItem('student_photo');
 
-                if (user.photoURL) {
+            if (savedEmail) {
+                window.isUserLoggedIn = true;
+                studentEmail = savedEmail;
+                if (document.getElementById('user-display-name')) {
+                    document.getElementById('user-display-name').textContent = savedName || savedEmail.split('@')[0];
+                }
+                if (document.getElementById('user-display-email')) {
+                    document.getElementById('user-display-email').textContent = savedEmail;
+                }
+                if (document.getElementById('welcome-banner-name')) {
+                    document.getElementById('welcome-banner-name').textContent = `${savedName || savedEmail.split('@')[0]}!`;
+                }
+                if (document.getElementById('login-nav-item')) {
+                    document.getElementById('login-nav-item').style.display = 'none';
+                }
+                if (savedPhoto) {
                     const navImg = document.getElementById('nav-profile-img');
                     const navIcon = document.getElementById('nav-profile-icon');
                     const dropImg = document.getElementById('dropdown-profile-img');
                     const dropIcon = document.getElementById('dropdown-profile-icon');
 
-                    navImg.src = user.photoURL;
+                    if(navImg && navIcon) {
+                        navImg.src = savedPhoto;
+                        navImg.classList.remove('hidden');
+                        navIcon.classList.add('hidden');
+                    }
+                    if(dropImg && dropIcon) {
+                        dropImg.src = savedPhoto;
+                        dropImg.classList.remove('hidden');
+                        dropIcon.classList.add('hidden');
+                    }
+                }
+            }
+        }
+        applyLocalUserSession();
+
+        // 1. Auth State Check & Sync with Firebase Session
+        onAuthStateChanged(auth, async (user) => {
+            const loginNavItem = document.getElementById('login-nav-item');
+            
+            if (user) {
+                const displayName = user.displayName || user.email.split('@')[0];
+                const email = user.email.toLowerCase().trim();
+                const photoURL = user.photoURL || '';
+
+                // Save to localStorage for instant loading across reloads
+                localStorage.setItem('student_name', displayName);
+                localStorage.setItem('student_email', email);
+                localStorage.setItem('student_photo', photoURL);
+                localStorage.setItem('isLoggedIn', 'true');
+
+                document.getElementById('user-display-name').textContent = displayName;
+                if(document.getElementById('user-display-email')) {
+                    document.getElementById('user-display-email').textContent = email;
+                }
+                document.getElementById('welcome-banner-name').textContent = `${displayName}!`;
+                
+                if(loginNavItem) loginNavItem.style.display = 'none';
+
+                if (photoURL) {
+                    const navImg = document.getElementById('nav-profile-img');
+                    const navIcon = document.getElementById('nav-profile-icon');
+                    const dropImg = document.getElementById('dropdown-profile-img');
+                    const dropIcon = document.getElementById('dropdown-profile-icon');
+
+                    navImg.src = photoURL;
                     navImg.classList.remove('hidden');
                     navIcon.classList.add('hidden');
 
-                    dropImg.src = user.photoURL;
+                    dropImg.src = photoURL;
                     dropImg.classList.remove('hidden');
                     dropIcon.classList.add('hidden');
                 }
 
                 window.isUserLoggedIn = true;
-                studentEmail = user.email.toLowerCase().trim();
+                studentEmail = email;
             } else {
+                localStorage.clear();
                 document.getElementById('user-display-name').textContent = 'Guest User';
                 if(document.getElementById('user-display-email')) {
                     document.getElementById('user-display-email').textContent = 'Not logged in';
                 }
                 document.getElementById('welcome-banner-name').textContent = 'Today!';
                 
-                // Show Login option if user is guest
                 if(loginNavItem) loginNavItem.style.display = 'block';
 
                 window.isUserLoggedIn = false;
@@ -510,14 +560,16 @@
             }
         }
 
-        // 4. Logout Handlers
+        // 4. Logout Handlers (Full session clear & signout)
         async function handleLogout() {
             try {
                 await signOut(auth);
-                localStorage.removeItem('isLoggedIn');
+                localStorage.clear();
                 window.location.href = 'login.html';
             } catch (error) {
                 console.error('Logout Error:', error);
+                localStorage.clear();
+                window.location.href = 'login.html';
             }
         }
 
