@@ -77,40 +77,15 @@
                 </div>
 
                 <!-- RIGHT SIDE: Profile -->
-                <div class="relative flex items-center gap-3">
+                <div class="flex items-center gap-3">
                     <button class="text-gray-500 hover:text-brandBlue transition relative hidden md:block">
                         <i class="fa-regular fa-bell text-xl"></i>
                         <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                     </button>
-                    <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center focus:outline-none">
+                    <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center">
                         <img id="nav-profile-img" src="" alt="User" class="w-full h-full object-cover hidden">
                         <i id="nav-profile-icon" class="fa-solid fa-user text-brandBlue text-sm md:text-lg"></i>
                     </button>
-
-                    <!-- PROFILE DROPDOWN -->
-                    <div id="profile-dropdown" class="absolute right-0 top-12 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
-                        <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden shrink-0">
-                                <img id="dropdown-profile-img" src="" class="w-full h-full object-cover hidden">
-                                <i id="dropdown-profile-icon" class="fa-solid fa-user text-brandBlue text-sm"></i>
-                            </div>
-                            <div class="truncate">
-                                <h4 id="user-display-name" class="font-bold text-sm leading-tight truncate max-w-[140px]">Guest User</h4>
-                                <p id="user-display-email" class="text-[10px] text-blue-200 mt-0.5 truncate max-w-[140px]">Not logged in</p>
-                            </div>
-                        </div>
-                        <ul class="py-1 text-gray-700 font-medium text-[13px]">
-                            <li id="login-nav-item"><a href="login.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 font-bold text-brandBlue"><i class="fa-solid fa-right-to-bracket w-4 text-center"></i> Login / Register</a></li>
-                            <li><a href="edit-profile.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50"><i class="fa-solid fa-user-pen w-4 text-center text-brandGold"></i> Edit Profile</a></li>
-                            <li><a href="offline-dashboard.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-id-card text-brandGold w-4 text-center"></i> Offline Dashboard</a></li>
-                            <li><a href="my-courses.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code text-brandBlue w-4 text-center"></i> My Courses (Paid)</a></li>
-                            <li id="logout-li-item" class="border-t border-gray-50 hidden">
-                                <button class="global-logout-btn w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium">
-                                    <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
 
@@ -125,11 +100,32 @@
         </div>
     </header>
 
+    <!-- PROFILE DROPDOWN -->
+    <div id="profile-dropdown" class="absolute right-4 top-16 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
+        <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden shrink-0">
+                <img id="dropdown-profile-img" src="" class="w-full h-full object-cover hidden">
+                <i id="dropdown-profile-icon" class="fa-solid fa-user text-brandBlue text-sm"></i>
+            </div>
+            <div class="truncate">
+                <h4 id="user-display-name" class="font-bold text-sm leading-tight truncate max-w-[140px]">Guest User</h4>
+                <p id="user-display-email" class="text-[10px] text-blue-200 mt-0.5 truncate max-w-[140px]">Not logged in</p>
+            </div>
+        </div>
+        <ul class="py-1 text-gray-700 font-medium text-[13px]">
+            <li id="dropdown-login-item"><a href="login.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 font-bold text-brandBlue"><i class="fa-solid fa-right-to-bracket w-4 text-center"></i> Login / Register</a></li>
+            <li><a href="edit-profile.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50"><i class="fa-solid fa-user-pen w-4 text-center text-brandGold"></i> Edit Profile</a></li>
+            <li><a href="offline-dashboard.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-id-card text-brandGold w-4 text-center"></i> Offline Dashboard</a></li>
+            <li><a href="my-courses.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code text-brandBlue w-4 text-center"></i> My Courses (Paid)</a></li>
+            <li id="dropdown-logout-item" class="border-t border-gray-50" style="display: none;"><button id="logout-dropdown-btn" class="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
+        </ul>
+    </div>
+
     <!-- SIDEBAR NAVIGATION -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-50 hidden opacity-0 transition-opacity duration-300"></div>
     <aside id="sidebar" class="fixed top-0 left-0 w-[80%] max-w-sm h-full bg-white z-50 shadow-2xl -translate-x-full overflow-y-auto flex flex-col">
         <div class="p-4 flex justify-between items-center border-b border-gray-100 bg-[#f8fafc]">
-            <a href="#home" class="flex items-center gap-2 sidebar-link">
+            <a href="#home" class="flex items-center gap-2">
                 <img src="logo.png" alt="Logo" class="h-9 w-9 rounded-full object-cover border border-brandGold" onerror="this.src='https://via.placeholder.com/50'">
                 <div class="flex flex-col leading-none">
                     <span class="font-bold text-[15px] text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
@@ -141,17 +137,17 @@
         
         <div class="p-3 flex-grow">
             <ul class="space-y-1 text-gray-600 font-medium text-[14px]">
-                <li><a href="#home" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-house w-5 text-center text-gray-400"></i> Home</a></li>
-                <li><a href="#courses" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Explore Courses</a></li>
-                <li><a href="edit-profile.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-user-pen w-5 text-center text-brandGold"></i> Edit Profile</a></li>
-                <li><a href="demo.html" class="flex items-center gap-3 p-3 bg-yellow-50 text-brandGold font-bold rounded-lg transition sidebar-link" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-gift w-5 text-center"></i> Book Free Demo</a></li>
-                <li><a href="my-courses.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code w-5 text-center text-gray-400"></i> My Courses</a></li>
-                <li><a href="offline-dashboard.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-user-graduate w-5 text-center text-brandGold"></i> Offline Student Dashboard</a></li>
-                <li><a href="offline-centre.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-map-location-dot w-5 text-center text-gray-400"></i> View Offline Centre</a></li>
-                <li><a href="register-offline.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
-                <li><a href="verify.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
-                <li id="sidebar-logout-li" class="border-t border-gray-100 mt-2 pt-2 hidden">
-                    <button class="global-logout-btn w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
+                <li><a href="#home" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-house w-5 text-center text-gray-400"></i> Home</a></li>
+                <li><a href="#courses" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Explore Courses</a></li>
+                <li><a href="edit-profile.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-user-pen w-5 text-center text-brandGold"></i> Edit Profile</a></li>
+                <li><a href="demo.html" class="flex items-center gap-3 p-3 bg-yellow-50 text-brandGold font-bold rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-gift w-5 text-center"></i> Book Free Demo</a></li>
+                <li><a href="my-courses.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code w-5 text-center text-gray-400"></i> My Courses</a></li>
+                <li><a href="offline-dashboard.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-user-graduate w-5 text-center text-brandGold"></i> Offline Student Dashboard</a></li>
+                <li><a href="offline-centre.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-map-location-dot w-5 text-center text-gray-400"></i> View Offline Centre</a></li>
+                <li><a href="register-offline.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
+                <li><a href="verify.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
+                <li id="sidebar-logout-item" class="border-t border-gray-100 mt-2 pt-2" style="display: none;">
+                    <button id="logout-sidebar-btn" class="w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
                 </li>
             </ul>
         </div>
@@ -360,108 +356,86 @@
 
         let studentEmail = '';
 
-        // Instant UI Update from LocalStorage on page load (Fixes delay)
-        function applyLocalUserSession() {
-            const savedName = localStorage.getItem('student_name');
-            const savedEmail = localStorage.getItem('student_email');
-            const savedPhoto = localStorage.getItem('student_photo');
-
-            if (savedEmail) {
-                window.isUserLoggedIn = true;
-                studentEmail = savedEmail;
-                if (document.getElementById('user-display-name')) document.getElementById('user-display-name').textContent = savedName || savedEmail.split('@')[0];
-                if (document.getElementById('user-display-email')) document.getElementById('user-display-email').textContent = savedEmail;
-                if (document.getElementById('welcome-banner-name')) document.getElementById('welcome-banner-name').textContent = `${savedName || savedEmail.split('@')[0]}!`;
-                
-                if (document.getElementById('login-nav-item')) document.getElementById('login-nav-item').classList.add('hidden');
-                if (document.getElementById('logout-li-item')) document.getElementById('logout-li-item').classList.remove('hidden');
-                if (document.getElementById('sidebar-logout-li')) document.getElementById('sidebar-logout-li').classList.remove('hidden');
-
-                if (savedPhoto) {
-                    const navImg = document.getElementById('nav-profile-img');
-                    const navIcon = document.getElementById('nav-profile-icon');
-                    const dropImg = document.getElementById('dropdown-profile-img');
-                    const dropIcon = document.getElementById('dropdown-profile-icon');
-
-                    if(navImg && navIcon) { navImg.src = savedPhoto; navImg.classList.remove('hidden'); navIcon.classList.add('hidden'); }
-                    if(dropImg && dropIcon) { dropImg.src = savedPhoto; dropImg.classList.remove('hidden'); dropIcon.classList.add('hidden'); }
-                }
-            }
-        }
-        applyLocalUserSession();
-
-        // 1. Auth State Check & Sync with Firebase
+        // 1. Auth State Check & Auto-detect Name, Email & Photo
         onAuthStateChanged(auth, async (user) => {
-            const loginNavItem = document.getElementById('login-nav-item');
-            const logoutDropdownItem = document.getElementById('logout-li-item');
-            const logoutSidebarItem = document.getElementById('sidebar-logout-li');
-            
-            if (user) {
-                const displayName = user.displayName || user.email.split('@')[0];
-                const email = user.email.toLowerCase().trim();
-                const photoURL = user.photoURL || '';
+            try {
+                if (user) {
+                    const displayName = user.displayName ? user.displayName : (user.email ? user.email.split('@')[0] : 'Student');
+                    
+                    // UI Text updates
+                    const nameEl = document.getElementById('user-display-name');
+                    if (nameEl) nameEl.textContent = displayName;
+                    
+                    const emailEl = document.getElementById('user-display-email');
+                    if (emailEl) emailEl.textContent = user.email;
+                    
+                    const bannerEl = document.getElementById('welcome-banner-name');
+                    if (bannerEl) bannerEl.textContent = displayName + '!';
+                    
+                    // Toggle Login/Logout buttons
+                    const loginItem = document.getElementById('dropdown-login-item');
+                    if (loginItem) loginItem.style.display = 'none';
+                    
+                    const logoutItem = document.getElementById('dropdown-logout-item');
+                    if (logoutItem) logoutItem.style.display = 'block';
 
-                localStorage.setItem('student_name', displayName);
-                localStorage.setItem('student_email', email);
-                localStorage.setItem('student_photo', photoURL);
-                localStorage.setItem('isLoggedIn', 'true');
+                    const sidebarLogoutItem = document.getElementById('sidebar-logout-item');
+                    if (sidebarLogoutItem) sidebarLogoutItem.style.display = 'block';
 
-                document.getElementById('user-display-name').textContent = displayName;
-                if(document.getElementById('user-display-email')) document.getElementById('user-display-email').textContent = email;
-                document.getElementById('welcome-banner-name').textContent = `${displayName}!`;
-                
-                if(loginNavItem) loginNavItem.classList.add('hidden');
-                if(logoutDropdownItem) logoutDropdownItem.classList.remove('hidden');
-                if(logoutSidebarItem) logoutSidebarItem.classList.remove('hidden');
+                    // Profile Pictures
+                    if (user.photoURL) {
+                        const navImg = document.getElementById('nav-profile-img');
+                        const navIcon = document.getElementById('nav-profile-icon');
+                        const dropImg = document.getElementById('dropdown-profile-img');
+                        const dropIcon = document.getElementById('dropdown-profile-icon');
 
-                if (photoURL) {
-                    const navImg = document.getElementById('nav-profile-img');
-                    const navIcon = document.getElementById('nav-profile-icon');
-                    const dropImg = document.getElementById('dropdown-profile-img');
-                    const dropIcon = document.getElementById('dropdown-profile-icon');
+                        if (navImg) { navImg.src = user.photoURL; navImg.classList.remove('hidden'); }
+                        if (navIcon) navIcon.classList.add('hidden');
 
-                    if(navImg) { navImg.src = photoURL; navImg.classList.remove('hidden'); }
-                    if(navIcon) navIcon.classList.add('hidden');
-                    if(dropImg) { dropImg.src = photoURL; dropImg.classList.remove('hidden'); }
-                    if(dropIcon) dropIcon.classList.add('hidden');
+                        if (dropImg) { dropImg.src = user.photoURL; dropImg.classList.remove('hidden'); }
+                        if (dropIcon) dropIcon.classList.add('hidden');
+                    }
+
+                    window.isUserLoggedIn = true;
+                    studentEmail = user.email.toLowerCase().trim();
+                } else {
+                    // Not Logged In Default values
+                    const nameEl = document.getElementById('user-display-name');
+                    if (nameEl) nameEl.textContent = 'Guest User';
+                    
+                    const emailEl = document.getElementById('user-display-email');
+                    if (emailEl) emailEl.textContent = 'Not logged in';
+                    
+                    const bannerEl = document.getElementById('welcome-banner-name');
+                    if (bannerEl) bannerEl.textContent = 'Today!';
+                    
+                    // Toggle Login/Logout buttons
+                    const loginItem = document.getElementById('dropdown-login-item');
+                    if (loginItem) loginItem.style.display = 'block';
+                    
+                    const logoutItem = document.getElementById('dropdown-logout-item');
+                    if (logoutItem) logoutItem.style.display = 'none';
+
+                    const sidebarLogoutItem = document.getElementById('sidebar-logout-item');
+                    if (sidebarLogoutItem) sidebarLogoutItem.style.display = 'none';
+
+                    window.isUserLoggedIn = false;
+                    studentEmail = '';
                 }
-
-                window.isUserLoggedIn = true;
-                studentEmail = email;
-            } else {
-                localStorage.clear();
-                document.getElementById('user-display-name').textContent = 'Guest User';
-                if(document.getElementById('user-display-email')) document.getElementById('user-display-email').textContent = 'Not logged in';
-                document.getElementById('welcome-banner-name').textContent = 'Today!';
-                
-                if(loginNavItem) loginNavItem.classList.remove('hidden');
-                if(logoutDropdownItem) logoutDropdownItem.classList.add('hidden');
-                if(logoutSidebarItem) logoutSidebarItem.classList.add('hidden');
-
-                const navImg = document.getElementById('nav-profile-img');
-                const navIcon = document.getElementById('nav-profile-icon');
-                const dropImg = document.getElementById('dropdown-profile-img');
-                const dropIcon = document.getElementById('dropdown-profile-icon');
-
-                if(navImg) { navImg.src = ''; navImg.classList.add('hidden'); }
-                if(navIcon) navIcon.classList.remove('hidden');
-                if(dropImg) { dropImg.src = ''; dropImg.classList.add('hidden'); }
-                if(dropIcon) dropIcon.classList.remove('hidden');
-
-                window.isUserLoggedIn = false;
-                studentEmail = '';
+            } catch (err) {
+                console.error("UI Update Error: ", err);
             }
+
+            // After checking Auth, Load the courses
             await loadFirestoreCourses(studentEmail);
         });
 
         // 2. Fetch Courses from Firestore and Render with Lock/Unlock State
         async function loadFirestoreCourses(email) {
             const container = document.getElementById('dynamic-courses-container');
-            const noResultsEl = document.getElementById('no-results');
             
-            // Show loading initially
+            // Initial loading state
             container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses...</p>';
-            noResultsEl.classList.add('hidden');
 
             let unlockedCourses = {};
             if (email) {
@@ -478,16 +452,20 @@
             try {
                 const querySnapshot = await getDocs(collection(db, "courses"));
                 
-                // Remove loading spinner completely before checking if empty
+                // Clear the loading spinner
                 container.innerHTML = '';
 
+                // IF NO COURSES FOUND IN DATABASE, Show Professional "No Courses" Block
                 if (querySnapshot.empty) {
-                    // Show the 'No Courses Found' UI block robustly
-                    noResultsEl.classList.remove('hidden');
+                    container.innerHTML = `
+                        <div class="col-span-full text-center py-12 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
+                            <i class="fa-solid fa-folder-open text-4xl mb-3 text-gray-300"></i>
+                            <p class="text-lg text-gray-700">No Courses Available</p>
+                            <p class="text-xs text-gray-400 mt-1">Admin has not published any active courses yet.</p>
+                        </div>
+                    `;
                     return;
                 }
-
-                noResultsEl.classList.add('hidden');
 
                 querySnapshot.forEach((docSnap) => {
                     const courseId = docSnap.id;
@@ -545,17 +523,10 @@
                     container.appendChild(card);
                 });
 
-                if (typeof performLiveSearch === 'function') performLiveSearch();
+                performLiveSearch();
 
-            } catch (error) {
-                console.error("Firebase Fetch Error:", error);
-                container.innerHTML = '';
-                noResultsEl.classList.remove('hidden');
-                noResultsEl.innerHTML = `
-                    <i class="fa-solid fa-triangle-exclamation text-3xl mb-2 text-red-500"></i>
-                    <p class="text-base font-bold text-gray-700">Connection Error</p>
-                    <p class="text-xs text-gray-400 mt-1">Unable to connect to the database. Please check your internet connection.</p>
-                `;
+            } catch (e) {
+                container.innerHTML = '<p class="col-span-full text-center text-red-500 py-10 bg-white rounded-2xl shadow-sm border border-gray-100">Error loading data from Firebase.</p>';
             }
         };
 
@@ -570,24 +541,24 @@
             }
         }
 
-        // 4. Robust Logout Handler
-        window.handleLogout = async function(e) {
+        // 4. Secure Logout Handler
+        function handleLogout(e) {
             if(e) e.preventDefault();
-            try {
-                await signOut(auth);
-                localStorage.clear();
+            signOut(auth).then(() => {
                 window.location.href = 'login.html';
-            } catch (error) {
+            }).catch((error) => {
                 console.error('Logout Error:', error);
-                localStorage.clear();
                 window.location.href = 'login.html';
-            }
+            });
         }
 
-        // Apply logout event to all logout buttons
-        document.querySelectorAll('.global-logout-btn').forEach(btn => {
-            btn.addEventListener('click', window.handleLogout);
-        });
+        // Attach Logout events securely
+        const dropdownLogoutBtn = document.getElementById('logout-dropdown-btn');
+        if (dropdownLogoutBtn) dropdownLogoutBtn.addEventListener('click', handleLogout);
+
+        const sidebarLogoutBtn = document.getElementById('logout-sidebar-btn');
+        if (sidebarLogoutBtn) sidebarLogoutBtn.addEventListener('click', handleLogout);
+
     </script>
 
     <!-- UI INTERACTION & SEARCH SCRIPTS -->
@@ -625,16 +596,7 @@
 
             const noResultsEl = document.getElementById('no-results');
             if (noResultsEl) {
-                if(hasResults || courseCards.length === 0) {
-                    noResultsEl.classList.add('hidden');
-                } else {
-                    noResultsEl.classList.remove('hidden');
-                    noResultsEl.innerHTML = `
-                        <i class="fa-solid fa-magnifying-glass text-3xl mb-2 text-gray-300"></i>
-                        <p class="text-base font-bold text-gray-700">No matching courses</p>
-                        <p class="text-xs text-gray-400 mt-1">Try searching with a different keyword like Tally, Python, etc.</p>
-                    `;
-                }
+                noResultsEl.style.display = hasResults ? 'none' : 'block';
             }
         }
 
@@ -693,14 +655,6 @@
         if(menuBtn) menuBtn.addEventListener('click', openMenu);
         if(closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
         if(overlay) overlay.addEventListener('click', closeMenu);
-
-        // Auto close sidebar when any sidebar link is clicked
-        const sidebarLinks = document.querySelectorAll('.sidebar-link');
-        sidebarLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                closeMenu();
-            });
-        });
 
         window.addEventListener('click', (e) => {
             if (profileBtn && profileDropdown && !profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
