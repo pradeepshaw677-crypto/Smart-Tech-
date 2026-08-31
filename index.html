@@ -40,13 +40,6 @@
         .swiper-pagination-bullet-active { background-color: #f59e0b !important; }
         .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 15px 25px -5px rgba(0,0,0,0.1); }
-        
-        .fab-pulse { animation: pulse-ring 2s infinite; }
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
     </style>
 </head>
 <body class="antialiased relative" id="home">
@@ -56,10 +49,10 @@
         <span class="text-brandGold">★</span> ISO 9001:2015 CERTIFIED ORGANISATION (GOVT. OF INDIA) <span class="text-brandGold">★</span>
     </div>
 
-    <!-- MAIN HEADER -->
+    <!-- MAIN HEADER (Sticky Position Fix applied here) -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-3">
-            <div class="flex justify-between items-center mb-3">
+            <div class="flex justify-between items-center mb-3 relative">
                 
                 <!-- LEFT SIDE: Hamburger & Circular Logo -->
                 <div class="flex items-center gap-2 md:gap-3 shrink-0">
@@ -76,16 +69,32 @@
                     </a>
                 </div>
 
-                <!-- RIGHT SIDE: Profile -->
+                <!-- RIGHT SIDE: Profile Container -->
                 <div class="flex items-center gap-3">
-                    <button class="text-gray-500 hover:text-brandBlue transition relative hidden md:block">
-                        <i class="fa-regular fa-bell text-xl"></i>
-                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                    </button>
-                    <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center relative">
+                    <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center relative focus:outline-none">
                         <i id="header-user-icon" class="fa-solid fa-user text-brandBlue text-sm md:text-lg"></i>
                         <img id="header-user-img" src="" class="w-full h-full object-cover hidden absolute inset-0">
                     </button>
+
+                    <!-- PROFILE DROPDOWN (Inside relative parent so it scrolls perfectly) -->
+                    <div id="profile-dropdown" class="absolute right-0 top-12 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
+                        <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden relative">
+                                <i id="dropdown-user-icon" class="fa-solid fa-user text-brandBlue text-sm"></i>
+                                <img id="dropdown-user-img" src="" class="w-full h-full object-cover hidden absolute inset-0">
+                            </div>
+                            <div class="truncate">
+                                <h4 id="user-display-name" class="font-bold text-sm leading-tight truncate max-w-[140px]">Guest User</h4>
+                                <p id="user-display-email" class="text-[10px] text-blue-200 mt-0.5 truncate max-w-[140px]">Not logged in</p>
+                            </div>
+                        </div>
+                        <ul class="py-1 text-gray-700 font-medium text-[13px]">
+                            <li id="nav-login-item"><a href="login.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 font-bold text-brandBlue"><i class="fa-solid fa-right-to-bracket w-4 text-center"></i> Login / Register</a></li>
+                            <li><a href="offline-dashboard.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-id-card text-brandGold w-4 text-center"></i> Offline Dashboard</a></li>
+                            <li><a href="my-courses.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code text-brandBlue w-4 text-center"></i> My Courses (Paid)</a></li>
+                            <li id="nav-logout-item" class="hidden border-t border-gray-50"><button class="global-logout-btn w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -100,35 +109,14 @@
         </div>
     </header>
 
-    <!-- PROFILE DROPDOWN (Dynamic User Display) -->
-    <div id="profile-dropdown" class="absolute right-4 top-16 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
-        <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden relative">
-                <i id="dropdown-user-icon" class="fa-solid fa-user text-brandBlue text-sm"></i>
-                <img id="dropdown-user-img" src="" class="w-full h-full object-cover hidden absolute inset-0">
-            </div>
-            <div class="truncate">
-                <h4 id="user-display-name" class="font-bold text-sm leading-tight truncate max-w-[140px]">Guest User</h4>
-                <p id="user-display-email" class="text-[10px] text-blue-200 mt-0.5 truncate max-w-[140px]">Not logged in</p>
-            </div>
-        </div>
-        <ul class="py-1 text-gray-700 font-medium text-[13px]">
-            <li id="nav-login-item"><a href="login.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 font-bold text-brandBlue"><i class="fa-solid fa-right-to-bracket w-4 text-center"></i> Login / Register</a></li>
-            <li><a href="offline-dashboard.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-id-card text-brandGold w-4 text-center"></i> Offline Dashboard</a></li>
-            <li><a href="my-courses.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code text-brandBlue w-4 text-center"></i> My Courses (Paid)</a></li>
-            <li id="nav-logout-item" class="hidden border-t border-gray-50"><button id="dropdown-logout-btn" class="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
-        </ul>
-    </div>
-
     <!-- SIDEBAR NAVIGATION -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-50 hidden opacity-0 transition-opacity duration-300"></div>
-    <aside id="sidebar" class="fixed top-0 left-0 w-[80%] max-w-sm h-full bg-white z-50 shadow-2xl -translate-x-full overflow-y-auto flex flex-col">
+    <aside id="sidebar" class="fixed top-0 left-0 w-[80%] max-w-sm h-full bg-white z-50 shadow-2xl -translate-x-full overflow-y-auto flex flex-col transition-transform duration-300">
         <div class="p-4 flex justify-between items-center border-b border-gray-100 bg-[#f8fafc]">
-            <a href="#home" class="flex items-center gap-2">
+            <a href="#home" class="flex items-center gap-2 sidebar-link">
                 <img src="logo.png" alt="Logo" class="h-9 w-9 rounded-full object-cover border border-brandGold" onerror="this.src='https://via.placeholder.com/50'">
                 <div class="flex flex-col leading-none">
                     <span class="font-bold text-[15px] text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
-                    <span class="text-[7px] text-gray-500 font-bold tracking-widest uppercase">Education</span>
                 </div>
             </a>
             <button id="close-menu-btn" class="text-gray-500 hover:text-red-500 transition text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
@@ -136,16 +124,16 @@
         
         <div class="p-3 flex-grow">
             <ul class="space-y-1 text-gray-600 font-medium text-[14px]">
-                <li><a href="#home" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-house w-5 text-center text-gray-400"></i> Home</a></li>
-                <li><a href="#courses" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Explore Courses</a></li>
-                <li><a href="demo.html" class="flex items-center gap-3 p-3 bg-yellow-50 text-brandGold font-bold rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-gift w-5 text-center"></i> Book Free Demo</a></li>
-                <li><a href="my-courses.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code w-5 text-center text-gray-400"></i> My Courses</a></li>
-                <li><a href="offline-dashboard.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-user-graduate w-5 text-center text-brandGold"></i> Offline Student Dashboard</a></li>
-                <li><a href="offline-centre.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-map-location-dot w-5 text-center text-gray-400"></i> View Offline Centre</a></li>
-                <li><a href="register-offline.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
-                <li><a href="verify.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
+                <li><a href="#home" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-house w-5 text-center text-gray-400"></i> Home</a></li>
+                <li><a href="#courses" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Explore Courses</a></li>
+                <li><a href="demo.html" class="sidebar-link flex items-center gap-3 p-3 bg-yellow-50 text-brandGold font-bold rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-gift w-5 text-center"></i> Book Free Demo</a></li>
+                <li><a href="my-courses.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code w-5 text-center text-gray-400"></i> My Courses</a></li>
+                <li><a href="offline-dashboard.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-user-graduate w-5 text-center text-brandGold"></i> Offline Student Dashboard</a></li>
+                <li><a href="offline-centre.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-map-location-dot w-5 text-center text-gray-400"></i> View Offline Centre</a></li>
+                <li><a href="register-offline.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
+                <li><a href="verify.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
                 <li id="sidebar-logout-item" class="hidden border-t border-gray-100 mt-2 pt-2">
-                    <button id="sidebar-logout-btn" class="w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
+                    <button class="global-logout-btn sidebar-link w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
                 </li>
             </ul>
         </div>
@@ -165,7 +153,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="swiper-pagination"></div>
             </div>
         </section>
 
@@ -201,21 +188,21 @@
             </div>
         </section>
 
-        <!-- COURSES GRID (Firestore Logic added here) -->
+        <!-- COURSES GRID (Firestore Dynamic Load) -->
         <section id="courses" class="max-w-7xl mx-auto px-4 mb-16 scroll-mt-24">
             <div class="mb-6">
                 <h2 class="text-xl md:text-3xl font-bold text-brandBlue mb-2">Our Popular Courses</h2>
                 <div class="w-12 h-1 bg-brandGold rounded-full"></div>
             </div>
 
-            <!-- Dynamic Courses Container with initial spinner -->
+            <!-- Container for Courses / Spinner -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="dynamic-courses-container">
                 <p class="col-span-full text-center text-gray-400 py-12" id="loading-spinner">
-                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br>Loading courses from database...
+                    <i class="fa-solid fa-spinner fa-spin text-3xl mb-2"></i><br>Loading courses from database...
                 </p>
             </div>
 
-            <!-- Dynamic Search/Empty Fail Message -->
+            <!-- Dynamic Search / Empty Fail Message -->
             <div id="no-results" class="hidden col-span-full text-center py-8 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
                 <i class="fa-solid fa-magnifying-glass text-2xl mb-2 text-gray-300"></i>
                 <p class="text-sm">No courses found matching your search.</p>
@@ -259,14 +246,6 @@
                         <li class="flex items-start gap-2"><i class="fa-solid fa-location-dot text-brandGold mt-0.5"></i> Near College Road, Baharagora</li>
                         <li class="flex items-center gap-2"><i class="fa-solid fa-phone-volume text-brandGold"></i> 96613 56309, 70044 99194</li>
                     </ul>
-                    
-                    <!-- Socials -->
-                    <div class="flex gap-3 mt-6">
-                        <a href="https://facebook.com" target="_blank" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#1877F2] transition"><i class="fa-brands fa-facebook-f text-sm"></i></a>
-                        <a href="https://wa.me/919661356309" target="_blank" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#25D366] transition"><i class="fa-brands fa-whatsapp text-sm"></i></a>
-                        <a href="https://instagram.com/smarttech_baharagora" target="_blank" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition"><i class="fa-brands fa-instagram text-sm"></i></a>
-                        <a href="https://youtube.com" target="_blank" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#FF0000] transition"><i class="fa-brands fa-youtube text-sm"></i></a>
-                    </div>
                 </div>
 
                 <!-- Quick Links -->
@@ -300,15 +279,11 @@
                         </li>
                         <li class="flex items-center gap-3 bg-gray-800/40 p-2 rounded-lg border border-gray-700/50">
                             <i class="fa-solid fa-chalkboard-user text-blue-400 text-sm w-4 text-center"></i>
-                            <span class="text-xs font-semibold text-gray-200">Friendly Expert Teachers</span>
+                            <span class="text-xs font-semibold text-gray-200">Expert Teachers</span>
                         </li>
                         <li class="flex items-center gap-3 bg-gray-800/40 p-2 rounded-lg border border-gray-700/50">
                             <i class="fa-solid fa-briefcase text-green-400 text-sm w-4 text-center"></i>
                             <span class="text-xs font-semibold text-gray-200">100% Job Assistance</span>
-                        </li>
-                        <li class="flex items-center gap-3 bg-gray-800/40 p-2 rounded-lg border border-gray-700/50">
-                            <i class="fa-solid fa-wifi text-pink-400 text-sm w-4 text-center"></i>
-                            <span class="text-xs font-semibold text-gray-200">Free High-Speed Wi-Fi</span>
                         </li>
                     </ul>
                 </div>
@@ -320,8 +295,8 @@
         </div>
     </footer>
 
-    <!-- FLIPKART STYLE MOBILE BOTTOM NAV -->
-    <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 flex justify-around items-center px-1 py-2.5 z-50 shadow-[0_-5px_15px_rgba(0,0,0,0.08)]">
+    <!-- MOBILE BOTTOM NAV -->
+    <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 flex justify-around items-center px-1 py-2.5 z-50">
         <a href="#home" class="flex flex-col items-center gap-0.5 text-brandBlue font-bold w-1/4">
             <i class="fa-solid fa-house text-[18px]"></i>
             <span class="text-[9px]">Home</span>
@@ -330,14 +305,9 @@
             <i class="fa-solid fa-gift text-[18px]"></i>
             <span class="text-[9px]">Demo</span>
         </a>
-        <a href="my-courses.html" onclick="requireLogin(event, this.href)" class="flex flex-col items-center gap-0.5 text-gray-500 hover:text-brandBlue transition w-1/4 relative">
+        <a href="my-courses.html" onclick="requireLogin(event, this.href)" class="flex flex-col items-center gap-0.5 text-gray-500 hover:text-brandBlue transition w-1/4">
             <i class="fa-solid fa-laptop-code text-[18px]"></i>
-            <span class="absolute -top-1 right-4 w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span>
             <span class="text-[9px]">Courses</span>
-        </a>
-        <a href="verify.html" class="flex flex-col items-center gap-0.5 text-gray-500 hover:text-brandBlue transition w-1/4">
-            <i class="fa-solid fa-certificate text-[18px]"></i>
-            <span class="text-[9px]">Verify</span>
         </a>
     </nav>
 
@@ -348,102 +318,110 @@
         </a>
     </div>
 
-    <!-- FIREBASE AUTH & FIRESTORE LOGIC -->
+    <!-- FIREBASE AUTH & FIRESTORE LOGIC (VERSION 10.8.1) -->
     <script type="module">
-        import { db, auth } from './firebase-config.js';
+        import { app, auth } from './firebase-config.js';
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        
+        // Yahan par hum db ko manually index.html me initialize kar rahe hain taaki crash na ho
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        const db = getFirestore(app);
 
-        // Global flag for login check
         window.isUserLoggedIn = false;
 
-        // UI Manipulation elements
-        const nameEl = document.getElementById('user-display-name');
-        const emailEl = document.getElementById('user-display-email');
-        const bannerNameEl = document.getElementById('welcome-banner-name');
-        const navLoginItem = document.getElementById('nav-login-item');
-        const navLogoutItem = document.getElementById('nav-logout-item');
-        const sidebarLogoutItem = document.getElementById('sidebar-logout-item');
-        
-        const headerImg = document.getElementById('header-user-img');
-        const headerIcon = document.getElementById('header-user-icon');
-        const dropdownImg = document.getElementById('dropdown-user-img');
-        const dropdownIcon = document.getElementById('dropdown-user-icon');
-
-        // 1. Listen for Authentication Changes
+        // 1. LISTEN TO LOGIN STATE
         onAuthStateChanged(auth, async (user) => {
+            const nameEl = document.getElementById('user-display-name');
+            const emailEl = document.getElementById('user-display-email');
+            const bannerNameEl = document.getElementById('welcome-banner-name');
+            
+            const navLoginItem = document.getElementById('nav-login-item');
+            const navLogoutItem = document.getElementById('nav-logout-item');
+            const sidebarLogoutItem = document.getElementById('sidebar-logout-item');
+            
+            const headerImg = document.getElementById('header-user-img');
+            const headerIcon = document.getElementById('header-user-icon');
+            const dropdownImg = document.getElementById('dropdown-user-img');
+            const dropdownIcon = document.getElementById('dropdown-user-icon');
+
             let userEmail = '';
 
             if (user) {
+                // User is logged in
                 window.isUserLoggedIn = true;
                 userEmail = user.email ? user.email.toLowerCase().trim() : '';
-                const displayName = user.displayName || userEmail.split('@')[0];
                 
-                // Update Name & Email Text
-                nameEl.textContent = displayName;
-                bannerNameEl.textContent = `${displayName}!`;
-                emailEl.textContent = userEmail;
+                // Get name properly (Fallback to email handle)
+                let displayName = 'Student';
+                if (user.displayName && user.displayName.trim() !== "") {
+                    displayName = user.displayName;
+                } else if (userEmail !== "") {
+                    displayName = userEmail.split('@')[0];
+                }
+                
+                // Update text
+                if(nameEl) nameEl.textContent = displayName;
+                if(bannerNameEl) bannerNameEl.textContent = `${displayName}!`;
+                if(emailEl) emailEl.textContent = userEmail;
 
-                // Show Logout, Hide Login
-                navLoginItem.classList.add('hidden');
-                navLogoutItem.classList.remove('hidden');
-                sidebarLogoutItem.classList.remove('hidden');
+                // Toggle Buttons (Hide Login, Show Logout)
+                if(navLoginItem) navLoginItem.classList.add('hidden');
+                if(navLogoutItem) navLogoutItem.classList.remove('hidden');
+                if(sidebarLogoutItem) sidebarLogoutItem.classList.remove('hidden');
 
-                // Update Profile Photo
+                // Set Profile Image
                 if (user.photoURL) {
-                    headerImg.src = user.photoURL;
-                    headerImg.classList.remove('hidden');
-                    headerIcon.classList.add('hidden');
-
-                    dropdownImg.src = user.photoURL;
-                    dropdownImg.classList.remove('hidden');
-                    dropdownIcon.classList.add('hidden');
+                    if(headerImg) { headerImg.src = user.photoURL; headerImg.classList.remove('hidden'); }
+                    if(headerIcon) headerIcon.classList.add('hidden');
+                    if(dropdownImg) { dropdownImg.src = user.photoURL; dropdownImg.classList.remove('hidden'); }
+                    if(dropdownIcon) dropdownIcon.classList.add('hidden');
                 }
             } else {
+                // User is logged out
                 window.isUserLoggedIn = false;
                 userEmail = '';
 
-                // Reset Text
-                nameEl.textContent = 'Guest User';
-                emailEl.textContent = 'Not logged in';
-                bannerNameEl.textContent = 'Today!';
+                // Reset text
+                if(nameEl) nameEl.textContent = 'Guest User';
+                if(emailEl) emailEl.textContent = 'Not logged in';
+                if(bannerNameEl) bannerNameEl.textContent = 'Today!';
 
-                // Show Login, Hide Logout
-                navLoginItem.classList.remove('hidden');
-                navLogoutItem.classList.add('hidden');
-                sidebarLogoutItem.classList.add('hidden');
+                // Toggle Buttons (Show Login, Hide Logout)
+                if(navLoginItem) navLoginItem.classList.remove('hidden');
+                if(navLogoutItem) navLogoutItem.classList.add('hidden');
+                if(sidebarLogoutItem) sidebarLogoutItem.classList.add('hidden');
 
                 // Reset Photo
-                headerImg.classList.add('hidden');
-                headerIcon.classList.remove('hidden');
-                dropdownImg.classList.add('hidden');
-                dropdownIcon.classList.remove('hidden');
+                if(headerImg) headerImg.classList.add('hidden');
+                if(headerIcon) headerIcon.classList.remove('hidden');
+                if(dropdownImg) dropdownImg.classList.add('hidden');
+                if(dropdownIcon) dropdownIcon.classList.remove('hidden');
             }
 
-            // After auth check, fetch the courses
+            // After checking user, load the courses
             await fetchCourses(userEmail);
         });
 
-        // 2. Logout Handler
+        // 2. LOGOUT FUNCTION
         window.handleLogout = function(e) {
             e.preventDefault();
             signOut(auth).then(() => {
-                window.location.reload(); // Instantly clears session and refeshes page
+                window.location.reload(); 
             }).catch((error) => {
-                console.error('Error signing out: ', error);
+                console.error('Logout error:', error);
             });
         }
 
-        document.getElementById('dropdown-logout-btn').addEventListener('click', handleLogout);
-        document.getElementById('sidebar-logout-btn').addEventListener('click', handleLogout);
+        // Attach event listeners to all dynamically visible logout buttons
+        document.querySelectorAll('.global-logout-btn').forEach(btn => {
+            btn.addEventListener('click', window.handleLogout);
+        });
 
-        // 3. Fetch Courses From Firestore
+        // 3. FETCH COURSES & HIDE SPINNER
         async function fetchCourses(email) {
             const container = document.getElementById('dynamic-courses-container');
-            const emptyMessage = document.getElementById('no-results');
-
+            
             try {
-                // Check if user has unlocked courses
                 let unlockedCourses = {};
                 if (email) {
                     const unlockSnap = await getDoc(doc(db, "unlocked_courses", email));
@@ -452,10 +430,9 @@
                     }
                 }
 
-                // Get all published courses
                 const querySnapshot = await getDocs(collection(db, "courses"));
                 
-                // Remove the loading spinner
+                // Clear the loading spinner immediately
                 container.innerHTML = '';
 
                 if (querySnapshot.empty) {
@@ -470,7 +447,7 @@
                     return;
                 }
 
-                // Render each course fetched
+                // Render courses
                 querySnapshot.forEach((docSnap) => {
                     const courseId = docSnap.id;
                     const course = docSnap.data();
@@ -478,48 +455,34 @@
                     const lectureCount = course.videos ? course.videos.length : 15;
 
                     const card = document.createElement('article');
-                    card.className = "course-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover-lift flex flex-col relative";
+                    card.className = "bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all flex flex-col relative";
 
                     if (isUnlocked) {
                         card.innerHTML = `
-                            <div class="absolute top-2 right-2 bg-green-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10 flex items-center gap-1 shadow">
-                                <i class="fa-solid fa-unlock"></i> Unlocked
-                            </div>
-                            <div class="h-36 bg-gray-200 relative overflow-hidden">
-                                <img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover">
-                            </div>
+                            <div class="absolute top-2 right-2 bg-green-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10">Unlocked</div>
+                            <div class="h-36 bg-gray-200 relative"><img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover"></div>
                             <div class="p-4 flex flex-col flex-grow">
                                 <h3 class="course-title font-bold text-base text-gray-800 mb-1">${course.title}</h3>
-                                <p class="course-desc text-[10px] text-brandBlue font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures Included</p>
-                                <p class="text-xs text-gray-500 mb-4 flex-grow line-clamp-2">Complete access to all videos and materials.</p>
-                                <div class="flex items-center justify-between mt-auto border-t border-gray-50 pt-3">
+                                <p class="course-desc text-[10px] text-brandBlue font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures</p>
+                                <div class="mt-auto border-t border-gray-50 pt-3 flex justify-between items-center">
                                     <span class="text-base font-bold text-brandBlue">₹${course.price}</span>
-                                    <a href="my-courses.html" class="bg-green-600 text-white text-[11px] font-semibold px-4 py-2 rounded-lg hover:bg-green-700 transition shadow">
-                                        <i class="fa-solid fa-play mr-1"></i> Watch Now
-                                    </a>
+                                    <a href="my-courses.html" class="bg-green-600 text-white text-[11px] font-semibold px-4 py-2 rounded-lg">Watch Now</a>
                                 </div>
                             </div>
                         `;
                     } else {
                         card.innerHTML = `
-                            <div class="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10 shadow flex items-center gap-1">
-                                <i class="fa-solid fa-lock"></i> Locked
-                            </div>
-                            <div class="h-36 bg-gray-900 relative overflow-hidden">
-                                <img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover opacity-40 blur-[1px]">
-                                <div class="absolute inset-0 flex items-center justify-center text-white">
-                                    <i class="fa-solid fa-lock text-3xl opacity-75"></i>
-                                </div>
+                            <div class="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10">Locked</div>
+                            <div class="h-36 bg-gray-900 relative">
+                                <img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover opacity-40">
+                                <i class="fa-solid fa-lock absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl"></i>
                             </div>
                             <div class="p-4 flex flex-col flex-grow">
                                 <h3 class="course-title font-bold text-base text-gray-800 mb-1">${course.title}</h3>
-                                <p class="course-desc text-[10px] text-brandBlue font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures (Locked)</p>
-                                <p class="text-xs text-gray-500 mb-4 flex-grow line-clamp-2">Complete course curriculum and practical modules.</p>
-                                <div class="flex items-center justify-between mt-auto border-t border-gray-50 pt-3">
+                                <p class="course-desc text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures</p>
+                                <div class="mt-auto border-t border-gray-50 pt-3 flex justify-between items-center">
                                     <span class="text-base font-bold text-brandBlue">₹${course.price}</span>
-                                    <a href="payment.html?course=${courseId}" class="bg-brandBlue text-white text-[11px] font-semibold px-4 py-2 rounded-lg hover:bg-blue-800 transition shadow">
-                                        Buy Now
-                                    </a>
+                                    <a href="payment.html?course=${courseId}" class="bg-brandBlue text-white text-[11px] font-semibold px-4 py-2 rounded-lg">Buy Now</a>
                                 </div>
                             </div>
                         `;
@@ -527,11 +490,12 @@
                     container.appendChild(card);
                 });
 
-                // Call search function in case search input had text
-                if(typeof performLiveSearch === 'function') performLiveSearch();
+                if(typeof window.performLiveSearch === 'function') {
+                    window.performLiveSearch();
+                }
 
             } catch (error) {
-                console.error("Firestore loading error: ", error);
+                console.error("Firestore Error: ", error);
                 container.innerHTML = `
                     <div class="col-span-full text-center py-12 text-red-500 font-semibold bg-white rounded-2xl shadow-sm border border-red-100">
                         <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
@@ -542,7 +506,7 @@
         }
     </script>
 
-    <!-- UI INTERACTION & SEARCH SCRIPTS -->
+    <!-- UI INTERACTION SCRIPTS -->
     <script>
         // Protected Link Logic
         window.requireLogin = function(event, targetUrl) {
@@ -555,11 +519,13 @@
             }
         }
 
+        // Live Search Logic
         const searchInput = document.getElementById('search-input');
         const searchForm = document.getElementById('search-form');
         const courseSection = document.getElementById('courses');
         
         window.performLiveSearch = function() {
+            if(!searchInput) return;
             const filterText = searchInput.value.toLowerCase().trim();
             const searchTerms = filterText.split(' ').filter(term => term.length > 0);
             
@@ -581,22 +547,25 @@
                 }
             });
 
-            document.getElementById('no-results').style.display = hasResults ? 'none' : 'block';
+            const noRes = document.getElementById('no-results');
+            if(noRes) noRes.style.display = hasResults ? 'none' : 'block';
         }
 
-        searchInput.addEventListener('input', performLiveSearch);
+        if(searchInput) searchInput.addEventListener('input', window.performLiveSearch);
 
-        searchForm.addEventListener('submit', (e) => {
-            e.preventDefault(); 
-            performLiveSearch();
-            searchInput.blur(); 
-            
-            const yOffset = -100; 
-            const y = courseSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({top: y, behavior: 'smooth'});
-        });
+        if(searchForm) {
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault(); 
+                window.performLiveSearch();
+                searchInput.blur(); 
+                
+                const yOffset = -100; 
+                const y = courseSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            });
+        }
 
-        /* --- PROFILE AND MENU --- */
+        /* --- PROFILE AND MENU LOGIC --- */
         const profileBtn = document.getElementById('profile-btn');
         const profileDropdown = document.getElementById('profile-dropdown');
         
@@ -629,6 +598,14 @@
         menuBtn.addEventListener('click', openMenu);
         closeMenuBtn.addEventListener('click', closeMenu);
         overlay.addEventListener('click', closeMenu);
+
+        // Hamburger Links closing behavior
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeMenu();
+            });
+        });
 
         window.addEventListener('click', (e) => {
             if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
