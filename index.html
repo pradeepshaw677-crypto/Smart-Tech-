@@ -57,7 +57,7 @@
     </div>
 
     <!-- MAIN HEADER -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+    <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex justify-between items-center mb-3">
                 
@@ -76,13 +76,12 @@
                     </a>
                 </div>
 
-                <!-- RIGHT SIDE: Profile Container -->
+                <!-- RIGHT SIDE: Profile -->
                 <div class="relative flex items-center gap-3">
                     <button class="text-gray-500 hover:text-brandBlue transition relative hidden md:block">
                         <i class="fa-regular fa-bell text-xl"></i>
                         <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                     </button>
-                    
                     <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center focus:outline-none">
                         <img id="nav-profile-img" src="" alt="User" class="w-full h-full object-cover hidden">
                         <i id="nav-profile-icon" class="fa-solid fa-user text-brandBlue text-sm md:text-lg"></i>
@@ -113,7 +112,6 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
 
             <!-- SMART LIVE SEARCH BAR -->
@@ -142,7 +140,7 @@
         </div>
         
         <div class="p-3 flex-grow">
-            <ul id="sidebar-links" class="space-y-1 text-gray-600 font-medium text-[14px]">
+            <ul class="space-y-1 text-gray-600 font-medium text-[14px]">
                 <li><a href="#home" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-house w-5 text-center text-gray-400"></i> Home</a></li>
                 <li><a href="#courses" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Explore Courses</a></li>
                 <li><a href="edit-profile.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-user-pen w-5 text-center text-brandGold"></i> Edit Profile</a></li>
@@ -152,10 +150,8 @@
                 <li><a href="offline-centre.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-map-location-dot w-5 text-center text-gray-400"></i> View Offline Centre</a></li>
                 <li><a href="register-offline.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
                 <li><a href="verify.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
-                <li class="border-t border-gray-100 mt-2 pt-2 hidden" id="sidebar-logout-li">
-                    <button class="global-logout-btn w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition">
-                        <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout
-                    </button>
+                <li id="sidebar-logout-li" class="border-t border-gray-100 mt-2 pt-2 hidden">
+                    <button class="global-logout-btn w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
                 </li>
             </ul>
         </div>
@@ -220,14 +216,13 @@
 
             <!-- Dynamic Courses Container -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="dynamic-courses-container">
-                <p class="col-span-full text-center text-gray-400 py-12" id="loading-spinner"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses from database...</p>
+                <p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses from database...</p>
             </div>
 
-            <!-- Dynamic Search / Empty Fail Message -->
-            <div id="no-results" class="hidden col-span-full text-center py-12 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
-                <i class="fa-solid fa-triangle-exclamation text-3xl mb-2 text-amber-500"></i>
-                <p class="text-base font-bold text-gray-700" id="no-result-title">No courses found</p>
-                <p class="text-xs text-gray-400 mt-1" id="no-result-desc">No active courses have been added from the admin panel yet, or none matched your search.</p>
+            <!-- Dynamic Search Fail Message -->
+            <div id="no-results" class="hidden col-span-full text-center py-8 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
+                <i class="fa-solid fa-magnifying-glass text-2xl mb-2 text-gray-300"></i>
+                <p class="text-sm">No courses found matching your search.</p>
             </div>
         </section>
 
@@ -365,97 +360,133 @@
 
         let studentEmail = '';
 
-        // UI Updater Function to strictly control Login/Logout display states
-        function updateUIState(user) {
+        // Instant UI Update from LocalStorage on page load (Fixes delay)
+        function applyLocalUserSession() {
+            const savedName = localStorage.getItem('student_name');
+            const savedEmail = localStorage.getItem('student_email');
+            const savedPhoto = localStorage.getItem('student_photo');
+
+            if (savedEmail) {
+                window.isUserLoggedIn = true;
+                studentEmail = savedEmail;
+                if (document.getElementById('user-display-name')) document.getElementById('user-display-name').textContent = savedName || savedEmail.split('@')[0];
+                if (document.getElementById('user-display-email')) document.getElementById('user-display-email').textContent = savedEmail;
+                if (document.getElementById('welcome-banner-name')) document.getElementById('welcome-banner-name').textContent = `${savedName || savedEmail.split('@')[0]}!`;
+                
+                if (document.getElementById('login-nav-item')) document.getElementById('login-nav-item').classList.add('hidden');
+                if (document.getElementById('logout-li-item')) document.getElementById('logout-li-item').classList.remove('hidden');
+                if (document.getElementById('sidebar-logout-li')) document.getElementById('sidebar-logout-li').classList.remove('hidden');
+
+                if (savedPhoto) {
+                    const navImg = document.getElementById('nav-profile-img');
+                    const navIcon = document.getElementById('nav-profile-icon');
+                    const dropImg = document.getElementById('dropdown-profile-img');
+                    const dropIcon = document.getElementById('dropdown-profile-icon');
+
+                    if(navImg && navIcon) { navImg.src = savedPhoto; navImg.classList.remove('hidden'); navIcon.classList.add('hidden'); }
+                    if(dropImg && dropIcon) { dropImg.src = savedPhoto; dropImg.classList.remove('hidden'); dropIcon.classList.add('hidden'); }
+                }
+            }
+        }
+        applyLocalUserSession();
+
+        // 1. Auth State Check & Sync with Firebase
+        onAuthStateChanged(auth, async (user) => {
             const loginNavItem = document.getElementById('login-nav-item');
             const logoutDropdownItem = document.getElementById('logout-li-item');
             const logoutSidebarItem = document.getElementById('sidebar-logout-li');
             
-            const navImg = document.getElementById('nav-profile-img');
-            const navIcon = document.getElementById('nav-profile-icon');
-            const dropImg = document.getElementById('dropdown-profile-img');
-            const dropIcon = document.getElementById('dropdown-profile-icon');
-
             if (user) {
                 const displayName = user.displayName || user.email.split('@')[0];
                 const email = user.email.toLowerCase().trim();
+                const photoURL = user.photoURL || '';
+
+                localStorage.setItem('student_name', displayName);
+                localStorage.setItem('student_email', email);
+                localStorage.setItem('student_photo', photoURL);
+                localStorage.setItem('isLoggedIn', 'true');
 
                 document.getElementById('user-display-name').textContent = displayName;
-                if (document.getElementById('user-display-email')) document.getElementById('user-display-email').textContent = email;
-                if (document.getElementById('welcome-banner-name')) document.getElementById('welcome-banner-name').textContent = `${displayName}!`;
+                if(document.getElementById('user-display-email')) document.getElementById('user-display-email').textContent = email;
+                document.getElementById('welcome-banner-name').textContent = `${displayName}!`;
                 
-                // Hide Login, Show Logout
-                if (loginNavItem) loginNavItem.classList.add('hidden');
-                if (logoutDropdownItem) logoutDropdownItem.classList.remove('hidden');
-                if (logoutSidebarItem) logoutSidebarItem.classList.remove('hidden');
+                if(loginNavItem) loginNavItem.classList.add('hidden');
+                if(logoutDropdownItem) logoutDropdownItem.classList.remove('hidden');
+                if(logoutSidebarItem) logoutSidebarItem.classList.remove('hidden');
 
-                // Show Profile Picture
-                if (user.photoURL) {
-                    if (navImg) { navImg.src = user.photoURL; navImg.classList.remove('hidden'); }
-                    if (navIcon) navIcon.classList.add('hidden');
-                    if (dropImg) { dropImg.src = user.photoURL; dropImg.classList.remove('hidden'); }
-                    if (dropIcon) dropIcon.classList.add('hidden');
+                if (photoURL) {
+                    const navImg = document.getElementById('nav-profile-img');
+                    const navIcon = document.getElementById('nav-profile-icon');
+                    const dropImg = document.getElementById('dropdown-profile-img');
+                    const dropIcon = document.getElementById('dropdown-profile-icon');
+
+                    if(navImg) { navImg.src = photoURL; navImg.classList.remove('hidden'); }
+                    if(navIcon) navIcon.classList.add('hidden');
+                    if(dropImg) { dropImg.src = photoURL; dropImg.classList.remove('hidden'); }
+                    if(dropIcon) dropIcon.classList.add('hidden');
                 }
-                
-                window.isUserLoggedIn = true;
-                return email;
-            } else {
-                document.getElementById('user-display-name').textContent = 'Guest User';
-                if (document.getElementById('user-display-email')) document.getElementById('user-display-email').textContent = 'Not logged in';
-                if (document.getElementById('welcome-banner-name')) document.getElementById('welcome-banner-name').textContent = 'Today!';
-                
-                // Show Login, Hide Logout
-                if (loginNavItem) loginNavItem.classList.remove('hidden');
-                if (logoutDropdownItem) logoutDropdownItem.classList.add('hidden');
-                if (logoutSidebarItem) logoutSidebarItem.classList.add('hidden');
 
-                // Show Default Icon
-                if (navImg) { navImg.src = ''; navImg.classList.add('hidden'); }
-                if (navIcon) navIcon.classList.remove('hidden');
-                if (dropImg) { dropImg.src = ''; dropImg.classList.add('hidden'); }
-                if (dropIcon) dropIcon.classList.remove('hidden');
+                window.isUserLoggedIn = true;
+                studentEmail = email;
+            } else {
+                localStorage.clear();
+                document.getElementById('user-display-name').textContent = 'Guest User';
+                if(document.getElementById('user-display-email')) document.getElementById('user-display-email').textContent = 'Not logged in';
+                document.getElementById('welcome-banner-name').textContent = 'Today!';
+                
+                if(loginNavItem) loginNavItem.classList.remove('hidden');
+                if(logoutDropdownItem) logoutDropdownItem.classList.add('hidden');
+                if(logoutSidebarItem) logoutSidebarItem.classList.add('hidden');
+
+                const navImg = document.getElementById('nav-profile-img');
+                const navIcon = document.getElementById('nav-profile-icon');
+                const dropImg = document.getElementById('dropdown-profile-img');
+                const dropIcon = document.getElementById('dropdown-profile-icon');
+
+                if(navImg) { navImg.src = ''; navImg.classList.add('hidden'); }
+                if(navIcon) navIcon.classList.remove('hidden');
+                if(dropImg) { dropImg.src = ''; dropImg.classList.add('hidden'); }
+                if(dropIcon) dropIcon.classList.remove('hidden');
 
                 window.isUserLoggedIn = false;
-                return '';
+                studentEmail = '';
             }
-        }
-
-        // Firebase Auth Listener
-        onAuthStateChanged(auth, async (user) => {
-            try {
-                studentEmail = updateUIState(user);
-                await loadFirestoreCourses(studentEmail);
-            } catch (err) {
-                console.error("Auth Processing Error:", err);
-                await loadFirestoreCourses(''); // Try to load as guest if auth check fails
-            }
+            await loadFirestoreCourses(studentEmail);
         });
 
-        // Fetch Courses from Firestore
+        // 2. Fetch Courses from Firestore and Render with Lock/Unlock State
         async function loadFirestoreCourses(email) {
             const container = document.getElementById('dynamic-courses-container');
             const noResultsEl = document.getElementById('no-results');
             
-            try {
-                let unlockedCourses = {};
-                if (email) {
+            // Show loading initially
+            container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses...</p>';
+            noResultsEl.classList.add('hidden');
+
+            let unlockedCourses = {};
+            if (email) {
+                try {
                     const unlockSnap = await getDoc(doc(db, "unlocked_courses", email));
                     if (unlockSnap.exists()) {
                         unlockedCourses = unlockSnap.data();
                     }
+                } catch (e) {
+                    console.log("Error checking unlocked access:", e);
                 }
+            }
 
+            try {
                 const querySnapshot = await getDocs(collection(db, "courses"));
                 
-                // Clear the spinning loader completely BEFORE checking empty state
-                container.innerHTML = ''; 
+                // Remove loading spinner completely before checking if empty
+                container.innerHTML = '';
 
                 if (querySnapshot.empty) {
+                    // Show the 'No Courses Found' UI block robustly
                     noResultsEl.classList.remove('hidden');
                     return;
                 }
 
-                // If courses exist, hide the empty message
                 noResultsEl.classList.add('hidden');
 
                 querySnapshot.forEach((docSnap) => {
@@ -517,15 +548,18 @@
                 if (typeof performLiveSearch === 'function') performLiveSearch();
 
             } catch (error) {
-                console.error("Firebase fetch error:", error);
+                console.error("Firebase Fetch Error:", error);
                 container.innerHTML = '';
                 noResultsEl.classList.remove('hidden');
-                document.getElementById('no-result-title').textContent = "Connection Error";
-                document.getElementById('no-result-desc').textContent = "Unable to connect to the database. Please check your internet connection.";
+                noResultsEl.innerHTML = `
+                    <i class="fa-solid fa-triangle-exclamation text-3xl mb-2 text-red-500"></i>
+                    <p class="text-base font-bold text-gray-700">Connection Error</p>
+                    <p class="text-xs text-gray-400 mt-1">Unable to connect to the database. Please check your internet connection.</p>
+                `;
             }
-        }
+        };
 
-        // Global Protected Route Handler
+        // 3. Protected Route Handler
         window.requireLogin = function(event, targetUrl) {
             event.preventDefault();
             if(!window.isUserLoggedIn) {
@@ -536,23 +570,24 @@
             }
         }
 
-        // Robust Logout Logic
+        // 4. Robust Logout Handler
         window.handleLogout = async function(e) {
             if(e) e.preventDefault();
             try {
                 await signOut(auth);
+                localStorage.clear();
                 window.location.href = 'login.html';
             } catch (error) {
                 console.error('Logout Error:', error);
+                localStorage.clear();
                 window.location.href = 'login.html';
             }
         }
 
-        // Attach Logout Event Listeners securely
+        // Apply logout event to all logout buttons
         document.querySelectorAll('.global-logout-btn').forEach(btn => {
             btn.addEventListener('click', window.handleLogout);
         });
-
     </script>
 
     <!-- UI INTERACTION & SEARCH SCRIPTS -->
@@ -590,12 +625,15 @@
 
             const noResultsEl = document.getElementById('no-results');
             if (noResultsEl) {
-                if (hasResults || courseCards.length === 0) {
+                if(hasResults || courseCards.length === 0) {
                     noResultsEl.classList.add('hidden');
                 } else {
                     noResultsEl.classList.remove('hidden');
-                    document.getElementById('no-result-title').textContent = "No matching courses";
-                    document.getElementById('no-result-desc').textContent = "Try searching with a different keyword like Tally, Python, etc.";
+                    noResultsEl.innerHTML = `
+                        <i class="fa-solid fa-magnifying-glass text-3xl mb-2 text-gray-300"></i>
+                        <p class="text-base font-bold text-gray-700">No matching courses</p>
+                        <p class="text-xs text-gray-400 mt-1">Try searching with a different keyword like Tally, Python, etc.</p>
+                    `;
                 }
             }
         }
