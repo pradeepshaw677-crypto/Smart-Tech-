@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +51,9 @@
         </div>
 
         <div id="my-courses-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading your courses...</p>
+            <p class="col-span-full text-center text-gray-400 py-12" id="loading-spinner">
+                <i class="fa-solid fa-spinner fa-spin text-3xl mb-2"></i><br>Syncing your courses...
+            </p>
         </div>
     </main>
 
@@ -110,45 +111,65 @@
 
     <!-- Firebase & Progress Logic -->
     <script type="module">
-        import { db, auth } from './firebase-config.js';
-        import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { app, auth } from './firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        // Directly initializing firestore properly to avoid crash
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        
+        const db = getFirestore(app);
 
         let currentCourseId = '';
         let currentUserEmail = '';
         let activeVideos = [];
         let activeIndex = 0;
 
+        // Instant UI Email Update from LocalStorage
+        const savedEmail = localStorage.getItem('student_email');
+        if(savedEmail) {
+            document.getElementById('user-email-display').textContent = savedEmail;
+        }
+
+        // Auth State Listener
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                currentUserEmail = user.email.toLowerCase().trim();
+                currentUserEmail = user.email ? user.email.toLowerCase().trim() : '';
                 document.getElementById('user-email-display').textContent = currentUserEmail;
+                localStorage.setItem('student_email', currentUserEmail);
                 await loadStudentDashboard(currentUserEmail);
             } else {
                 document.getElementById('user-email-display').textContent = "Guest Mode";
                 currentUserEmail = "guest@smarttech.com";
+                localStorage.removeItem('student_email');
                 await loadStudentDashboard(currentUserEmail);
             }
         });
 
+        // Main Dashboard Loader
         async function loadStudentDashboard(email) {
             const container = document.getElementById('my-courses-container');
-            container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Syncing your courses...</p>';
+            
+            // Show loading spinner initially
+            container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-3xl mb-2"></i><br>Syncing your courses...</p>';
 
             let unlockedCourses = {};
-            try {
-                const unlockSnap = await getDoc(doc(db, "unlocked_courses", email));
-                if (unlockSnap.exists()) {
-                    unlockedCourses = unlockSnap.data();
+            if (email && email !== "guest@smarttech.com") {
+                try {
+                    const unlockSnap = await getDoc(doc(db, "unlocked_courses", email));
+                    if (unlockSnap.exists()) {
+                        unlockedCourses = unlockSnap.data();
+                    }
+                } catch (e) {
+                    console.log("Error fetching access:", e);
                 }
-            } catch (e) {
-                console.log("Error fetching access:", e);
             }
 
             try {
                 const querySnapshot = await getDocs(collection(db, "courses"));
+                
+                // CRITICAL FIX: Clear the spinner immediately before rendering
                 container.innerHTML = '';
 
+                // This is the fallback professional demo test card
                 const defaultTestVideos = [
                     { title: "Class 1: Introduction & Basics", url: "https://res.cloudinary.com/pifz9qlb/video/upload/v1788177527/Https_aapka_apnabazzarwork.mp4" },
                     { title: "Class 2: Advanced Practical Module", url: "https://www.w3schools.com/html/mov_bbb.mp4" }
@@ -173,6 +194,7 @@
                 `;
 
                 if (querySnapshot.empty) {
+                    // Show Test Card if database is empty so player can still be tested
                     container.innerHTML = testCardHtml;
                 } else {
                     querySnapshot.forEach((docSnap) => {
@@ -190,12 +212,12 @@
                                     <i class="fa-solid fa-unlock"></i> Unlocked
                                 </div>
                                 <div class="h-40 bg-gray-200 relative overflow-hidden">
-                                    <img src="${course.thumb}" class="w-full h-full object-cover">
+                                    <img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover">
                                 </div>
                                 <div class="p-5 flex flex-col flex-grow">
                                     <h3 class="font-bold text-lg text-gray-800 mb-1">${course.title}</h3>
                                     <p class="text-xs text-brandBlue font-bold uppercase tracking-wider mb-4"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures in Syllabus</p>
-                                    <button onclick='openPlayer("${courseId}", ${JSON.stringify(course.videos)}, "${course.title}")' class="mt-auto w-full bg-brandBlue hover:bg-blue-800 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
+                                    <button onclick='openPlayer("${courseId}", ${JSON.stringify(course.videos || [])}, "${course.title}")' class="mt-auto w-full bg-brandBlue hover:bg-blue-800 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
                                         <i class="fa-solid fa-play"></i> Open Syllabus & Watch
                                     </button>
                                 </div>
@@ -206,7 +228,7 @@
                                     <i class="fa-solid fa-lock"></i> Locked
                                 </div>
                                 <div class="h-40 bg-gray-900 relative overflow-hidden">
-                                    <img src="${course.thumb}" class="w-full h-full object-cover opacity-40 blur-[1px]">
+                                    <img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover opacity-40 blur-[1px]">
                                     <div class="absolute inset-0 flex items-center justify-center text-white">
                                         <i class="fa-solid fa-lock text-3xl opacity-80"></i>
                                     </div>
@@ -225,14 +247,29 @@
                         }
                         container.appendChild(card);
                     });
+                    
+                    // Add Demo Test card at the bottom for quick check
                     container.insertAdjacentHTML('beforeend', testCardHtml);
                 }
             } catch (e) {
-                container.innerHTML = '<p class="col-span-full text-center text-red-500 py-10">Error loading dashboard data.</p>';
+                console.error("Dashboard Fetch Error: ", e);
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-red-500 font-semibold bg-white rounded-2xl shadow-sm border border-red-100">
+                        <i class="fa-solid fa-triangle-exclamation text-4xl mb-3"></i>
+                        <p class="text-lg">Connection Error</p>
+                        <p class="text-sm text-gray-500 mt-1">Failed to load courses from Firebase. Check your connection.</p>
+                    </div>
+                `;
             }
         }
 
+        // Global functions for the video player attached to window
         window.openPlayer = (courseId, videos, title) => {
+            if(!videos || videos.length === 0) {
+                alert("No videos available for this course yet!");
+                return;
+            }
+            
             currentCourseId = courseId;
             activeVideos = videos;
             document.getElementById('player-modal').classList.remove('hidden');
@@ -242,9 +279,7 @@
             renderSyllabusList();
             updateProgressUI();
 
-            if(videos.length > 0) {
-                playVideo(0);
-            }
+            playVideo(0); // Auto play first video
         };
 
         window.renderSyllabusList = () => {
