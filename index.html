@@ -359,74 +359,64 @@
         // 1. Auth State Check & Auto-detect Name, Email & Photo
         onAuthStateChanged(auth, async (user) => {
             try {
+                const nameEl = document.getElementById('user-display-name');
+                const emailEl = document.getElementById('user-display-email');
+                const bannerEl = document.getElementById('welcome-banner-name');
+                const loginItem = document.getElementById('dropdown-login-item');
+                const logoutItem = document.getElementById('dropdown-logout-item');
+                const sidebarLogoutItem = document.getElementById('sidebar-logout-item');
+                const navImg = document.getElementById('nav-profile-img');
+                const navIcon = document.getElementById('nav-profile-icon');
+                const dropImg = document.getElementById('dropdown-profile-img');
+                const dropIcon = document.getElementById('dropdown-profile-icon');
+
                 if (user) {
                     const displayName = user.displayName ? user.displayName : (user.email ? user.email.split('@')[0] : 'Student');
                     
-                    // UI Text updates
-                    const nameEl = document.getElementById('user-display-name');
                     if (nameEl) nameEl.textContent = displayName;
-                    
-                    const emailEl = document.getElementById('user-display-email');
                     if (emailEl) emailEl.textContent = user.email;
-                    
-                    const bannerEl = document.getElementById('welcome-banner-name');
                     if (bannerEl) bannerEl.textContent = displayName + '!';
                     
-                    // Toggle Login/Logout buttons
-                    const loginItem = document.getElementById('dropdown-login-item');
                     if (loginItem) loginItem.style.display = 'none';
-                    
-                    const logoutItem = document.getElementById('dropdown-logout-item');
                     if (logoutItem) logoutItem.style.display = 'block';
-
-                    const sidebarLogoutItem = document.getElementById('sidebar-logout-item');
                     if (sidebarLogoutItem) sidebarLogoutItem.style.display = 'block';
 
-                    // Profile Pictures
                     if (user.photoURL) {
-                        const navImg = document.getElementById('nav-profile-img');
-                        const navIcon = document.getElementById('nav-profile-icon');
-                        const dropImg = document.getElementById('dropdown-profile-img');
-                        const dropIcon = document.getElementById('dropdown-profile-icon');
-
                         if (navImg) { navImg.src = user.photoURL; navImg.classList.remove('hidden'); }
                         if (navIcon) navIcon.classList.add('hidden');
-
                         if (dropImg) { dropImg.src = user.photoURL; dropImg.classList.remove('hidden'); }
                         if (dropIcon) dropIcon.classList.add('hidden');
+                    } else {
+                        if (navImg) navImg.classList.add('hidden');
+                        if (navIcon) navIcon.classList.remove('hidden');
+                        if (dropImg) dropImg.classList.add('hidden');
+                        if (dropIcon) dropIcon.classList.remove('hidden');
                     }
 
                     window.isUserLoggedIn = true;
-                    studentEmail = user.email.toLowerCase().trim();
+                    studentEmail = user.email ? user.email.toLowerCase().trim() : '';
                 } else {
-                    // Not Logged In Default values
-                    const nameEl = document.getElementById('user-display-name');
                     if (nameEl) nameEl.textContent = 'Guest User';
-                    
-                    const emailEl = document.getElementById('user-display-email');
                     if (emailEl) emailEl.textContent = 'Not logged in';
-                    
-                    const bannerEl = document.getElementById('welcome-banner-name');
                     if (bannerEl) bannerEl.textContent = 'Today!';
                     
-                    // Toggle Login/Logout buttons
-                    const loginItem = document.getElementById('dropdown-login-item');
                     if (loginItem) loginItem.style.display = 'block';
-                    
-                    const logoutItem = document.getElementById('dropdown-logout-item');
                     if (logoutItem) logoutItem.style.display = 'none';
-
-                    const sidebarLogoutItem = document.getElementById('sidebar-logout-item');
                     if (sidebarLogoutItem) sidebarLogoutItem.style.display = 'none';
+
+                    if (navImg) navImg.classList.add('hidden');
+                    if (navIcon) navIcon.classList.remove('hidden');
+                    if (dropImg) dropImg.classList.add('hidden');
+                    if (dropIcon) dropIcon.classList.remove('hidden');
 
                     window.isUserLoggedIn = false;
                     studentEmail = '';
                 }
             } catch (err) {
-                console.error("UI Update Error: ", err);
+                console.error("UI Auth State Error: ", err);
             }
 
-            // After checking Auth, Load the courses
+            // Load Courses from database
             await loadFirestoreCourses(studentEmail);
         });
 
@@ -434,7 +424,6 @@
         async function loadFirestoreCourses(email) {
             const container = document.getElementById('dynamic-courses-container');
             
-            // Initial loading state
             container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses...</p>';
 
             let unlockedCourses = {};
@@ -452,10 +441,8 @@
             try {
                 const querySnapshot = await getDocs(collection(db, "courses"));
                 
-                // Clear the loading spinner
                 container.innerHTML = '';
 
-                // IF NO COURSES FOUND IN DATABASE, Show Professional "No Courses" Block
                 if (querySnapshot.empty) {
                     container.innerHTML = `
                         <div class="col-span-full text-center py-12 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
@@ -552,7 +539,6 @@
             });
         }
 
-        // Attach Logout events securely
         const dropdownLogoutBtn = document.getElementById('logout-dropdown-btn');
         if (dropdownLogoutBtn) dropdownLogoutBtn.addEventListener('click', handleLogout);
 
