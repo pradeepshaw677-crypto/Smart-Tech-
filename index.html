@@ -49,7 +49,7 @@
         <span class="text-brandGold">★</span> ISO 9001:2015 CERTIFIED ORGANISATION (GOVT. OF INDIA) <span class="text-brandGold">★</span>
     </div>
 
-    <!-- MAIN HEADER (Sticky Position Fix applied here) -->
+    <!-- MAIN HEADER -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex justify-between items-center mb-3 relative">
@@ -76,7 +76,7 @@
                         <img id="header-user-img" src="" class="w-full h-full object-cover hidden absolute inset-0">
                     </button>
 
-                    <!-- PROFILE DROPDOWN (Inside relative parent so it scrolls perfectly) -->
+                    <!-- PROFILE DROPDOWN -->
                     <div id="profile-dropdown" class="absolute right-0 top-12 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
                         <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden relative">
@@ -295,8 +295,8 @@
         </div>
     </footer>
 
-    <!-- MOBILE BOTTOM NAV -->
-    <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 flex justify-around items-center px-1 py-2.5 z-50">
+    <!-- MOBILE BOTTOM NAV (With Verify Certificate Added Back) -->
+    <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 flex justify-around items-center px-1 py-2.5 z-50 shadow-[0_-5px_15px_rgba(0,0,0,0.08)]">
         <a href="#home" class="flex flex-col items-center gap-0.5 text-brandBlue font-bold w-1/4">
             <i class="fa-solid fa-house text-[18px]"></i>
             <span class="text-[9px]">Home</span>
@@ -305,9 +305,14 @@
             <i class="fa-solid fa-gift text-[18px]"></i>
             <span class="text-[9px]">Demo</span>
         </a>
-        <a href="my-courses.html" onclick="requireLogin(event, this.href)" class="flex flex-col items-center gap-0.5 text-gray-500 hover:text-brandBlue transition w-1/4">
+        <a href="my-courses.html" onclick="requireLogin(event, this.href)" class="flex flex-col items-center gap-0.5 text-gray-500 hover:text-brandBlue transition w-1/4 relative">
             <i class="fa-solid fa-laptop-code text-[18px]"></i>
+            <span class="absolute -top-1 right-4 w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span>
             <span class="text-[9px]">Courses</span>
+        </a>
+        <a href="verify.html" class="flex flex-col items-center gap-0.5 text-gray-500 hover:text-brandBlue transition w-1/4">
+            <i class="fa-solid fa-certificate text-[18px]"></i>
+            <span class="text-[9px]">Verify</span>
         </a>
     </nav>
 
@@ -322,11 +327,9 @@
     <script type="module">
         import { app, auth } from './firebase-config.js';
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        
-        // Yahan par hum db ko manually index.html me initialize kar rahe hain taaki crash na ho
         import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        
         const db = getFirestore(app);
-
         window.isUserLoggedIn = false;
 
         // 1. LISTEN TO LOGIN STATE
@@ -351,7 +354,7 @@
                 window.isUserLoggedIn = true;
                 userEmail = user.email ? user.email.toLowerCase().trim() : '';
                 
-                // Get name properly (Fallback to email handle)
+                // Set name
                 let displayName = 'Student';
                 if (user.displayName && user.displayName.trim() !== "") {
                     displayName = user.displayName;
@@ -359,17 +362,17 @@
                     displayName = userEmail.split('@')[0];
                 }
                 
-                // Update text
+                // Update UI text
                 if(nameEl) nameEl.textContent = displayName;
                 if(bannerNameEl) bannerNameEl.textContent = `${displayName}!`;
                 if(emailEl) emailEl.textContent = userEmail;
 
-                // Toggle Buttons (Hide Login, Show Logout)
+                // Toggle Login / Logout Links
                 if(navLoginItem) navLoginItem.classList.add('hidden');
                 if(navLogoutItem) navLogoutItem.classList.remove('hidden');
                 if(sidebarLogoutItem) sidebarLogoutItem.classList.remove('hidden');
 
-                // Set Profile Image
+                // Profile Image
                 if (user.photoURL) {
                     if(headerImg) { headerImg.src = user.photoURL; headerImg.classList.remove('hidden'); }
                     if(headerIcon) headerIcon.classList.add('hidden');
@@ -381,24 +384,21 @@
                 window.isUserLoggedIn = false;
                 userEmail = '';
 
-                // Reset text
                 if(nameEl) nameEl.textContent = 'Guest User';
                 if(emailEl) emailEl.textContent = 'Not logged in';
                 if(bannerNameEl) bannerNameEl.textContent = 'Today!';
 
-                // Toggle Buttons (Show Login, Hide Logout)
                 if(navLoginItem) navLoginItem.classList.remove('hidden');
                 if(navLogoutItem) navLogoutItem.classList.add('hidden');
                 if(sidebarLogoutItem) sidebarLogoutItem.classList.add('hidden');
 
-                // Reset Photo
                 if(headerImg) headerImg.classList.add('hidden');
                 if(headerIcon) headerIcon.classList.remove('hidden');
                 if(dropdownImg) dropdownImg.classList.add('hidden');
                 if(dropdownIcon) dropdownIcon.classList.remove('hidden');
             }
 
-            // After checking user, load the courses
+            // Fetch the courses
             await fetchCourses(userEmail);
         });
 
@@ -412,7 +412,6 @@
             });
         }
 
-        // Attach event listeners to all dynamically visible logout buttons
         document.querySelectorAll('.global-logout-btn').forEach(btn => {
             btn.addEventListener('click', window.handleLogout);
         });
@@ -432,11 +431,10 @@
 
                 const querySnapshot = await getDocs(collection(db, "courses"));
                 
-                // Clear the loading spinner immediately
+                // Clear spinner
                 container.innerHTML = '';
 
                 if (querySnapshot.empty) {
-                    // Show exact No Courses UI if database is empty
                     container.innerHTML = `
                         <div class="col-span-full text-center py-12 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
                             <i class="fa-solid fa-folder-open text-4xl mb-3 text-gray-300"></i>
@@ -508,7 +506,6 @@
 
     <!-- UI INTERACTION SCRIPTS -->
     <script>
-        // Protected Link Logic
         window.requireLogin = function(event, targetUrl) {
             event.preventDefault();
             if(!window.isUserLoggedIn) {
@@ -519,7 +516,6 @@
             }
         }
 
-        // Live Search Logic
         const searchInput = document.getElementById('search-input');
         const searchForm = document.getElementById('search-form');
         const courseSection = document.getElementById('courses');
@@ -599,7 +595,6 @@
         closeMenuBtn.addEventListener('click', closeMenu);
         overlay.addEventListener('click', closeMenu);
 
-        // Hamburger Links closing behavior
         const sidebarLinks = document.querySelectorAll('.sidebar-link');
         sidebarLinks.forEach(link => {
             link.addEventListener('click', () => {
