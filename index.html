@@ -5,17 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Tech | Premium Computer Education</title>
     
-    <!-- SEO & Meta Tags -->
     <meta name="description" content="Smart Tech Computer Education Centre, Baharagora. Enroll now for offline classes in DCA, Tally, Python, and get 100% Job Assistance.">
     <meta name="robots" content="index, follow">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
@@ -51,17 +46,14 @@
 </head>
 <body class="antialiased relative" id="home">
 
-    <!-- TOP ANNOUNCEMENT BAR -->
     <div class="bg-brandBlue text-white text-[10px] md:text-xs py-1.5 text-center font-medium tracking-wide">
         <span class="text-brandGold">★</span> ISO 9001:2015 CERTIFIED ORGANISATION (GOVT. OF INDIA) <span class="text-brandGold">★</span>
     </div>
 
-    <!-- MAIN HEADER -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex justify-between items-center mb-3">
                 
-                <!-- LEFT SIDE: Hamburger & Circular Logo -->
                 <div class="flex items-center gap-2 md:gap-3 shrink-0">
                     <button id="menu-btn" class="p-1 md:p-2 text-brandBlue hover:bg-gray-100 rounded-lg transition">
                         <i class="fa-solid fa-bars text-2xl md:text-3xl"></i>
@@ -76,7 +68,6 @@
                     </a>
                 </div>
 
-                <!-- RIGHT SIDE: Profile Container -->
                 <div class="relative flex items-center gap-3">
                     <button class="text-gray-500 hover:text-brandBlue transition relative hidden md:block">
                         <i class="fa-regular fa-bell text-xl"></i>
@@ -88,7 +79,6 @@
                         <i id="nav-profile-icon" class="fa-solid fa-user text-brandBlue text-sm md:text-lg"></i>
                     </button>
 
-                    <!-- PROFILE DROPDOWN -->
                     <div id="profile-dropdown" class="absolute right-0 top-12 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
                         <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden shrink-0">
@@ -105,14 +95,13 @@
                             <li><a href="edit-profile.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50"><i class="fa-solid fa-user-pen w-4 text-center text-brandGold"></i> Edit Profile</a></li>
                             <li><a href="offline-dashboard.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-id-card text-brandGold w-4 text-center"></i> Offline Dashboard</a></li>
                             <li><a href="my-courses.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code text-brandBlue w-4 text-center"></i> My Courses (Paid)</a></li>
-                            <li class="border-t border-gray-50"><button id="logout-dropdown-btn" class="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
+                            <li class="border-t border-gray-50" id="logout-li-item" style="display: none;"><button id="logout-dropdown-btn" class="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
                         </ul>
                     </div>
                 </div>
 
             </div>
 
-            <!-- SMART LIVE SEARCH BAR -->
             <div class="relative w-full max-w-3xl mx-auto">
                 <form id="search-form" class="flex items-center bg-gray-50 border border-gray-200 rounded-full shadow-inner focus-within:border-brandBlue transition-all">
                     <div class="pl-4 text-gray-400"><i class="fa-solid fa-magnifying-glass text-sm"></i></div>
@@ -123,7 +112,6 @@
         </div>
     </header>
 
-    <!-- SIDEBAR NAVIGATION -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-50 hidden opacity-0 transition-opacity duration-300"></div>
     <aside id="sidebar" class="fixed top-0 left-0 w-[80%] max-w-sm h-full bg-white z-50 shadow-2xl -translate-x-full overflow-y-auto flex flex-col">
         <div class="p-4 flex justify-between items-center border-b border-gray-100 bg-[#f8fafc]">
@@ -148,7 +136,7 @@
                 <li><a href="offline-centre.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-map-location-dot w-5 text-center text-gray-400"></i> View Offline Centre</a></li>
                 <li><a href="register-offline.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
                 <li><a href="verify.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
-                <li class="border-t border-gray-100 mt-2 pt-2">
+                <li class="border-t border-gray-100 mt-2 pt-2" id="sidebar-logout-li" style="display: none;">
                     <button id="logout-sidebar-btn" class="w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
                 </li>
             </ul>
@@ -156,7 +144,6 @@
     </aside>
 
     <main>
-        <!-- HERO BANNER CAROUSEL -->
         <section class="max-w-7xl mx-auto px-4 mt-4 mb-10">
             <div class="swiper mySwiper rounded-2xl overflow-hidden shadow-sm h-[200px] md:h-[400px]">
                 <div class="swiper-wrapper">
@@ -173,7 +160,6 @@
             </div>
         </section>
 
-        <!-- WHY CHOOSE US -->
         <section class="max-w-7xl mx-auto px-4 mb-14">
             <div class="text-center mb-6">
                 <span class="text-brandGold font-bold text-[10px] tracking-widest uppercase mb-1 block">Our Features</span>
@@ -205,19 +191,16 @@
             </div>
         </section>
 
-        <!-- COURSES GRID -->
         <section id="courses" class="max-w-7xl mx-auto px-4 mb-16 scroll-mt-24">
             <div class="mb-6">
                 <h2 class="text-xl md:text-3xl font-bold text-brandBlue mb-2">Our Popular Courses</h2>
                 <div class="w-12 h-1 bg-brandGold rounded-full"></div>
             </div>
 
-            <!-- Dynamic Courses Container -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="dynamic-courses-container">
                 <p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses from database...</p>
             </div>
 
-            <!-- Dynamic Search / Empty Fail Message -->
             <div id="no-results" class="hidden col-span-full text-center py-12 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
                 <i class="fa-solid fa-triangle-exclamation text-3xl mb-2 text-amber-500"></i>
                 <p class="text-base font-bold text-gray-700">No courses found</p>
@@ -225,7 +208,6 @@
             </div>
         </section>
 
-        <!-- CTA REGISTRATION -->
         <section class="max-w-7xl mx-auto px-4 mb-16 relative">
             <div class="bg-gradient-to-r from-brandBlue via-blue-900 to-brandBlue rounded-2xl p-6 md:p-12 text-center text-white shadow-lg relative overflow-hidden">
                 <div class="relative z-10">
@@ -244,12 +226,10 @@
         </section>
     </main>
 
-    <!-- FOOTER -->
     <footer class="bg-[#1e293b] text-white pt-12 pb-24 md:pb-8 border-t-4 border-brandGold">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 border-b border-gray-700 pb-8">
                 
-                <!-- Brand -->
                 <div>
                     <div class="flex items-center gap-2 mb-4">
                         <img src="logo.png" alt="Smart Tech" class="h-9 w-9 rounded-full object-cover bg-white border border-brandGold p-0.5" onerror="this.src='https://via.placeholder.com/50'">
@@ -263,7 +243,6 @@
                         <li class="flex items-center gap-2"><i class="fa-solid fa-phone-volume text-brandGold"></i> 96613 56309, 70044 99194</li>
                     </ul>
                     
-                    <!-- Socials -->
                     <div class="flex gap-3 mt-6">
                         <a href="https://facebook.com" target="_blank" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#1877F2] transition"><i class="fa-brands fa-facebook-f text-sm"></i></a>
                         <a href="https://wa.me/919661356309" target="_blank" class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-[#25D366] transition"><i class="fa-brands fa-whatsapp text-sm"></i></a>
@@ -272,7 +251,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Links -->
                 <div>
                     <h4 class="font-bold text-sm mb-4 text-white">Quick Links</h4>
                     <ul class="space-y-3 text-xs text-gray-400">
@@ -283,7 +261,6 @@
                     </ul>
                 </div>
 
-                <!-- Top Courses -->
                 <div>
                     <h4 class="font-bold text-sm mb-4 text-white">Top Courses</h4>
                     <ul class="space-y-3 text-xs text-gray-400">
@@ -293,7 +270,6 @@
                     </ul>
                 </div>
 
-                <!-- Facilities -->
                 <div>
                     <h4 class="font-bold text-sm mb-4 text-white">Our Facilities</h4>
                     <ul class="space-y-3">
@@ -323,7 +299,6 @@
         </div>
     </footer>
 
-    <!-- FLIPKART STYLE MOBILE BOTTOM NAV -->
     <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 flex justify-around items-center px-1 py-2.5 z-50 shadow-[0_-5px_15px_rgba(0,0,0,0.08)]">
         <a href="#home" class="flex flex-col items-center gap-0.5 text-brandBlue font-bold w-1/4">
             <i class="fa-solid fa-house text-[18px]"></i>
@@ -344,14 +319,12 @@
         </a>
     </nav>
 
-    <!-- FLOATING WHATSAPP -->
     <div class="fixed bottom-[75px] md:bottom-6 right-4 z-40">
         <a href="https://wa.me/919661356309" target="_blank" class="w-12 h-12 md:w-14 md:h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg fab-pulse hover:scale-105 transition">
             <i class="fa-brands fa-whatsapp text-2xl md:text-3xl"></i>
         </a>
     </div>
 
-    <!-- FIREBASE AUTH & FIRESTORE COURSES SYNC LOGIC -->
     <script type="module">
         import { db, auth } from './firebase-config.js';
         import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -359,101 +332,59 @@
 
         let studentEmail = '';
 
-        // Instant UI Update from LocalStorage on page load if available
-        function applyLocalUserSession() {
-            const savedName = localStorage.getItem('student_name');
-            const savedEmail = localStorage.getItem('student_email');
-            const savedPhoto = localStorage.getItem('student_photo');
-
-            if (savedEmail) {
-                window.isUserLoggedIn = true;
-                studentEmail = savedEmail;
-                if (document.getElementById('user-display-name')) {
-                    document.getElementById('user-display-name').textContent = savedName || savedEmail.split('@')[0];
-                }
-                if (document.getElementById('user-display-email')) {
-                    document.getElementById('user-display-email').textContent = savedEmail;
-                }
-                if (document.getElementById('welcome-banner-name')) {
-                    document.getElementById('welcome-banner-name').textContent = `${savedName || savedEmail.split('@')[0]}!`;
-                }
-                if (document.getElementById('login-nav-item')) {
-                    document.getElementById('login-nav-item').style.display = 'none';
-                }
-                if (savedPhoto) {
-                    const navImg = document.getElementById('nav-profile-img');
-                    const navIcon = document.getElementById('nav-profile-icon');
-                    const dropImg = document.getElementById('dropdown-profile-img');
-                    const dropIcon = document.getElementById('dropdown-profile-icon');
-
-                    if(navImg && navIcon) {
-                        navImg.src = savedPhoto;
-                        navImg.classList.remove('hidden');
-                        navIcon.classList.add('hidden');
-                    }
-                    if(dropImg && dropIcon) {
-                        dropImg.src = savedPhoto;
-                        dropImg.classList.remove('hidden');
-                        dropIcon.classList.add('hidden');
-                    }
-                }
-            }
-        }
-        applyLocalUserSession();
-
-        // 1. Auth State Check & Sync with Firebase Session
-        onAuthStateChanged(auth, async (user) => {
+        // FUNCTION TO UPDATE UI GLOBALLY
+        function updateUIForUser(user) {
             const loginNavItem = document.getElementById('login-nav-item');
+            const logoutDropdownItem = document.getElementById('logout-li-item');
+            const logoutSidebarItem = document.getElementById('sidebar-logout-li');
             
+            const navImg = document.getElementById('nav-profile-img');
+            const navIcon = document.getElementById('nav-profile-icon');
+            const dropImg = document.getElementById('dropdown-profile-img');
+            const dropIcon = document.getElementById('dropdown-profile-icon');
+
             if (user) {
                 const displayName = user.displayName || user.email.split('@')[0];
                 const email = user.email.toLowerCase().trim();
-                const photoURL = user.photoURL || '';
-
-                // Save to localStorage for instant loading across reloads
-                localStorage.setItem('student_name', displayName);
-                localStorage.setItem('student_email', email);
-                localStorage.setItem('student_photo', photoURL);
-                localStorage.setItem('isLoggedIn', 'true');
 
                 document.getElementById('user-display-name').textContent = displayName;
-                if(document.getElementById('user-display-email')) {
-                    document.getElementById('user-display-email').textContent = email;
-                }
-                document.getElementById('welcome-banner-name').textContent = `${displayName}!`;
+                if (document.getElementById('user-display-email')) document.getElementById('user-display-email').textContent = email;
+                if (document.getElementById('welcome-banner-name')) document.getElementById('welcome-banner-name').textContent = `${displayName}!`;
                 
-                if(loginNavItem) loginNavItem.style.display = 'none';
+                if (loginNavItem) loginNavItem.style.display = 'none';
+                if (logoutDropdownItem) logoutDropdownItem.style.display = 'block';
+                if (logoutSidebarItem) logoutSidebarItem.style.display = 'block';
 
-                if (photoURL) {
-                    const navImg = document.getElementById('nav-profile-img');
-                    const navIcon = document.getElementById('nav-profile-icon');
-                    const dropImg = document.getElementById('dropdown-profile-img');
-                    const dropIcon = document.getElementById('dropdown-profile-icon');
-
-                    navImg.src = photoURL;
-                    navImg.classList.remove('hidden');
-                    navIcon.classList.add('hidden');
-
-                    dropImg.src = photoURL;
-                    dropImg.classList.remove('hidden');
-                    dropIcon.classList.add('hidden');
+                if (user.photoURL) {
+                    if (navImg) { navImg.src = user.photoURL; navImg.classList.remove('hidden'); }
+                    if (navIcon) navIcon.classList.add('hidden');
+                    if (dropImg) { dropImg.src = user.photoURL; dropImg.classList.remove('hidden'); }
+                    if (dropIcon) dropIcon.classList.add('hidden');
                 }
-
                 window.isUserLoggedIn = true;
-                studentEmail = email;
+                return email;
             } else {
-                localStorage.clear();
                 document.getElementById('user-display-name').textContent = 'Guest User';
-                if(document.getElementById('user-display-email')) {
-                    document.getElementById('user-display-email').textContent = 'Not logged in';
-                }
-                document.getElementById('welcome-banner-name').textContent = 'Today!';
+                if (document.getElementById('user-display-email')) document.getElementById('user-display-email').textContent = 'Not logged in';
+                if (document.getElementById('welcome-banner-name')) document.getElementById('welcome-banner-name').textContent = 'Today!';
                 
-                if(loginNavItem) loginNavItem.style.display = 'block';
+                if (loginNavItem) loginNavItem.style.display = 'block';
+                if (logoutDropdownItem) logoutDropdownItem.style.display = 'none';
+                if (logoutSidebarItem) logoutSidebarItem.style.display = 'none';
+
+                if (navImg) { navImg.src = ''; navImg.classList.add('hidden'); }
+                if (navIcon) navIcon.classList.remove('hidden');
+                if (dropImg) { dropImg.src = ''; dropImg.classList.add('hidden'); }
+                if (dropIcon) dropIcon.classList.remove('hidden');
 
                 window.isUserLoggedIn = false;
-                studentEmail = '';
+                return '';
             }
+        }
+
+        // Auth State Listener
+        onAuthStateChanged(auth, async (user) => {
+            studentEmail = updateUIForUser(user);
             await loadFirestoreCourses(studentEmail);
         });
 
@@ -461,7 +392,10 @@
         async function loadFirestoreCourses(email) {
             const container = document.getElementById('dynamic-courses-container');
             const noResultsEl = document.getElementById('no-results');
+            
+            // Show loading initially
             container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses...</p>';
+            noResultsEl.style.display = 'none';
 
             let unlockedCourses = {};
             if (email) {
@@ -477,6 +411,8 @@
 
             try {
                 const querySnapshot = await getDocs(collection(db, "courses"));
+                
+                // Clear loading BEFORE checking if empty
                 container.innerHTML = '';
 
                 if (querySnapshot.empty) {
@@ -545,7 +481,7 @@
                 performLiveSearch();
 
             } catch (e) {
-                container.innerHTML = '<p class="col-span-full text-center text-red-500 py-10 bg-white rounded-2xl">Error loading data from Firebase.</p>';
+                container.innerHTML = '<p class="col-span-full text-center text-red-500 py-10 bg-white rounded-2xl shadow-sm border border-gray-100">Error loading data from Firebase.</p>';
             }
         };
 
@@ -560,8 +496,9 @@
             }
         }
 
-        // 4. Logout Handlers (Full session clear & signout)
-        async function handleLogout() {
+        // 4. Robust Logout Handler
+        window.handleLogout = async function(e) {
+            if(e) e.preventDefault();
             try {
                 await signOut(auth);
                 localStorage.clear();
@@ -577,7 +514,6 @@
         document.getElementById('logout-sidebar-btn').addEventListener('click', handleLogout);
     </script>
 
-    <!-- UI INTERACTION & SEARCH SCRIPTS -->
     <script>
         const searchInput = document.getElementById('search-input');
         const searchForm = document.getElementById('search-form');
