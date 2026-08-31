@@ -57,7 +57,7 @@
     </div>
 
     <!-- MAIN HEADER -->
-    <header class="bg-white shadow-sm sticky top-0 z-40">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex justify-between items-center mb-3">
                 
@@ -76,17 +76,40 @@
                     </a>
                 </div>
 
-                <!-- RIGHT SIDE: Profile -->
-                <div class="flex items-center gap-3">
+                <!-- RIGHT SIDE: Profile Container -->
+                <div class="relative flex items-center gap-3">
                     <button class="text-gray-500 hover:text-brandBlue transition relative hidden md:block">
                         <i class="fa-regular fa-bell text-xl"></i>
                         <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                     </button>
-                    <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center">
+                    
+                    <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center focus:outline-none">
                         <img id="nav-profile-img" src="" alt="User" class="w-full h-full object-cover hidden">
                         <i id="nav-profile-icon" class="fa-solid fa-user text-brandBlue text-sm md:text-lg"></i>
                     </button>
+
+                    <!-- PROFILE DROPDOWN -->
+                    <div id="profile-dropdown" class="absolute right-0 top-12 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
+                        <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden shrink-0">
+                                <img id="dropdown-profile-img" src="" class="w-full h-full object-cover hidden">
+                                <i id="dropdown-profile-icon" class="fa-solid fa-user text-brandBlue text-sm"></i>
+                            </div>
+                            <div class="truncate">
+                                <h4 id="user-display-name" class="font-bold text-sm leading-tight truncate max-w-[140px]">Guest User</h4>
+                                <p id="user-display-email" class="text-[10px] text-blue-200 mt-0.5 truncate max-w-[140px]">Not logged in</p>
+                            </div>
+                        </div>
+                        <ul class="py-1 text-gray-700 font-medium text-[13px]">
+                            <li id="login-nav-item"><a href="login.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 font-bold text-brandBlue"><i class="fa-solid fa-right-to-bracket w-4 text-center"></i> Login / Register</a></li>
+                            <li><a href="edit-profile.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50"><i class="fa-solid fa-user-pen w-4 text-center text-brandGold"></i> Edit Profile</a></li>
+                            <li><a href="offline-dashboard.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-id-card text-brandGold w-4 text-center"></i> Offline Dashboard</a></li>
+                            <li><a href="my-courses.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code text-brandBlue w-4 text-center"></i> My Courses (Paid)</a></li>
+                            <li class="border-t border-gray-50"><button id="logout-dropdown-btn" class="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
+                        </ul>
+                    </div>
                 </div>
+
             </div>
 
             <!-- SMART LIVE SEARCH BAR -->
@@ -100,32 +123,11 @@
         </div>
     </header>
 
-    <!-- PROFILE DROPDOWN -->
-    <div id="profile-dropdown" class="absolute right-4 top-16 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
-        <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden shrink-0">
-                <img id="dropdown-profile-img" src="" class="w-full h-full object-cover hidden">
-                <i id="dropdown-profile-icon" class="fa-solid fa-user text-brandBlue text-sm"></i>
-            </div>
-            <div class="truncate">
-                <h4 id="user-display-name" class="font-bold text-sm leading-tight truncate max-w-[140px]">Guest User</h4>
-                <p id="user-display-email" class="text-[10px] text-blue-200 mt-0.5 truncate max-w-[140px]">Not logged in</p>
-            </div>
-        </div>
-        <ul class="py-1 text-gray-700 font-medium text-[13px]">
-            <li><a href="login.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 font-bold text-brandBlue"><i class="fa-solid fa-right-to-bracket w-4 text-center"></i> Login / Register</a></li>
-            <li><a href="edit-profile.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50"><i class="fa-solid fa-user-pen w-4 text-center text-brandGold"></i> Edit Profile</a></li>
-            <li><a href="offline-dashboard.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-id-card text-brandGold w-4 text-center"></i> Offline Dashboard</a></li>
-            <li><a href="my-courses.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code text-brandBlue w-4 text-center"></i> My Courses (Paid)</a></li>
-            <li class="border-t border-gray-50"><button id="logout-dropdown-btn" class="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
-        </ul>
-    </div>
-
-    <!-- SIDEBAR NAVIGATION -->
+    <!-- SIDEBAR NAVIGATION (With auto-close on link clicks) -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-50 hidden opacity-0 transition-opacity duration-300"></div>
     <aside id="sidebar" class="fixed top-0 left-0 w-[80%] max-w-sm h-full bg-white z-50 shadow-2xl -translate-x-full overflow-y-auto flex flex-col">
         <div class="p-4 flex justify-between items-center border-b border-gray-100 bg-[#f8fafc]">
-            <a href="#home" class="flex items-center gap-2">
+            <a href="#home" class="flex items-center gap-2 sidebar-link">
                 <img src="logo.png" alt="Logo" class="h-9 w-9 rounded-full object-cover border border-brandGold" onerror="this.src='https://via.placeholder.com/50'">
                 <div class="flex flex-col leading-none">
                     <span class="font-bold text-[15px] text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
@@ -136,16 +138,16 @@
         </div>
         
         <div class="p-3 flex-grow">
-            <ul class="space-y-1 text-gray-600 font-medium text-[14px]">
-                <li><a href="#home" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-house w-5 text-center text-gray-400"></i> Home</a></li>
-                <li><a href="#courses" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Explore Courses</a></li>
-                <li><a href="edit-profile.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-user-pen w-5 text-center text-brandGold"></i> Edit Profile</a></li>
-                <li><a href="demo.html" class="flex items-center gap-3 p-3 bg-yellow-50 text-brandGold font-bold rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-gift w-5 text-center"></i> Book Free Demo</a></li>
-                <li><a href="my-courses.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code w-5 text-center text-gray-400"></i> My Courses</a></li>
-                <li><a href="offline-dashboard.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-user-graduate w-5 text-center text-brandGold"></i> Offline Student Dashboard</a></li>
-                <li><a href="offline-centre.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-map-location-dot w-5 text-center text-gray-400"></i> View Offline Centre</a></li>
-                <li><a href="register-offline.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
-                <li><a href="verify.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
+            <ul id="sidebar-links" class="space-y-1 text-gray-600 font-medium text-[14px]">
+                <li><a href="#home" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-house w-5 text-center text-gray-400"></i> Home</a></li>
+                <li><a href="#courses" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Explore Courses</a></li>
+                <li><a href="edit-profile.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-user-pen w-5 text-center text-brandGold"></i> Edit Profile</a></li>
+                <li><a href="demo.html" class="flex items-center gap-3 p-3 bg-yellow-50 text-brandGold font-bold rounded-lg transition sidebar-link" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-gift w-5 text-center"></i> Book Free Demo</a></li>
+                <li><a href="my-courses.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code w-5 text-center text-gray-400"></i> My Courses</a></li>
+                <li><a href="offline-dashboard.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-user-graduate w-5 text-center text-brandGold"></i> Offline Student Dashboard</a></li>
+                <li><a href="offline-centre.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-map-location-dot w-5 text-center text-gray-400"></i> View Offline Centre</a></li>
+                <li><a href="register-offline.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
+                <li><a href="verify.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition sidebar-link"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
                 <li class="border-t border-gray-100 mt-2 pt-2">
                     <button id="logout-sidebar-btn" class="w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
                 </li>
@@ -203,7 +205,7 @@
             </div>
         </section>
 
-        <!-- COURSES GRID (Firestore Dynamic Sync with Auto-Email Verification & Lock/Unlock) -->
+        <!-- COURSES GRID -->
         <section id="courses" class="max-w-7xl mx-auto px-4 mb-16 scroll-mt-24">
             <div class="mb-6">
                 <h2 class="text-xl md:text-3xl font-bold text-brandBlue mb-2">Our Popular Courses</h2>
@@ -215,10 +217,11 @@
                 <p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses from database...</p>
             </div>
 
-            <!-- Dynamic Search Fail Message -->
-            <div id="no-results" class="hidden col-span-full text-center py-8 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
-                <i class="fa-solid fa-magnifying-glass text-2xl mb-2 text-gray-300"></i>
-                <p class="text-sm">No courses found matching your search.</p>
+            <!-- Dynamic Search / Empty Fail Message -->
+            <div id="no-results" class="hidden col-span-full text-center py-12 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
+                <i class="fa-solid fa-triangle-exclamation text-3xl mb-2 text-amber-500"></i>
+                <p class="text-base font-bold text-gray-700">No courses found</p>
+                <p class="text-xs text-gray-400 mt-1">No active courses have been added from the admin panel yet, or none matched your search.</p>
             </div>
         </section>
 
@@ -356,8 +359,10 @@
 
         let studentEmail = '';
 
-        // 1. Auth State Check & Auto-detect Name, Email & Photo
+        // 1. Auth State Check & Auto-detect User Name, Email, Photo & UI State Management
         onAuthStateChanged(auth, async (user) => {
+            const loginNavItem = document.getElementById('login-nav-item');
+            
             if (user) {
                 const displayName = user.displayName || user.email.split('@')[0];
                 document.getElementById('user-display-name').textContent = displayName;
@@ -366,6 +371,9 @@
                 }
                 document.getElementById('welcome-banner-name').textContent = `${displayName}!`;
                 
+                // Hide Login option from dropdown since user is logged in
+                if(loginNavItem) loginNavItem.style.display = 'none';
+
                 if (user.photoURL) {
                     const navImg = document.getElementById('nav-profile-img');
                     const navIcon = document.getElementById('nav-profile-icon');
@@ -389,6 +397,10 @@
                     document.getElementById('user-display-email').textContent = 'Not logged in';
                 }
                 document.getElementById('welcome-banner-name').textContent = 'Today!';
+                
+                // Show Login option if user is guest
+                if(loginNavItem) loginNavItem.style.display = 'block';
+
                 window.isUserLoggedIn = false;
                 studentEmail = '';
             }
@@ -398,6 +410,7 @@
         // 2. Fetch Courses from Firestore and Render with Lock/Unlock State
         async function loadFirestoreCourses(email) {
             const container = document.getElementById('dynamic-courses-container');
+            const noResultsEl = document.getElementById('no-results');
             container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses...</p>';
 
             let unlockedCourses = {};
@@ -417,9 +430,11 @@
                 container.innerHTML = '';
 
                 if (querySnapshot.empty) {
-                    container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10 bg-white rounded-2xl shadow-sm border border-gray-100">No courses published from Admin panel yet.</p>';
+                    noResultsEl.style.display = 'block';
                     return;
                 }
+
+                noResultsEl.style.display = 'none';
 
                 querySnapshot.forEach((docSnap) => {
                     const courseId = docSnap.id;
@@ -452,7 +467,7 @@
                         `;
                     } else {
                         card.innerHTML = `
-                            <div class="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10 flex items-center gap-1 shadow">
+                            <div class="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10 shadow flex items-center gap-1">
                                 <i class="fa-solid fa-lock"></i> Locked
                             </div>
                             <div class="h-36 bg-gray-900 relative overflow-hidden">
@@ -496,13 +511,14 @@
         }
 
         // 4. Logout Handlers
-        function handleLogout() {
-            signOut(auth).then(() => {
+        async function handleLogout() {
+            try {
+                await signOut(auth);
                 localStorage.removeItem('isLoggedIn');
                 window.location.href = 'login.html';
-            }).catch((error) => {
+            } catch (error) {
                 console.error('Logout Error:', error);
-            });
+            }
         }
 
         document.getElementById('logout-dropdown-btn').addEventListener('click', handleLogout);
@@ -544,7 +560,7 @@
 
             const noResultsEl = document.getElementById('no-results');
             if (noResultsEl) {
-                noResultsEl.style.display = hasResults ? 'none' : 'block';
+                noResultsEl.style.display = (hasResults || courseCards.length === 0) ? 'none' : 'block';
             }
         }
 
@@ -603,6 +619,14 @@
         if(menuBtn) menuBtn.addEventListener('click', openMenu);
         if(closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
         if(overlay) overlay.addEventListener('click', closeMenu);
+
+        // Auto close sidebar when any sidebar link is clicked
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeMenu();
+            });
+        });
 
         window.addEventListener('click', (e) => {
             if (profileBtn && profileDropdown && !profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
