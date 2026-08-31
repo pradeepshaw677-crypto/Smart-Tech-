@@ -1,1 +1,340 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Enrolled Courses | Smart Tech</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'], },
+                    colors: { brandBlue: '#0f4c81', brandGold: '#f59e0b', }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        .playlist-scroll::-webkit-scrollbar { width: 5px; }
+        .playlist-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-brandBlue text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="text-white hover:text-brandGold transition"><i class="fa-solid fa-arrow-left text-lg"></i></a>
+                <h1 class="font-bold text-lg tracking-tight"><i class="fa-solid fa-graduation-cap text-brandGold mr-2"></i> My Learning Dashboard</h1>
+            </div>
+            <div id="user-email-display" class="text-xs bg-white/10 px-3 py-1.5 rounded-xl text-blue-100 font-semibold truncate max-w-[200px]">
+                Checking user...
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Course Grid -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Your Enrolled & Available Courses</h2>
+            <p class="text-xs text-gray-500">Access your unlocked playlists, track your syllabus completion, and learn seamlessly.</p>
+        </div>
+
+        <div id="my-courses-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading your courses...</p>
+        </div>
+    </main>
+
+    <!-- NETFLIX STYLE VIDEO PLAYER MODAL WITH SYLLABUS & PROGRESS -->
+    <div id="player-modal" class="fixed inset-0 bg-black z-50 hidden flex flex-col md:flex-row">
+        
+        <!-- Close Button -->
+        <button onclick="closePlayer()" class="absolute top-4 left-4 text-white hover:text-red-500 text-3xl z-50 transition"><i class="fa-solid fa-circle-xmark"></i></button>
+        
+        <!-- Left: Video Player Area -->
+        <div class="w-full md:w-3/4 h-[50vh] md:h-full bg-black flex flex-col items-center justify-center relative">
+            <video id="main-video" controls controlsList="nodownload" class="w-full max-h-full object-contain bg-black shadow-2xl" onended="markVideoCompleted()"></video>
+            
+            <div class="absolute top-4 right-6 flex items-center gap-2 sm:gap-3 z-40 bg-black/75 px-3 sm:px-4 py-2 rounded-xl backdrop-blur-md">
+                <span id="now-playing-title" class="text-white text-xs font-bold truncate max-w-[140px] sm:max-w-xs">Select a video</span>
+                
+                <!-- Speed Control Selector -->
+                <select id="playback-speed" onchange="changeSpeed()" class="bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded outline-none border border-gray-700 cursor-pointer">
+                    <option value="0.5">0.5x</option>
+                    <option value="1" selected>1.0x</option>
+                    <option value="1.25">1.25x</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2">2.0x</option>
+                </select>
+
+                <!-- Fullscreen Landscape Button -->
+                <button onclick="makeFullscreen()" class="bg-brandGold text-brandBlue text-xs font-bold px-2.5 py-1 rounded hover:bg-yellow-500 transition">
+                    <i class="fa-solid fa-expand"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Right: Syllabus & Playlist Sidebar -->
+        <div class="w-full md:w-1/4 h-[50vh] md:h-full bg-slate-900 border-l border-slate-800 flex flex-col">
+            <div class="p-4 bg-slate-800 border-b border-slate-700">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 id="playlist-course-title" class="text-white font-bold text-sm truncate max-w-[150px]">Course Syllabus</h3>
+                    <span id="completion-badge" class="text-xs font-bold bg-amber-500 text-slate-900 px-2 py-0.5 rounded-full">0% Done</span>
+                </div>
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div id="syllabus-progress-bar" class="bg-amber-500 h-full w-0 transition-all duration-300"></div>
+                </div>
+                <p class="text-gray-400 text-[10px] mt-1.5 flex justify-between">
+                    <span>Completed Lectures</span>
+                    <span id="completed-count">0</span> / <span id="vid-count">0</span>
+                </p>
+            </div>
+            <!-- Syllabus Items Container -->
+            <div id="playlist-items" class="flex-1 overflow-y-auto playlist-scroll p-3 space-y-2">
+                <!-- Javascript injects syllabus items here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase & Progress Logic -->
+    <script type="module">
+        import { db, auth } from './firebase-config.js';
+        import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        let currentCourseId = '';
+        let currentUserEmail = '';
+        let activeVideos = [];
+        let activeIndex = 0;
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUserEmail = user.email.toLowerCase().trim();
+                document.getElementById('user-email-display').textContent = currentUserEmail;
+                await loadStudentDashboard(currentUserEmail);
+            } else {
+                document.getElementById('user-email-display').textContent = "Guest Mode";
+                currentUserEmail = "guest@smarttech.com";
+                await loadStudentDashboard(currentUserEmail);
+            }
+        });
+
+        async function loadStudentDashboard(email) {
+            const container = document.getElementById('my-courses-container');
+            container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Syncing your courses...</p>';
+
+            let unlockedCourses = {};
+            try {
+                const unlockSnap = await getDoc(doc(db, "unlocked_courses", email));
+                if (unlockSnap.exists()) {
+                    unlockedCourses = unlockSnap.data();
+                }
+            } catch (e) {
+                console.log("Error fetching access:", e);
+            }
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "courses"));
+                container.innerHTML = '';
+
+                const defaultTestVideos = [
+                    { title: "Class 1: Introduction & Basics", url: "https://res.cloudinary.com/pifz9qlb/video/upload/v1788177527/Https_aapka_apnabazzarwork.mp4" },
+                    { title: "Class 2: Advanced Practical Module", url: "https://www.w3schools.com/html/mov_bbb.mp4" }
+                ];
+
+                const testCardHtml = `
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden relative flex flex-col hover:shadow-md transition">
+                        <div class="absolute top-3 right-3 bg-green-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase z-10 shadow flex items-center gap-1">
+                            <i class="fa-solid fa-unlock"></i> Unlocked
+                        </div>
+                        <div class="h-40 bg-gray-200 relative overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow">
+                            <h3 class="font-bold text-lg text-gray-800 mb-1">Advanced IT Professional Diploma</h3>
+                            <p class="text-xs text-brandBlue font-bold uppercase tracking-wider mb-4"><i class="fa-solid fa-video"></i> ${defaultTestVideos.length} Lectures in Syllabus</p>
+                            <button onclick='openPlayer("test-course", ${JSON.stringify(defaultTestVideos)}, "Advanced IT Professional Diploma")' class="mt-auto w-full bg-brandBlue hover:bg-blue-800 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-play"></i> Open Syllabus & Watch
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                if (querySnapshot.empty) {
+                    container.innerHTML = testCardHtml;
+                } else {
+                    querySnapshot.forEach((docSnap) => {
+                        const courseId = docSnap.id;
+                        const course = docSnap.data();
+                        const isUnlocked = unlockedCourses[courseId] === true;
+                        const lectureCount = course.videos ? course.videos.length : 15;
+
+                        const card = document.createElement('div');
+                        card.className = "bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden relative flex flex-col hover:shadow-md transition";
+
+                        if (isUnlocked) {
+                            card.innerHTML = `
+                                <div class="absolute top-3 right-3 bg-green-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase z-10 shadow flex items-center gap-1">
+                                    <i class="fa-solid fa-unlock"></i> Unlocked
+                                </div>
+                                <div class="h-40 bg-gray-200 relative overflow-hidden">
+                                    <img src="${course.thumb}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="p-5 flex flex-col flex-grow">
+                                    <h3 class="font-bold text-lg text-gray-800 mb-1">${course.title}</h3>
+                                    <p class="text-xs text-brandBlue font-bold uppercase tracking-wider mb-4"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures in Syllabus</p>
+                                    <button onclick='openPlayer("${courseId}", ${JSON.stringify(course.videos)}, "${course.title}")' class="mt-auto w-full bg-brandBlue hover:bg-blue-800 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-play"></i> Open Syllabus & Watch
+                                    </button>
+                                </div>
+                            `;
+                        } else {
+                            card.innerHTML = `
+                                <div class="absolute top-3 right-3 bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase z-10 shadow flex items-center gap-1">
+                                    <i class="fa-solid fa-lock"></i> Locked
+                                </div>
+                                <div class="h-40 bg-gray-900 relative overflow-hidden">
+                                    <img src="${course.thumb}" class="w-full h-full object-cover opacity-40 blur-[1px]">
+                                    <div class="absolute inset-0 flex items-center justify-center text-white">
+                                        <i class="fa-solid fa-lock text-3xl opacity-80"></i>
+                                    </div>
+                                </div>
+                                <div class="p-5 flex flex-col flex-grow">
+                                    <h3 class="font-bold text-lg text-gray-800 mb-1">${course.title}</h3>
+                                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-4"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures (Locked)</p>
+                                    <div class="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
+                                        <span class="text-xl font-black text-brandBlue">₹${course.price}</span>
+                                        <a href="payment.html?course=${courseId}" class="bg-brandGold hover:bg-yellow-500 text-brandBlue font-bold px-5 py-2.5 rounded-xl shadow transition text-sm">
+                                            Buy Now
+                                        </a>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        container.appendChild(card);
+                    });
+                    container.insertAdjacentHTML('beforeend', testCardHtml);
+                }
+            } catch (e) {
+                container.innerHTML = '<p class="col-span-full text-center text-red-500 py-10">Error loading dashboard data.</p>';
+            }
+        }
+
+        window.openPlayer = (courseId, videos, title) => {
+            currentCourseId = courseId;
+            activeVideos = videos;
+            document.getElementById('player-modal').classList.remove('hidden');
+            document.getElementById('playlist-course-title').innerText = title;
+            document.getElementById('vid-count').innerText = videos.length;
+            
+            renderSyllabusList();
+            updateProgressUI();
+
+            if(videos.length > 0) {
+                playVideo(0);
+            }
+        };
+
+        window.renderSyllabusList = () => {
+            const listDiv = document.getElementById('playlist-items');
+            listDiv.innerHTML = '';
+            
+            const completedSet = getCompletedSet();
+
+            activeVideos.forEach((vid, index) => {
+                const isDone = completedSet.has(index);
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3 rounded-xl border transition flex items-center justify-between ${index === activeIndex ? 'bg-blue-600 text-white border-blue-500' : 'bg-slate-800 hover:bg-slate-700 text-gray-300 border-slate-700'}`;
+                
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3 truncate">
+                        <span class="bg-slate-700 text-xs w-6 h-6 flex items-center justify-center rounded-full font-bold shrink-0">${index+1}</span> 
+                        <span class="text-xs font-medium truncate">${vid.title}</span>
+                    </div>
+                    <div>
+                        ${isDone ? '<i class="fa-solid fa-circle-check text-green-400 text-sm"></i>' : '<i class="fa-regular fa-circle text-slate-500 text-sm"></i>'}
+                    </div>
+                `;
+                
+                btn.onclick = () => playVideo(index);
+                listDiv.appendChild(btn);
+            });
+        };
+
+        window.playVideo = (index) => {
+            activeIndex = index;
+            const vid = activeVideos[index];
+            const videoEl = document.getElementById('main-video');
+            videoEl.src = vid.url;
+            videoEl.play();
+            document.getElementById('now-playing-title').innerText = vid.title;
+            renderSyllabusList();
+        };
+
+        window.markVideoCompleted = () => {
+            let completedSet = getCompletedSet();
+            completedSet.add(activeIndex);
+            saveCompletedSet(completedSet);
+            renderSyllabusList();
+            updateProgressUI();
+        };
+
+        function getCompletedSet() {
+            const key = `progress_${currentUserEmail}_${currentCourseId}`;
+            const data = localStorage.getItem(key);
+            return data ? new Set(JSON.parse(data)) : new Set();
+        }
+
+        function saveCompletedSet(setObj) {
+            const key = `progress_${currentUserEmail}_${currentCourseId}`;
+            localStorage.setItem(key, JSON.stringify([...setObj]));
+        }
+
+        function updateProgressUI() {
+            const completedSet = getCompletedSet();
+            const total = activeVideos.length;
+            const done = completedSet.size;
+            const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+
+            document.getElementById('completed-count').innerText = done;
+            document.getElementById('completion-badge').innerText = `${percent}% Done`;
+            document.getElementById('syllabus-progress-bar').style.width = `${percent}%`;
+        }
+
+        window.closePlayer = () => {
+            const videoEl = document.getElementById('main-video');
+            videoEl.pause();
+            videoEl.src = "";
+            document.getElementById('player-modal').classList.add('hidden');
+        };
+
+        window.changeSpeed = () => {
+            const speed = document.getElementById('playback-speed').value;
+            document.getElementById('main-video').playbackRate = parseFloat(speed);
+        };
+
+        window.makeFullscreen = () => {
+            const videoEl = document.getElementById('main-video');
+            if (videoEl.requestFullscreen) {
+                videoEl.requestFullscreen();
+            } else if (videoEl.webkitRequestFullscreen) {
+                videoEl.webkitRequestFullscreen();
+            } else if (videoEl.msRequestFullscreen) {
+                videoEl.msRequestFullscreen();
+            }
+        };
+    </script>
+</body>
+</html>
