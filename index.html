@@ -82,9 +82,9 @@
                         <i class="fa-regular fa-bell text-xl"></i>
                         <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                     </button>
-                    <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center">
-                        <img id="nav-profile-img" src="" alt="User" class="w-full h-full object-cover hidden">
-                        <i id="nav-profile-icon" class="fa-solid fa-user text-brandBlue text-sm md:text-lg"></i>
+                    <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center relative">
+                        <i id="header-user-icon" class="fa-solid fa-user text-brandBlue text-sm md:text-lg"></i>
+                        <img id="header-user-img" src="" class="w-full h-full object-cover hidden absolute inset-0">
                     </button>
                 </div>
             </div>
@@ -100,12 +100,12 @@
         </div>
     </header>
 
-    <!-- PROFILE DROPDOWN -->
+    <!-- PROFILE DROPDOWN (Dynamic User Display) -->
     <div id="profile-dropdown" class="absolute right-4 top-16 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
         <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden shrink-0">
-                <img id="dropdown-profile-img" src="" class="w-full h-full object-cover hidden">
-                <i id="dropdown-profile-icon" class="fa-solid fa-user text-brandBlue text-sm"></i>
+            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden relative">
+                <i id="dropdown-user-icon" class="fa-solid fa-user text-brandBlue text-sm"></i>
+                <img id="dropdown-user-img" src="" class="w-full h-full object-cover hidden absolute inset-0">
             </div>
             <div class="truncate">
                 <h4 id="user-display-name" class="font-bold text-sm leading-tight truncate max-w-[140px]">Guest User</h4>
@@ -113,11 +113,10 @@
             </div>
         </div>
         <ul class="py-1 text-gray-700 font-medium text-[13px]">
-            <li id="dropdown-login-item"><a href="login.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 font-bold text-brandBlue"><i class="fa-solid fa-right-to-bracket w-4 text-center"></i> Login / Register</a></li>
-            <li><a href="edit-profile.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50"><i class="fa-solid fa-user-pen w-4 text-center text-brandGold"></i> Edit Profile</a></li>
+            <li id="nav-login-item"><a href="login.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 font-bold text-brandBlue"><i class="fa-solid fa-right-to-bracket w-4 text-center"></i> Login / Register</a></li>
             <li><a href="offline-dashboard.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-id-card text-brandGold w-4 text-center"></i> Offline Dashboard</a></li>
             <li><a href="my-courses.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code text-brandBlue w-4 text-center"></i> My Courses (Paid)</a></li>
-            <li id="dropdown-logout-item" class="border-t border-gray-50" style="display: none;"><button id="logout-dropdown-btn" class="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
+            <li id="nav-logout-item" class="hidden border-t border-gray-50"><button id="dropdown-logout-btn" class="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
         </ul>
     </div>
 
@@ -139,15 +138,14 @@
             <ul class="space-y-1 text-gray-600 font-medium text-[14px]">
                 <li><a href="#home" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-house w-5 text-center text-gray-400"></i> Home</a></li>
                 <li><a href="#courses" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Explore Courses</a></li>
-                <li><a href="edit-profile.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-user-pen w-5 text-center text-brandGold"></i> Edit Profile</a></li>
                 <li><a href="demo.html" class="flex items-center gap-3 p-3 bg-yellow-50 text-brandGold font-bold rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-gift w-5 text-center"></i> Book Free Demo</a></li>
                 <li><a href="my-courses.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code w-5 text-center text-gray-400"></i> My Courses</a></li>
                 <li><a href="offline-dashboard.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-user-graduate w-5 text-center text-brandGold"></i> Offline Student Dashboard</a></li>
                 <li><a href="offline-centre.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-map-location-dot w-5 text-center text-gray-400"></i> View Offline Centre</a></li>
                 <li><a href="register-offline.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
                 <li><a href="verify.html" class="flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
-                <li id="sidebar-logout-item" class="border-t border-gray-100 mt-2 pt-2" style="display: none;">
-                    <button id="logout-sidebar-btn" class="w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
+                <li id="sidebar-logout-item" class="hidden border-t border-gray-100 mt-2 pt-2">
+                    <button id="sidebar-logout-btn" class="w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
                 </li>
             </ul>
         </div>
@@ -203,19 +201,21 @@
             </div>
         </section>
 
-        <!-- COURSES GRID -->
+        <!-- COURSES GRID (Firestore Logic added here) -->
         <section id="courses" class="max-w-7xl mx-auto px-4 mb-16 scroll-mt-24">
             <div class="mb-6">
                 <h2 class="text-xl md:text-3xl font-bold text-brandBlue mb-2">Our Popular Courses</h2>
                 <div class="w-12 h-1 bg-brandGold rounded-full"></div>
             </div>
 
-            <!-- Dynamic Courses Container -->
+            <!-- Dynamic Courses Container with initial spinner -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="dynamic-courses-container">
-                <p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses from database...</p>
+                <p class="col-span-full text-center text-gray-400 py-12" id="loading-spinner">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br>Loading courses from database...
+                </p>
             </div>
 
-            <!-- Dynamic Search Fail Message -->
+            <!-- Dynamic Search/Empty Fail Message -->
             <div id="no-results" class="hidden col-span-full text-center py-8 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
                 <i class="fa-solid fa-magnifying-glass text-2xl mb-2 text-gray-300"></i>
                 <p class="text-sm">No courses found matching your search.</p>
@@ -348,112 +348,129 @@
         </a>
     </div>
 
-    <!-- FIREBASE AUTH & FIRESTORE COURSES SYNC LOGIC -->
+    <!-- FIREBASE AUTH & FIRESTORE LOGIC -->
     <script type="module">
         import { db, auth } from './firebase-config.js';
-        import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        let studentEmail = '';
+        // Global flag for login check
+        window.isUserLoggedIn = false;
 
-        // 1. Auth State Check & Auto-detect Name, Email & Photo
+        // UI Manipulation elements
+        const nameEl = document.getElementById('user-display-name');
+        const emailEl = document.getElementById('user-display-email');
+        const bannerNameEl = document.getElementById('welcome-banner-name');
+        const navLoginItem = document.getElementById('nav-login-item');
+        const navLogoutItem = document.getElementById('nav-logout-item');
+        const sidebarLogoutItem = document.getElementById('sidebar-logout-item');
+        
+        const headerImg = document.getElementById('header-user-img');
+        const headerIcon = document.getElementById('header-user-icon');
+        const dropdownImg = document.getElementById('dropdown-user-img');
+        const dropdownIcon = document.getElementById('dropdown-user-icon');
+
+        // 1. Listen for Authentication Changes
         onAuthStateChanged(auth, async (user) => {
-            try {
-                const nameEl = document.getElementById('user-display-name');
-                const emailEl = document.getElementById('user-display-email');
-                const bannerEl = document.getElementById('welcome-banner-name');
-                const loginItem = document.getElementById('dropdown-login-item');
-                const logoutItem = document.getElementById('dropdown-logout-item');
-                const sidebarLogoutItem = document.getElementById('sidebar-logout-item');
-                const navImg = document.getElementById('nav-profile-img');
-                const navIcon = document.getElementById('nav-profile-icon');
-                const dropImg = document.getElementById('dropdown-profile-img');
-                const dropIcon = document.getElementById('dropdown-profile-icon');
+            let userEmail = '';
 
-                if (user) {
-                    const displayName = user.displayName ? user.displayName : (user.email ? user.email.split('@')[0] : 'Student');
-                    
-                    if (nameEl) nameEl.textContent = displayName;
-                    if (emailEl) emailEl.textContent = user.email;
-                    if (bannerEl) bannerEl.textContent = displayName + '!';
-                    
-                    if (loginItem) loginItem.style.display = 'none';
-                    if (logoutItem) logoutItem.style.display = 'block';
-                    if (sidebarLogoutItem) sidebarLogoutItem.style.display = 'block';
+            if (user) {
+                window.isUserLoggedIn = true;
+                userEmail = user.email ? user.email.toLowerCase().trim() : '';
+                const displayName = user.displayName || userEmail.split('@')[0];
+                
+                // Update Name & Email Text
+                nameEl.textContent = displayName;
+                bannerNameEl.textContent = `${displayName}!`;
+                emailEl.textContent = userEmail;
 
-                    if (user.photoURL) {
-                        if (navImg) { navImg.src = user.photoURL; navImg.classList.remove('hidden'); }
-                        if (navIcon) navIcon.classList.add('hidden');
-                        if (dropImg) { dropImg.src = user.photoURL; dropImg.classList.remove('hidden'); }
-                        if (dropIcon) dropIcon.classList.add('hidden');
-                    } else {
-                        if (navImg) navImg.classList.add('hidden');
-                        if (navIcon) navIcon.classList.remove('hidden');
-                        if (dropImg) dropImg.classList.add('hidden');
-                        if (dropIcon) dropIcon.classList.remove('hidden');
-                    }
+                // Show Logout, Hide Login
+                navLoginItem.classList.add('hidden');
+                navLogoutItem.classList.remove('hidden');
+                sidebarLogoutItem.classList.remove('hidden');
 
-                    window.isUserLoggedIn = true;
-                    studentEmail = user.email ? user.email.toLowerCase().trim() : '';
-                } else {
-                    if (nameEl) nameEl.textContent = 'Guest User';
-                    if (emailEl) emailEl.textContent = 'Not logged in';
-                    if (bannerEl) bannerEl.textContent = 'Today!';
-                    
-                    if (loginItem) loginItem.style.display = 'block';
-                    if (logoutItem) logoutItem.style.display = 'none';
-                    if (sidebarLogoutItem) sidebarLogoutItem.style.display = 'none';
+                // Update Profile Photo
+                if (user.photoURL) {
+                    headerImg.src = user.photoURL;
+                    headerImg.classList.remove('hidden');
+                    headerIcon.classList.add('hidden');
 
-                    if (navImg) navImg.classList.add('hidden');
-                    if (navIcon) navIcon.classList.remove('hidden');
-                    if (dropImg) dropImg.classList.add('hidden');
-                    if (dropIcon) dropIcon.classList.remove('hidden');
-
-                    window.isUserLoggedIn = false;
-                    studentEmail = '';
+                    dropdownImg.src = user.photoURL;
+                    dropdownImg.classList.remove('hidden');
+                    dropdownIcon.classList.add('hidden');
                 }
-            } catch (err) {
-                console.error("UI Auth State Error: ", err);
+            } else {
+                window.isUserLoggedIn = false;
+                userEmail = '';
+
+                // Reset Text
+                nameEl.textContent = 'Guest User';
+                emailEl.textContent = 'Not logged in';
+                bannerNameEl.textContent = 'Today!';
+
+                // Show Login, Hide Logout
+                navLoginItem.classList.remove('hidden');
+                navLogoutItem.classList.add('hidden');
+                sidebarLogoutItem.classList.add('hidden');
+
+                // Reset Photo
+                headerImg.classList.add('hidden');
+                headerIcon.classList.remove('hidden');
+                dropdownImg.classList.add('hidden');
+                dropdownIcon.classList.remove('hidden');
             }
 
-            // Load Courses from database
-            await loadFirestoreCourses(studentEmail);
+            // After auth check, fetch the courses
+            await fetchCourses(userEmail);
         });
 
-        // 2. Fetch Courses from Firestore and Render with Lock/Unlock State
-        async function loadFirestoreCourses(email) {
-            const container = document.getElementById('dynamic-courses-container');
-            
-            container.innerHTML = '<p class="col-span-full text-center text-gray-400 py-12"><i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i><br>Loading courses...</p>';
+        // 2. Logout Handler
+        window.handleLogout = function(e) {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.reload(); // Instantly clears session and refeshes page
+            }).catch((error) => {
+                console.error('Error signing out: ', error);
+            });
+        }
 
-            let unlockedCourses = {};
-            if (email) {
-                try {
+        document.getElementById('dropdown-logout-btn').addEventListener('click', handleLogout);
+        document.getElementById('sidebar-logout-btn').addEventListener('click', handleLogout);
+
+        // 3. Fetch Courses From Firestore
+        async function fetchCourses(email) {
+            const container = document.getElementById('dynamic-courses-container');
+            const emptyMessage = document.getElementById('no-results');
+
+            try {
+                // Check if user has unlocked courses
+                let unlockedCourses = {};
+                if (email) {
                     const unlockSnap = await getDoc(doc(db, "unlocked_courses", email));
                     if (unlockSnap.exists()) {
                         unlockedCourses = unlockSnap.data();
                     }
-                } catch (e) {
-                    console.log("Error checking unlocked access:", e);
                 }
-            }
 
-            try {
+                // Get all published courses
                 const querySnapshot = await getDocs(collection(db, "courses"));
                 
+                // Remove the loading spinner
                 container.innerHTML = '';
 
                 if (querySnapshot.empty) {
+                    // Show exact No Courses UI if database is empty
                     container.innerHTML = `
                         <div class="col-span-full text-center py-12 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
                             <i class="fa-solid fa-folder-open text-4xl mb-3 text-gray-300"></i>
-                            <p class="text-lg text-gray-700">No Courses Available</p>
-                            <p class="text-xs text-gray-400 mt-1">Admin has not published any active courses yet.</p>
+                            <p class="text-lg text-gray-700">No Courses Found</p>
+                            <p class="text-xs text-gray-400 mt-1">Courses will appear here once added by the admin.</p>
                         </div>
                     `;
                     return;
                 }
 
+                // Render each course fetched
                 querySnapshot.forEach((docSnap) => {
                     const courseId = docSnap.id;
                     const course = docSnap.data();
@@ -510,14 +527,24 @@
                     container.appendChild(card);
                 });
 
-                performLiveSearch();
+                // Call search function in case search input had text
+                if(typeof performLiveSearch === 'function') performLiveSearch();
 
-            } catch (e) {
-                container.innerHTML = '<p class="col-span-full text-center text-red-500 py-10 bg-white rounded-2xl shadow-sm border border-gray-100">Error loading data from Firebase.</p>';
+            } catch (error) {
+                console.error("Firestore loading error: ", error);
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-red-500 font-semibold bg-white rounded-2xl shadow-sm border border-red-100">
+                        <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
+                        <p>Connection Error. Cannot load courses.</p>
+                    </div>
+                `;
             }
-        };
+        }
+    </script>
 
-        // 3. Protected Route Handler
+    <!-- UI INTERACTION & SEARCH SCRIPTS -->
+    <script>
+        // Protected Link Logic
         window.requireLogin = function(event, targetUrl) {
             event.preventDefault();
             if(!window.isUserLoggedIn) {
@@ -528,46 +555,20 @@
             }
         }
 
-        // 4. Secure Logout Handler
-        function handleLogout(e) {
-            if(e) e.preventDefault();
-            signOut(auth).then(() => {
-                window.location.href = 'login.html';
-            }).catch((error) => {
-                console.error('Logout Error:', error);
-                window.location.href = 'login.html';
-            });
-        }
-
-        const dropdownLogoutBtn = document.getElementById('logout-dropdown-btn');
-        if (dropdownLogoutBtn) dropdownLogoutBtn.addEventListener('click', handleLogout);
-
-        const sidebarLogoutBtn = document.getElementById('logout-sidebar-btn');
-        if (sidebarLogoutBtn) sidebarLogoutBtn.addEventListener('click', handleLogout);
-
-    </script>
-
-    <!-- UI INTERACTION & SEARCH SCRIPTS -->
-    <script>
         const searchInput = document.getElementById('search-input');
         const searchForm = document.getElementById('search-form');
         const courseSection = document.getElementById('courses');
         
-        function performLiveSearch() {
-            const filterText = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        window.performLiveSearch = function() {
+            const filterText = searchInput.value.toLowerCase().trim();
             const searchTerms = filterText.split(' ').filter(term => term.length > 0);
             
             const courseCards = document.querySelectorAll('.course-card');
             let hasResults = false;
             
             courseCards.forEach(card => {
-                const titleEl = card.querySelector('.course-title');
-                const descEl = card.querySelector('.course-desc');
-                
-                if (!titleEl) return;
-                
-                const title = titleEl.textContent.toLowerCase();
-                const desc = descEl ? descEl.textContent.toLowerCase() : '';
+                const title = card.querySelector('.course-title').textContent.toLowerCase();
+                const desc = card.querySelector('.course-desc').textContent.toLowerCase();
                 const combinedText = title + " " + desc;
                 
                 const matches = searchTerms.every(term => combinedText.includes(term));
@@ -580,40 +581,31 @@
                 }
             });
 
-            const noResultsEl = document.getElementById('no-results');
-            if (noResultsEl) {
-                noResultsEl.style.display = hasResults ? 'none' : 'block';
-            }
+            document.getElementById('no-results').style.display = hasResults ? 'none' : 'block';
         }
 
-        if (searchInput) {
-            searchInput.addEventListener('input', performLiveSearch);
-        }
+        searchInput.addEventListener('input', performLiveSearch);
 
-        if (searchForm) {
-            searchForm.addEventListener('submit', (e) => {
-                e.preventDefault(); 
-                performLiveSearch();
-                searchInput.blur(); 
-                
-                const yOffset = -100; 
-                const y = courseSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                window.scrollTo({top: y, behavior: 'smooth'});
-            });
-        }
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            performLiveSearch();
+            searchInput.blur(); 
+            
+            const yOffset = -100; 
+            const y = courseSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+        });
 
         /* --- PROFILE AND MENU --- */
         const profileBtn = document.getElementById('profile-btn');
         const profileDropdown = document.getElementById('profile-dropdown');
         
-        if (profileBtn && profileDropdown) {
-            profileBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                profileDropdown.classList.toggle('opacity-0');
-                profileDropdown.classList.toggle('scale-95');
-                profileDropdown.classList.toggle('pointer-events-none');
-            });
-        }
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('opacity-0');
+            profileDropdown.classList.toggle('scale-95');
+            profileDropdown.classList.toggle('pointer-events-none');
+        });
 
         const menuBtn = document.getElementById('menu-btn');
         const sidebar = document.getElementById('sidebar');
@@ -621,29 +613,25 @@
         const closeMenuBtn = document.getElementById('close-menu-btn');
 
         function openMenu() {
-            if(sidebar && overlay) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-                document.body.style.overflow = 'hidden'; 
-            }
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeMenu() {
-            if(sidebar && overlay) {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
-                document.body.style.overflow = 'auto'; 
-            }
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+            document.body.style.overflow = 'auto'; 
         }
 
-        if(menuBtn) menuBtn.addEventListener('click', openMenu);
-        if(closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
-        if(overlay) overlay.addEventListener('click', closeMenu);
+        menuBtn.addEventListener('click', openMenu);
+        closeMenuBtn.addEventListener('click', closeMenu);
+        overlay.addEventListener('click', closeMenu);
 
         window.addEventListener('click', (e) => {
-            if (profileBtn && profileDropdown && !profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+            if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
                 profileDropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
             }
         });
