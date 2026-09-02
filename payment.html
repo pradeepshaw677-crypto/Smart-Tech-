@@ -17,6 +17,7 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
         input[readonly] { background-color: #f1f5f9; cursor: not-allowed; opacity: 0.9; }
+        .qr-placeholder { background: repeating-linear-gradient(45deg, #f1f5f9, #f1f5f9 10px, #e2e8f0 10px, #e2e8f0 20px); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -51,7 +52,6 @@
             
             <form id="paymentForm" class="space-y-4">
                 
-                <!-- Hidden Field for Course ID -->
                 <input type="hidden" id="courseId" value="">
 
                 <!-- Student Name -->
@@ -73,49 +73,62 @@
                     <p class="text-[9px] font-bold text-green-600 mt-1 pl-1" id="email-lock-text">*This email will be verified by admin to unlock your course.</p>
                 </div>
 
-                <!-- Course Name (Auto Fetched from Database) -->
+                <!-- NEW: Mobile Number Field -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Course Title</label>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Mobile Number</label>
                     <div class="relative">
-                        <i class="fa-solid fa-book absolute left-4 top-3.5 text-gray-400"></i>
-                        <input type="text" id="courseName" required readonly placeholder="Loading course details..." class="w-full bg-gray-50 border border-gray-200 text-gray-600 rounded-xl py-3 pl-10 pr-4 outline-none font-semibold">
+                        <i class="fa-solid fa-phone absolute left-4 top-3.5 text-gray-400"></i>
+                        <input type="tel" id="studentMobile" required placeholder="10-digit mobile number" pattern="[0-9]{10}" class="w-full bg-gray-50 border border-gray-200 text-gray-800 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#0f4c81] focus:ring-1 focus:ring-[#0f4c81] transition">
                     </div>
                 </div>
 
-                <!-- Amount (Auto Fetched from Database) -->
-                <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Payment Amount (₹)</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-indian-rupee-sign absolute left-4 top-3.5 text-gray-400"></i>
-                        <input type="number" id="paymentAmount" required readonly placeholder="0" class="w-full bg-gray-50 border border-gray-200 text-[#0f4c81] rounded-xl py-3 pl-10 pr-4 outline-none font-black text-xl">
+                <!-- Course Name & Amount (Auto Fetched) -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Course Title</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-book absolute left-4 top-3.5 text-gray-400"></i>
+                            <input type="text" id="courseName" required readonly placeholder="Loading..." class="w-full bg-gray-50 border border-gray-200 text-gray-600 rounded-xl py-3 pl-10 pr-4 outline-none font-semibold text-sm">
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Payment Amount (₹)</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-indian-rupee-sign absolute left-4 top-3.5 text-gray-400"></i>
+                            <input type="number" id="paymentAmount" required readonly placeholder="0" class="w-full bg-green-50 border border-green-200 text-green-700 rounded-xl py-3 pl-10 pr-4 outline-none font-black text-xl">
+                        </div>
                     </div>
                 </div>
 
-                <!-- WhatsApp Pay Button -->
-                <button type="submit" id="pay-btn" class="w-full mt-6 bg-[#25D366] hover:bg-[#1ebd5a] text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 transform hover:-translate-y-1">
-                    <i class="fa-brands fa-whatsapp text-2xl"></i>
-                    <span>Get QR Code on WhatsApp</span>
-                </button>
+                <!-- LIVE AUTO-GENERATED QR CODE SECTION -->
+                <div class="mt-6 border border-gray-200 rounded-xl p-4 text-center bg-gray-50 flex flex-col items-center justify-center">
+                    <p class="text-xs font-bold text-gray-600 uppercase tracking-wide mb-3"><i class="fa-solid fa-qrcode mr-1"></i> Scan QR to Pay via any App</p>
+                    
+                    <div class="w-[180px] h-[180px] bg-white p-2 rounded-xl shadow-sm border border-gray-200 flex items-center justify-center relative overflow-hidden">
+                        <div id="qr-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10">
+                            <i class="fa-solid fa-spinner fa-spin text-2xl text-brandBlue mb-2"></i>
+                            <span class="text-[10px] text-gray-500 font-bold">Generating QR...</span>
+                        </div>
+                        <img id="dynamic-qr-code" src="" alt="Payment QR Code" class="w-full h-full object-contain hidden" />
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-3">Scan via PhonePe, GPay, Paytm, etc.</p>
+                </div>
+
+                <!-- 2 PAYMENT BUTTONS -->
+                <div class="grid grid-cols-1 gap-3 mt-4 pt-2">
+                    <!-- Button 1: Direct UPI Pay -->
+                    <button type="button" id="btn-upi-pay" class="w-full bg-[#0f4c81] hover:bg-blue-800 text-white font-bold py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-3 transform hover:-translate-y-1">
+                        <i class="fa-solid fa-money-bill-transfer text-2xl"></i>
+                        <span>Direct Auto-Pay (UPI Apps)</span>
+                    </button>
+
+                    <!-- Button 2: Submit Screenshot on WhatsApp -->
+                    <button type="submit" id="btn-wa-submit" class="w-full bg-[#25D366] hover:bg-[#1ebd5a] text-white font-bold py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-3 transform hover:-translate-y-1">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        <span>Submit Screenshot for Verification</span>
+                    </button>
+                </div>
             </form>
-
-            <!-- Trust Indicators -->
-            <div class="mt-8 pt-6 border-t border-gray-100">
-                <div class="flex items-center justify-center gap-6 text-gray-400">
-                    <div class="flex flex-col items-center gap-1">
-                        <i class="fa-solid fa-lock text-xl"></i>
-                        <span class="text-[10px] uppercase font-bold text-center">End-to-End<br>Encrypted</span>
-                    </div>
-                    <div class="flex flex-col items-center gap-1">
-                        <i class="fa-solid fa-qrcode text-xl"></i>
-                        <span class="text-[10px] uppercase font-bold text-center">QR Code<br>System</span>
-                    </div>
-                    <div class="flex flex-col items-center gap-1">
-                        <i class="fa-brands fa-whatsapp text-xl"></i>
-                        <span class="text-[10px] uppercase font-bold text-center">Direct<br>Verification</span>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 
@@ -126,6 +139,10 @@
         
         const db = getFirestore(app);
 
+        // Your specific UPI ID provided
+        const merchantUpiId = "jamunashaw9638@okicici";
+        const merchantName = "Smart Tech Education";
+
         // 1. AUTO-FILL LOGIN DETAILS
         const savedName = localStorage.getItem('student_name');
         const savedEmail = localStorage.getItem('student_email');
@@ -134,79 +151,128 @@
         const emailInput = document.getElementById('studentEmail');
         
         if(savedEmail && savedEmail !== "guest@smarttech.com") {
-            // Logged in: Auto-fill and lock email field
             if(savedName) nameInput.value = savedName;
             emailInput.value = savedEmail;
             emailInput.setAttribute("readonly", true);
         } else {
-            // Guest: Show warning
             document.getElementById('login-warning').classList.remove('hidden');
-            document.getElementById('email-lock-text').textContent = "*Make sure to enter correct email to get access.";
-            document.getElementById('email-lock-text').classList.replace('text-green-600', 'text-amber-600');
         }
 
-        // 2. SMART AUTO-FETCH COURSE DATA FROM FIREBASE
+        // 2. SMART AUTO-FETCH COURSE DATA & GENERATE QR
         async function loadCourseDetails() {
             const urlParams = new URLSearchParams(window.location.search);
-            // Accept both ?course=ID and ?id=ID parameters
             const courseId = urlParams.get('course') || urlParams.get('id');
 
             const courseNameInput = document.getElementById('courseName');
             const paymentAmountInput = document.getElementById('paymentAmount');
             const courseIdInput = document.getElementById('courseId');
-            const payBtn = document.getElementById('pay-btn');
+            
+            const btnUpi = document.getElementById('btn-upi-pay');
+            const btnWa = document.getElementById('btn-wa-submit');
+
+            const qrLoading = document.getElementById('qr-loading');
+            const qrImage = document.getElementById('dynamic-qr-code');
 
             if (courseId) {
                 courseIdInput.value = courseId;
                 
                 try {
-                    // Fetch directly from Firebase to ensure correct Title and Price
                     const docRef = doc(db, "courses", courseId);
                     const docSnap = await getDoc(docRef);
 
                     if (docSnap.exists()) {
                         const data = docSnap.data();
-                        courseNameInput.value = data.title;
-                        paymentAmountInput.value = data.price;
+                        const cTitle = data.title;
+                        const cPrice = data.price;
+                        
+                        courseNameInput.value = cTitle;
+                        paymentAmountInput.value = cPrice;
+
+                        // GENERATE LIVE QR CODE USING API
+                        const upiDeepLink = `upi://pay?pa=${merchantUpiId}&pn=${encodeURIComponent(merchantName)}&am=${cPrice}&cu=INR&tn=${encodeURIComponent(cTitle)}`;
+                        const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiDeepLink)}`;
+                        
+                        qrImage.src = qrApiUrl;
+                        qrImage.onload = () => {
+                            qrLoading.classList.add('hidden');
+                            qrImage.classList.remove('hidden');
+                        };
+
                     } else {
                         courseNameInput.value = "Error: Course Not Found";
                         paymentAmountInput.value = "0";
-                        payBtn.disabled = true;
-                        payBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                        qrLoading.innerHTML = '<span class="text-xs text-red-500 font-bold">Invalid Course</span>';
+                        disableButtons(btnUpi, btnWa);
                     }
                 } catch (error) {
                     console.error("Error fetching course data:", error);
                     courseNameInput.value = "Connection Error";
                     paymentAmountInput.value = "0";
+                    qrLoading.innerHTML = '<span class="text-xs text-red-500 font-bold">Connection Error</span>';
+                    disableButtons(btnUpi, btnWa);
                 }
             } else {
                 courseNameInput.value = "No course selected";
                 paymentAmountInput.value = "0";
-                payBtn.disabled = true;
-                payBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                qrLoading.innerHTML = '<span class="text-xs text-red-500 font-bold">No Course ID</span>';
+                disableButtons(btnUpi, btnWa);
             }
         }
         
-        // Call the fetch function
+        function disableButtons(btnUpi, btnWa) {
+            btnUpi.disabled = true; btnWa.disabled = true;
+            btnUpi.classList.add('opacity-50', 'cursor-not-allowed');
+            btnWa.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
         loadCourseDetails();
 
-        // 3. EXACT WHATSAPP SUBMIT LOGIC AS REQUESTED
+        // VALIDATION FUNCTION INCLUDES MOBILE NOW
+        function validateForm() {
+            const name = document.getElementById('studentName').value.trim();
+            const email = document.getElementById('studentEmail').value.trim();
+            const mobile = document.getElementById('studentMobile').value.trim();
+
+            if(!name || !email || !mobile) {
+                alert("Please fill your Full Name, Email ID, and Mobile Number properly.");
+                return false;
+            }
+            if(mobile.length < 10) {
+                alert("Please enter a valid 10-digit mobile number.");
+                return false;
+            }
+            
+            return {
+                name: name,
+                email: email,
+                mobile: mobile,
+                course: document.getElementById('courseName').value.trim(),
+                amount: document.getElementById('paymentAmount').value.trim()
+            };
+        }
+
+        // 3A. BUTTON 1: DIRECT UPI PAY
+        document.getElementById('btn-upi-pay').addEventListener('click', function() {
+            const data = validateForm();
+            if(!data) return;
+            
+            const upiLink = `upi://pay?pa=${merchantUpiId}&pn=${encodeURIComponent(merchantName)}&am=${data.amount}&cu=INR&tn=Fee for ${encodeURIComponent(data.course)}`;
+            window.location.href = upiLink;
+        });
+
+        // 3B. BUTTON 2: SEND DETAILS & SCREENSHOT ON WHATSAPP FOR VERIFICATION
         document.getElementById('paymentForm').addEventListener('submit', function(e) {
             e.preventDefault(); 
+            const data = validateForm();
+            if(!data) return;
             
-            const email = document.getElementById('studentEmail').value.trim();
-            const course = document.getElementById('courseName').value.trim();
-            const amount = document.getElementById('paymentAmount').value.trim();
-            
-            // Updated WhatsApp Number with Country Code (91 + 9153352808)
+            // Your WhatsApp Number
             const whatsappNumber = "919153352808"; 
 
-            // Exact formatting as requested by user
-            const message = `Hello sir,%0AMy email is: *${email}*%0ACourse title is: *${course}*%0AAmount is: *₹${amount}*%0A%0ASend your QR for payment.`;
+            // Formatted Message with Mobile Number included
+            const message = `Hello sir,%0AMy Name is: *${data.name}*%0AMy Email is: *${data.email}*%0AMy Mobile No is: *${data.mobile}*%0ACourse title is: *${data.course}*%0AAmount is: *₹${data.amount}*%0A%0A*I have made the payment. My transaction screenshot is attached below.* Please verify and unlock my course.`;
             
             const whatsappLink = `https://wa.me/${whatsappNumber}?text=${message}`;
-            
-            // Open WhatsApp in a new tab
             window.open(whatsappLink, '_blank');
         });
     </script>
