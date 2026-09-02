@@ -5,25 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Payment | Smart Tech</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts (Poppins) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        input[readonly], select[readonly] { background-color: #f1f5f9; cursor: not-allowed; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-    <!-- Payment Container -->
-    <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="w-full max-w-md mb-4 flex justify-start">
+        <a href="javascript:history.back()" class="text-gray-500 hover:text-[#0f4c81] flex items-center gap-2 font-semibold transition">
+            <i class="fa-solid fa-arrow-left"></i> Back to Courses
+        </a>
+    </div>
+
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden relative">
         
-        <!-- Header Section -->
         <div class="bg-[#0f4c81] p-6 text-center text-white relative">
             <div class="absolute top-0 right-0 p-4 opacity-20">
                 <i class="fa-solid fa-shield-halved text-6xl"></i>
@@ -32,13 +34,17 @@
             <p class="text-blue-200 text-xs mt-1 relative z-10">100% Safe & Secure Payment Portal</p>
         </div>
 
-        <!-- Form Section -->
-        <div class="p-6 sm:p-8">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">Course Fee Payment</h2>
+        <div id="login-warning" class="hidden bg-amber-50 border-l-4 border-amber-500 p-4 mx-6 mt-6 rounded text-amber-800 text-xs font-medium">
+            <i class="fa-solid fa-triangle-exclamation mr-1"></i> You are not logged in. Course will be unlocked for the email you enter below.
+        </div>
+
+        <div class="p-6 sm:px-8 sm:pb-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center border-b border-gray-100 pb-4">Course Fee Payment</h2>
             
             <form id="paymentForm" class="space-y-4">
                 
-                <!-- Student Name -->
+                <input type="hidden" id="courseId" value="unknown">
+
                 <div>
                     <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Student Full Name</label>
                     <div class="relative">
@@ -47,50 +53,37 @@
                     </div>
                 </div>
 
-                <!-- Email ID (For Course Unlock) -->
                 <div>
                     <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Registered Email ID</label>
                     <div class="relative">
                         <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-gray-400"></i>
                         <input type="email" id="studentEmail" required placeholder="student@gmail.com" class="w-full bg-gray-50 border border-gray-200 text-gray-800 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#0f4c81] focus:ring-1 focus:ring-[#0f4c81] transition">
                     </div>
-                    <p class="text-[10px] text-gray-500 mt-1 pl-1">*This email will be used to unlock your course.</p>
+                    <p class="text-[9px] font-bold text-green-600 mt-1 pl-1" id="email-lock-text">*This email will be verified by admin to unlock your course.</p>
                 </div>
 
-                <!-- Course Name -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Select Course</label>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Course Title</label>
                     <div class="relative">
                         <i class="fa-solid fa-book absolute left-4 top-3.5 text-gray-400"></i>
-                        <select id="courseName" class="w-full bg-gray-50 border border-gray-200 text-gray-800 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#0f4c81] focus:ring-1 focus:ring-[#0f4c81] transition appearance-none">
-                            <option value="Data Entry">Data Entry</option>
-                            <option value="Tally">Tally Prime</option>
-                            <option value="DTP">DTP (Desktop Publishing)</option>
-                            <option value="DCA">DCA</option>
-                            <option value="ADCA">ADCA</option>
-                            <option value="PGDCA">PGDCA</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down absolute right-4 top-4 text-gray-400 text-xs"></i>
+                        <input type="text" id="courseName" required readonly placeholder="No course selected" class="w-full bg-gray-50 border border-gray-200 text-gray-600 rounded-xl py-3 pl-10 pr-4 outline-none font-medium">
                     </div>
                 </div>
 
-                <!-- Amount -->
                 <div>
                     <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Payment Amount (₹)</label>
                     <div class="relative">
                         <i class="fa-solid fa-indian-rupee-sign absolute left-4 top-3.5 text-gray-400"></i>
-                        <input type="number" id="paymentAmount" required placeholder="e.g. 1500" class="w-full bg-gray-50 border border-gray-200 text-gray-800 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#0f4c81] focus:ring-1 focus:ring-[#0f4c81] transition font-bold text-lg">
+                        <input type="number" id="paymentAmount" required readonly placeholder="0" class="w-full bg-gray-50 border border-gray-200 text-[#0f4c81] rounded-xl py-3 pl-10 pr-4 outline-none font-black text-xl">
                     </div>
                 </div>
 
-                <!-- WhatsApp Pay Button -->
                 <button type="submit" class="w-full mt-6 bg-[#25D366] hover:bg-[#1ebd5a] text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 transform hover:-translate-y-1">
                     <i class="fa-brands fa-whatsapp text-2xl"></i>
                     <span>Pay via WhatsApp</span>
                 </button>
             </form>
 
-            <!-- Trust Indicators -->
             <div class="mt-8 pt-6 border-t border-gray-100">
                 <div class="flex items-center justify-center gap-6 text-gray-400">
                     <div class="flex flex-col items-center gap-1">
@@ -111,27 +104,67 @@
         </div>
     </div>
 
-    <!-- JavaScript logic to redirect to WhatsApp -->
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. AUTO-FILL LOGIN DETAILS
+            const savedName = localStorage.getItem('student_name');
+            const savedEmail = localStorage.getItem('student_email');
+            
+            const nameInput = document.getElementById('studentName');
+            const emailInput = document.getElementById('studentEmail');
+            
+            if(savedEmail && savedEmail !== "guest@smarttech.com") {
+                // If Logged in: Auto-fill and lock email field
+                if(savedName) nameInput.value = savedName;
+                emailInput.value = savedEmail;
+                emailInput.setAttribute("readonly", true);
+            } else {
+                // If Guest: Show warning
+                document.getElementById('login-warning').classList.remove('hidden');
+                document.getElementById('email-lock-text').textContent = "*Make sure to enter correct email to get access.";
+                document.getElementById('email-lock-text').classList.replace('text-green-600', 'text-amber-600');
+            }
+
+            // 2. AUTO-FILL COURSE DATA FROM URL PARAMETERS
+            // Extract URL Parameters (e.g. payment.html?id=course_id&title=Tally&price=1999)
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseIdParam = urlParams.get('id');
+            const courseTitleParam = urlParams.get('title');
+            const coursePriceParam = urlParams.get('price');
+
+            if (courseIdParam) document.getElementById('courseId').value = courseIdParam;
+            
+            if (courseTitleParam) {
+                document.getElementById('courseName').value = decodeURIComponent(courseTitleParam);
+            } else {
+                // Fallback basic parameter check if only ID is passed
+                if(courseIdParam) document.getElementById('courseName').value = courseIdParam.toUpperCase() + " Course";
+            }
+            
+            if (coursePriceParam) {
+                document.getElementById('paymentAmount').value = coursePriceParam;
+            }
+        });
+
+        // 3. WHATSAPP SUBMIT LOGIC
         document.getElementById('paymentForm').addEventListener('submit', function(e) {
             e.preventDefault(); 
             
-            // Get User Details
             const name = document.getElementById('studentName').value.trim();
             const email = document.getElementById('studentEmail').value.trim();
-            const course = document.getElementById('courseName').value;
+            const course = document.getElementById('courseName').value.trim();
+            const courseId = document.getElementById('courseId').value;
             const amount = document.getElementById('paymentAmount').value.trim();
             
             // Your Official WhatsApp Number (Country code 91)
             const whatsappNumber = "919661356309"; 
 
             // WhatsApp Pre-filled Message formatting
-            const message = `Hello Smart Tech! 👋%0A%0AMy name is *${name}*.%0AMy Email ID is: *${email}*%0A%0AI want to pay my fee for the *${course}* course.%0A*Amount:* ₹${amount}%0A%0APlease provide your QR Code so I can pay. After payment, please unlock my course.`;
+            const message = `Hello Smart Tech! 👋%0A%0AMy name is *${name}*.%0AMy Registered Email ID is: *${email}*%0A%0AI want to pay my fee for:%0A*Course:* ${course}%0A*Course ID:* ${courseId}%0A*Amount:* ₹${amount}%0A%0APlease provide your Payment QR Code. After payment, I will share the screenshot here so you can Unlock my course access.`;
             
-            // Generate WhatsApp API Link
             const whatsappLink = `https://wa.me/${whatsappNumber}?text=${message}`;
             
-            // Redirect to WhatsApp in a new tab
+            // Redirect to WhatsApp
             window.open(whatsappLink, '_blank');
         });
     </script>
