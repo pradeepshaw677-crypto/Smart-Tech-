@@ -1,0 +1,88 @@
+{
+  "entities": {
+    "Course": {
+      "title": "Course",
+      "description": "Educational course provided by Smart Tech",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200 },
+        "price": { "type": "string", "maxLength": 50 },
+        "thumb": { "type": "string", "maxLength": 1000 },
+        "videos": { "type": "array" }
+      },
+      "required": ["title", "price"]
+    },
+    "Demo": {
+      "title": "Demo",
+      "description": "Free demo lecture video",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200 },
+        "url": { "type": "string", "maxLength": 1000 },
+        "thumbnail": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["title", "url"]
+    },
+    "UnlockedCourses": {
+      "title": "UnlockedCourses",
+      "description": "Student purchased course permissions",
+      "type": "object",
+      "properties": {
+        "courses": { "type": "object" }
+      }
+    },
+    "Asset": {
+      "title": "Asset",
+      "description": "Centre asset such as certificate or teacher photo",
+      "type": "object",
+      "properties": {
+        "url": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["url"]
+    },
+    "Banner": {
+      "title": "Banner",
+      "description": "Centre carousel banner image",
+      "type": "object",
+      "properties": {
+        "url": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["url"]
+    },
+    "Gallery": {
+      "title": "Gallery",
+      "description": "Centre gallery photo",
+      "type": "object",
+      "properties": {
+        "url": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["url"]
+    }
+  },
+  "firestore": {
+    "/courses/{courseId}": {
+      "schema": "Course",
+      "description": "Published courses for student enrollment"
+    },
+    "/demos/{demoId}": {
+      "schema": "Demo",
+      "description": "Free demo videos available to all students"
+    },
+    "/unlocked_courses/{email}": {
+      "schema": "UnlockedCourses",
+      "description": "Mapping of student email to unlocked course IDs managed strictly by admin"
+    },
+    "/assets/{assetId}": {
+      "schema": "Asset",
+      "description": "Media assets and certificates for offline centre"
+    },
+    "/banners/{bannerId}": {
+      "schema": "Banner",
+      "description": "Hero carousel banners for centre display"
+    },
+    "/gallery/{galleryId}": {
+      "schema": "Gallery",
+      "description": "Photos of centre facilities and labs"
+    }
+  }
+}

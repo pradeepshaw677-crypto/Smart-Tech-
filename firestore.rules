@@ -1,0 +1,118 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─────────────────────────────────────────────────────────────
+    // GLOBAL SECURITY HELPERS
+    // ─────────────────────────────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email != null && request.auth.token.email.lower() in [
+          'smarttech@gmail.com',
+          'bhabanishit6@gmail.com',
+          'bhabanishankarshit82@gmail.com'
+        ])
+      );
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // DEFAULT DENY: Har unknown collection & path by default block rahega
+    // ─────────────────────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 1. COURSES:
+    // Student & Visitor: Har koi course list aur price dekh sakta hai (smooth loading)
+    // Hacker/Student: Koi course add/edit/delete nahi kar sakta
+    // Admin: Full access to add/update/delete courses
+    // ─────────────────────────────────────────────────────────────
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 2. UNLOCKED COURSES (PII & Access Protection):
+    // Student: Sirf apna khud ka unlocked document padh sakta hai.
+    // Hacker Protection:
+    // - Koi hacker sabhi students ki list ya email scrape nahi kar sakta (list is blocked)
+    // - Koi hacker dusre student ka data ya course nahi dekh sakta (get checks email match)
+    // - Koi student khud ko free course unlock nahi kar sakta (write is strictly admin-only)
+    // ─────────────────────────────────────────────────────────────
+    match /unlocked_courses/{email} {
+      allow get: if isAdmin() || (
+        isSignedIn() && 
+        request.auth.token.email != null && 
+        request.auth.token.email.lower() == email.lower()
+      );
+      allow list: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 3. USER PROFILES / STUDENTS (PII Protection):
+    // Hacker Protection:
+    // - Koi bhi hacker API se students ke phone/email ki list dump nahi kar sakta (allow list: if isAdmin())
+    // - Logged-in student sirf apna khud ka profile dekh sakta hai
+    // ─────────────────────────────────────────────────────────────
+    match /users/{userId} {
+      allow get: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+      allow list: if isAdmin();
+      allow create, update: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+      allow delete: if isAdmin();
+    }
+
+    match /students/{studentId} {
+      allow get: if isAdmin() || (
+        isSignedIn() && (
+          (resource.data.email != null && request.auth.token.email != null && resource.data.email.lower() == request.auth.token.email.lower()) ||
+          (resource.data.username != null && resource.data.username == request.auth.uid) ||
+          studentId == request.auth.uid
+        )
+      );
+      allow list: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 4. DEMO LECTURES & CENTRE MEDIA:
+    // Students & Visitors: Bina kisi error ke smooth play hoga
+    // Admin: Can manage/upload videos & banners
+    // ─────────────────────────────────────────────────────────────
+    match /demos/{demoId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /assets/{assetId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /banners/{bannerId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /gallery/{galleryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 5. ADMINS COLLECTION:
+    // Sirf verified admin hi padh sakta hai. Client-side write block hai.
+    // ─────────────────────────────────────────────────────────────
+    match /admins/{adminId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+  }
+}

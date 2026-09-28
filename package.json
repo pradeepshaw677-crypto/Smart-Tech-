@@ -1,0 +1,16 @@
+{
+  "name": "smart-tech-computer-education",
+  "version": "1.0.0",
+  "description": "Smart Tech Computer Education Centre, Baharagora. Enroll now for offline classes in DCA, Tally, Python, and get 100% Job Assistance.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node -e 'console.log(\"Build complete\")'"
+  },
+  "dependencies": {
+    "compression": "^1.8.2",
+    "express": "^4.21.2"
+  }
+}

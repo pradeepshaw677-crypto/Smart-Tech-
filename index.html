@@ -7,6 +7,8 @@
     
     <!-- SEO & Meta Tags -->
     <meta name="description" content="Smart Tech Computer Education Centre, Baharagora. Enroll now for offline classes in DCA, Tally, Python, and get 100% Job Assistance.">
+    <meta property="og:title" content="Smart Tech | Premium Computer Education">
+    <meta property="og:description" content="Smart Tech Computer Education Centre, Baharagora. Enroll now for offline classes in DCA, Tally, Python, and get 100% Job Assistance.">
     <meta name="robots" content="index, follow">
     
     <!-- Tailwind CSS -->
@@ -126,6 +128,7 @@
             <ul class="space-y-1 text-gray-600 font-medium text-[14px]">
                 <li><a href="#home" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-house w-5 text-center text-gray-400"></i> Home</a></li>
                 <li><a href="#courses" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Explore Courses</a></li>
+                <li><a href="javascript:void(0)" onclick="closeMenu(); toggleAiAssistant();" class="sidebar-link flex items-center gap-3 p-3 bg-gradient-to-r from-indigo-50 to-blue-50 text-indigo-700 font-bold rounded-lg transition hover:shadow-sm"><i class="fa-solid fa-robot w-5 text-center text-indigo-600"></i> Smart Tech AI Pro <span class="ml-auto text-[9px] bg-indigo-600 text-white px-2 py-0.5 rounded-full font-bold uppercase">AI</span></a></li>
                 <li><a href="demo.html" class="sidebar-link flex items-center gap-3 p-3 bg-yellow-50 text-brandGold font-bold rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-gift w-5 text-center"></i> Book Free Demo</a></li>
                 <li><a href="my-courses.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code w-5 text-center text-gray-400"></i> My Courses</a></li>
                 <li><a href="offline-dashboard.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-user-graduate w-5 text-center text-brandGold"></i> Offline Student Dashboard</a></li>
@@ -316,6 +319,80 @@
         </a>
     </nav>
 
+    <!-- FLOATING AI PRO BUTTON -->
+    <div class="fixed bottom-[140px] md:bottom-24 right-4 z-40 group">
+        <!-- Tooltip on Desktop Hover -->
+        <div class="hidden md:flex absolute right-16 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none items-center gap-1.5 border border-slate-700">
+            <i class="fa-solid fa-sparkles text-amber-400"></i> Smart Tech AI Pro
+            <div class="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-900 rotate-45 border-r border-t border-slate-700"></div>
+        </div>
+        
+        <button id="ai-floating-btn" onclick="toggleAiAssistant()" class="relative w-12 h-12 md:w-14 md:h-14 bg-gradient-to-tr from-indigo-600 via-blue-600 to-cyan-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white/80 focus:outline-none" aria-label="Open Smart Tech AI Pro">
+            <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-cyan-500 border border-white"></span>
+            </span>
+            <i class="fa-solid fa-robot text-xl md:text-2xl animate-pulse"></i>
+        </button>
+    </div>
+
+    <!-- SMART TECH AI PRO MODAL / POPUP -->
+    <div id="ai-assistant-modal" class="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 hidden flex flex-col w-full h-full sm:w-[440px] sm:h-[640px] sm:max-h-[90vh] bg-white sm:rounded-3xl shadow-2xl border border-gray-200 overflow-hidden transform transition-all duration-300">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-brandBlue via-indigo-900 to-slate-900 text-white p-3.5 px-4 flex items-center justify-between shadow-sm select-none">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 flex items-center justify-center text-white shadow">
+                    <i class="fa-solid fa-robot text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm leading-tight flex items-center gap-1.5">
+                        Smart Tech AI Pro
+                        <span class="w-2 h-2 rounded-full bg-green-400 inline-block animate-pulse"></span>
+                    </h3>
+                    <p class="text-[10px] text-blue-200">24/7 Intelligent Course & Learning Helper</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-1.5">
+                <!-- Open in Full Tab -->
+                <a href="https://pradeep-ai-png.github.io/smart-tech-aipro/" target="_blank" rel="noopener noreferrer" title="Open Full Screen in New Tab" class="text-white/80 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition text-xs flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                <!-- Close Button -->
+                <button onclick="toggleAiAssistant()" class="text-white/80 hover:text-white hover:bg-red-500/80 p-1.5 rounded-lg transition text-base" aria-label="Close AI Assistant">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Iframe with loader -->
+        <div class="flex-1 bg-slate-950 relative overflow-hidden flex flex-col">
+            <div id="ai-loading" class="absolute inset-0 bg-slate-900 text-white flex flex-col items-center justify-center gap-3 z-10">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl text-cyan-400"></i>
+                <p class="text-xs text-slate-300 font-medium tracking-wide">Starting Smart Tech AI Pro...</p>
+            </div>
+
+            <iframe 
+                id="ai-iframe" 
+                data-src="https://pradeep-ai-png.github.io/smart-tech-aipro/" 
+                class="w-full h-full border-0 flex-1 bg-white"
+                allow="clipboard-read; clipboard-write; microphone; camera; web-share"
+                onload="document.getElementById('ai-loading')?.classList.add('hidden')">
+            </iframe>
+        </div>
+
+        <!-- Bottom bar -->
+        <div class="bg-gray-50 border-t border-gray-100 px-3 py-2 flex items-center justify-between text-[11px] text-gray-500">
+            <span class="flex items-center gap-1 text-[10px]">
+                <i class="fa-solid fa-shield-halved text-brandBlue"></i> Official Smart Tech AI
+            </span>
+            <a href="https://pradeep-ai-png.github.io/smart-tech-aipro/" target="_blank" rel="noopener noreferrer" class="text-brandBlue font-semibold hover:underline">
+                Open full page <i class="fa-solid fa-chevron-right text-[9px]"></i>
+            </a>
+        </div>
+    </div>
+
     <!-- FLOATING WHATSAPP -->
     <div class="fixed bottom-[75px] md:bottom-6 right-4 z-40">
         <a href="https://wa.me/919661356309" target="_blank" class="w-12 h-12 md:w-14 md:h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg fab-pulse hover:scale-105 transition">
@@ -325,11 +402,10 @@
 
     <!-- FIREBASE AUTH & FIRESTORE LOGIC (VERSION 10.8.1) -->
     <script type="module">
-        import { app, auth } from './firebase-config.js';
+        import { auth, db } from './firebase-config.js';
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         
-        const db = getFirestore(app);
         window.isUserLoggedIn = false;
 
         // 1. LISTEN TO LOGIN STATE
@@ -423,9 +499,14 @@
             try {
                 let unlockedCourses = {};
                 if (email) {
-                    const unlockSnap = await getDoc(doc(db, "unlocked_courses", email));
-                    if (unlockSnap.exists()) {
-                        unlockedCourses = unlockSnap.data();
+                    try {
+                        const normalizedEmail = email.toLowerCase().trim();
+                        const unlockSnap = await getDoc(doc(db, "unlocked_courses", normalizedEmail));
+                        if (unlockSnap.exists()) {
+                            unlockedCourses = unlockSnap.data();
+                        }
+                    } catch (unlockErr) {
+                        console.warn("Notice: Student course unlock check bypassed:", unlockErr?.message);
                     }
                 }
 
@@ -607,6 +688,22 @@
                 profileDropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
             }
         });
+
+        /* --- SMART TECH AI PRO MODAL LOGIC --- */
+        window.toggleAiAssistant = function() {
+            const modal = document.getElementById('ai-assistant-modal');
+            const iframe = document.getElementById('ai-iframe');
+            if (!modal) return;
+            
+            if (modal.classList.contains('hidden')) {
+                if (iframe && !iframe.src && iframe.dataset.src) {
+                    iframe.src = iframe.dataset.src;
+                }
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        };
     </script>
 </body>
 </html>

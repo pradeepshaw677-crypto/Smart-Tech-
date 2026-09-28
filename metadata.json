@@ -1,0 +1,8 @@
+{
+  "name": "Smart Tech | Premium Computer Education",
+  "description": "Smart Tech Computer Education Centre, Baharagora. Enroll now for offline classes in DCA, Tally, Python, and get 100% Job Assistance.",
+  "version": "1.0.0",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

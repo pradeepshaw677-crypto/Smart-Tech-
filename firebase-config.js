@@ -1,12 +1,15 @@
-
 // firebase-config.js
-
-// Firebase SDKs import karna
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"; // Login/Registration ke liye
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { 
+    getFirestore, 
+    initializeFirestore, 
+    persistentLocalCache, 
+    persistentMultipleTabManager 
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-// Aapka Firebase configuration
+// Firebase configuration for Smart Tech
 const firebaseConfig = {
     apiKey: "AIzaSyCJ9vr7y4_4tbQ4TtEc_D9AxaBqL4XqjiE",
     authDomain: "smart-tech-d6528.firebaseapp.com",
@@ -17,10 +20,35 @@ const firebaseConfig = {
     measurementId: "G-YSV2PD1MNV"
 };
 
-// Initialize Firebase
+// Initialize Firebase App
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app); // Authentication service initialize karna
 
-// Inko export karna zaroori hai taaki dusri files (HTML/JS) inko import kar sakein
-export { app, analytics, auth };
+// Initialize Analytics safely
+let analytics = null;
+try {
+    analytics = getAnalytics(app);
+} catch (e) {
+    // Analytics may be ignored in restricted or offline contexts
+}
+
+// Initialize Auth
+const auth = getAuth(app);
+
+// Initialize Firestore with multi-tab offline persistence for instant loading and quota saving
+let db;
+try {
+    db = initializeFirestore(app, {
+        localCache: persistentLocalCache({
+            tabManager: persistentMultipleTabManager()
+        })
+    });
+} catch (e) {
+    db = getFirestore(app);
+}
+
+// Global safe error logger
+export function handleFirestoreError(error, context = '') {
+    console.warn(`[Smart Tech Security - ${context}]:`, error?.message || error);
+}
+
+export { app, analytics, auth, db, firebaseConfig };

@@ -121,10 +121,8 @@
 
     <!-- FIREBASE AND JAVASCRIPT LOGIC -->
     <script type="module">
-        import { app } from './firebase-config.js';
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-        
-        const db = getFirestore(app);
+        import { db } from './firebase-config.js';
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         // 1. AUTO-FILL LOGIN DETAILS
         const savedName = localStorage.getItem('student_name');

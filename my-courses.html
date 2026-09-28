@@ -111,11 +111,9 @@
 
     <!-- Firebase & Progress Logic -->
     <script type="module">
-        import { app, auth } from './firebase-config.js';
+        import { auth, db } from './firebase-config.js';
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-        
-        const db = getFirestore(app);
+        import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         let currentCourseId = '';
         let currentUserEmail = '';
@@ -153,7 +151,8 @@
             let unlockedCourses = {};
             if (email && email !== "guest@smarttech.com") {
                 try {
-                    const unlockSnap = await getDoc(doc(db, "unlocked_courses", email));
+                    const normalizedEmail = email.toLowerCase().trim();
+                    const unlockSnap = await getDoc(doc(db, "unlocked_courses", normalizedEmail));
                     if (unlockSnap.exists()) {
                         unlockedCourses = unlockSnap.data();
                     }
