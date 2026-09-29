@@ -1,17 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offline Admission 2026 | Smart Tech</title>
+    <title>Student Portal | Smart Tech</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -20,7 +19,9 @@
                     fontFamily: { sans: ['Poppins', 'sans-serif'], },
                     colors: {
                         brandBlue: '#0f4c81', 
-                        brandGold: '#f59e0b', 
+                        brandGold: '#f59e0b',
+                        boxBg: '#f4f8fc',
+                        boxBorder: '#d2e3fc'
                     }
                 }
             }
@@ -29,195 +30,425 @@
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col font-sans">
 
-    <!-- CUSTOM PREMIUM MODAL POPUP -->
-    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
-        <div class="bg-white rounded-2xl shadow-2xl p-6 w-80 text-center transform scale-95 transition-all duration-300">
-            <div id="modal-icon" class="w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4 bg-green-100 text-green-600">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            <h3 id="modal-title" class="text-xl font-bold text-gray-800 mb-2">Registration Booked!</h3>
-            <p id="modal-message" class="text-sm text-gray-500 mb-6">Your offline admission seat has been reserved successfully.</p>
-            <button onclick="closeModal()" class="w-full bg-brandBlue text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-800 transition">OK</button>
-        </div>
-    </div>
-
     <!-- HEADER -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2">
-                <img src="logo.png" alt="Smart Tech Logo" class="h-10 w-10 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.src='https://via.placeholder.com/150/ffffff/0f4c81?text=ST'">
+                <img src="logo.png" alt="Smart Tech" class="h-10 w-10 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.src='https://via.placeholder.com/150/ffffff/0f4c81?text=ST'">
                 <span class="font-bold text-xl text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
             </a>
-            <a href="index.html" class="text-sm font-semibold text-gray-600 hover:text-brandBlue transition flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            <a href="index.html" class="text-sm font-bold text-gray-500 hover:text-brandBlue transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Home
             </a>
         </div>
     </header>
 
-    <!-- MAIN FORM CONTAINER -->
-    <main class="flex-1 max-w-2xl w-full mx-auto px-4 py-10">
-        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 sm:p-10">
-            
+    <main class="flex-1 max-w-2xl w-full mx-auto px-4 py-10 flex flex-col justify-center">
+        
+        <!-- GLOBAL LOADER -->
+        <div id="global-loader" class="flex flex-col items-center justify-center py-20">
+            <i class="fa-solid fa-circle-notch fa-spin text-5xl text-brandBlue mb-4"></i>
+            <p class="text-sm font-bold text-gray-500 uppercase tracking-widest animate-pulse">Syncing Web Account...</p>
+        </div>
+
+        <!-- SECTION 1: ADMISSION FORM -->
+        <div id="form-section" class="hidden bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-10">
             <div class="text-center mb-8">
-                <span class="bg-brandGold/10 text-brandGold font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">Batch 2026</span>
+                <span class="bg-brandGold/10 text-brandGold font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">New Registration</span>
                 <h1 class="text-2xl sm:text-3xl font-bold text-brandBlue">Offline Centre Admission</h1>
-                <p class="text-sm text-gray-500 mt-1">Book your seat at our Baharagora centre instantly.</p>
             </div>
 
-            <form id="offline-reg-form" class="space-y-5">
+            <form id="offline-reg-form" class="space-y-6">
                 
+                <!-- Email -->
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Web Registered Email</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="email" id="student-email" readonly class="w-full bg-gray-100 border border-gray-200 text-brandBlue font-bold rounded-xl block pl-10 p-3.5 outline-none cursor-not-allowed">
+                    </div>
+                </div>
+
                 <!-- Full Name -->
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Full Name</label>
+                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Student Full Name</label>
                     <div class="relative">
                         <i class="fa-regular fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="student-name" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none transition" placeholder="Enter your full name">
+                        <input type="text" id="student-name" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm font-medium rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none transition" placeholder="Enter your full name">
                     </div>
                 </div>
 
                 <!-- Phone Number -->
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Mobile Number</label>
+                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Contact Mobile Number</label>
                     <div class="relative flex">
-                        <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-200 rounded-l-xl font-bold">+91</span>
-                        <input type="tel" id="student-phone" required pattern="[0-9]{10}" class="rounded-none rounded-r-xl bg-gray-50 border border-gray-200 text-gray-800 focus:ring-brandBlue focus:border-brandBlue block flex-1 min-w-0 w-full text-sm p-3.5 outline-none transition" placeholder="9876543210">
+                        <span class="inline-flex items-center px-4 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-200 rounded-l-xl font-bold">+91</span>
+                        <input type="tel" id="student-phone" required pattern="[0-9]{10}" maxlength="10" class="rounded-none rounded-r-xl bg-gray-50 border border-gray-200 text-gray-800 font-medium focus:ring-brandBlue focus:border-brandBlue block flex-1 min-w-0 w-full text-sm p-3.5 outline-none transition" placeholder="10-digit mobile number">
                     </div>
                 </div>
 
                 <!-- Address -->
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Residential Address / Village</label>
+                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Address / Village</label>
                     <div class="relative">
                         <i class="fa-solid fa-location-dot absolute left-4 top-4 text-gray-400"></i>
-                        <textarea id="student-address" rows="2" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none transition" placeholder="Enter your village, post, or area"></textarea>
+                        <textarea id="student-address" rows="2" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm font-medium rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none transition" placeholder="Enter your village, post, or area"></textarea>
+                    </div>
+                </div>
+
+                <!-- State & PIN -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">State</label>
+                        <input type="text" value="Jharkhand" readonly class="w-full bg-gray-100 border border-gray-200 text-gray-500 text-sm rounded-xl block p-3.5 cursor-not-allowed font-bold text-center">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">PIN Code</label>
+                        <input type="text" value="832101" readonly class="w-full bg-gray-100 border border-gray-200 text-gray-500 text-sm rounded-xl block p-3.5 cursor-not-allowed font-bold text-center">
                     </div>
                 </div>
 
                 <!-- Course Selection -->
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Select Computer Course</label>
+                <div class="pt-4 border-t border-gray-100">
+                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Select Computer Course</label>
                     <div class="relative">
-                        <i class="fa-solid fa-graduation-cap absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <select id="course-select" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none transition appearance-none">
-                            <option value="" disabled selected data-fee="0" data-duration="--">-- Choose a Course --</option>
-                            <option value="ADCA" data-fee="₹3,499" data-duration="12 Months">ADCA (Advance Diploma in Computer Application)</option>
-                            <option value="DCA" data-fee="₹2,499" data-duration="6 Months">DCA (Diploma in Computer Application)</option>
-                            <option value="Tally Prime" data-fee="₹1,999" data-duration="3 Months">Tally Prime with GST & Accounting</option>
-                            <option value="Python" data-fee="₹2,999" data-duration="3 Months">Python Programming & Development</option>
-                            <option value="Web Development" data-fee="₹3,499" data-duration="4 Months">Web Development (HTML, CSS, JS)</option>
-                            <option value="Graphic Design" data-fee="₹2,499" data-duration="3 Months">Graphic Design (Photoshop, CorelDRAW)</option>
-                            <option value="Basic Computer" data-fee="₹1,499" data-duration="2 Months">Basic Computer & Typing</option>
+                        <i class="fa-solid fa-graduation-cap absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <select id="course-select" required class="w-full bg-white border-2 border-gray-200 text-gray-800 text-base font-bold rounded-xl focus:border-brandBlue block pl-12 p-4 outline-none transition appearance-none cursor-pointer">
+                            <option value="" disabled selected data-total="0">-- Choose a Course --</option>
+                            <option value="Data Entry" data-dur="3 Months" data-total="1,500" data-adm="300" data-mon="400">Data Entry</option>
+                            <option value="DCA" data-dur="6 Months" data-total="3,000" data-adm="600" data-mon="400">DCA</option>
+                            <option value="ADCA" data-dur="12 Months" data-total="5,500" data-adm="700" data-mon="400">ADCA</option>
+                            <option value="PGDCA" data-dur="12 Months" data-total="6,400" data-adm="1,000" data-mon="450">PGDCA</option>
+                            <option value="Tally ERP 9" data-dur="3 Months" data-total="2,500" data-adm="1,000" data-mon="500">Tally ERP 9 (with GST)</option>
+                            <option value="Tally Prime" data-dur="6 Months" data-total="4,000" data-adm="1,000" data-mon="500">Tally Prime</option>
+                            <option value="DTP" data-dur="4 Months" data-total="2,500" data-adm="500" data-mon="500">DTP</option>
                         </select>
-                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                        <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                     </div>
                 </div>
 
-                <!-- Automatic Fee & Duration Display Box -->
-                <div id="course-details-box" class="hidden bg-blue-50 border border-blue-100 rounded-2xl p-4 flex justify-between items-center text-brandBlue">
-                    <div>
-                        <p class="text-xs font-semibold text-gray-500 uppercase">Course Duration</p>
-                        <p id="display-duration" class="font-bold text-base">-</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-xs font-semibold text-gray-500 uppercase">Total Course Fee</p>
-                        <p id="display-fee" class="font-bold text-xl text-brandGold">-</p>
-                    </div>
-                </div>
-
-                <!-- Frequency Option (Daily / 3 Days a Week) -->
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Class Frequency</label>
+                <!-- Fee Type Selection -->
+                <div id="fee-type-container" class="hidden">
+                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-3">Fee Payment Mode</label>
                     <div class="grid grid-cols-2 gap-4">
-                        <label class="flex items-center gap-3 bg-gray-50 border border-gray-200 p-3.5 rounded-xl cursor-pointer hover:border-brandBlue transition">
-                            <input type="radio" name="frequency" value="Daily (Mon - Sat)" required class="text-brandBlue focus:ring-brandBlue">
-                            <span class="text-sm font-semibold text-gray-800">Daily (Mon - Sat)</span>
+                        <label class="flex items-center gap-3 bg-white border-2 border-gray-200 p-4 rounded-xl cursor-pointer hover:border-brandBlue transition">
+                            <input type="radio" name="fee-type" value="Monthly" required class="text-brandBlue w-4 h-4">
+                            <span class="block text-sm font-bold text-gray-800">Monthly</span>
                         </label>
-                        <label class="flex items-center gap-3 bg-gray-50 border border-gray-200 p-3.5 rounded-xl cursor-pointer hover:border-brandBlue transition">
-                            <input type="radio" name="frequency" value="3 Days a Week" required class="text-brandBlue focus:ring-brandBlue">
-                            <span class="text-sm font-semibold text-gray-800">3 Days a Week</span>
+                        <label class="flex items-center gap-3 bg-white border-2 border-gray-200 p-4 rounded-xl cursor-pointer hover:border-brandBlue transition">
+                            <input type="radio" name="fee-type" value="Yearly" required class="text-brandBlue w-4 h-4">
+                            <span class="block text-sm font-bold text-gray-800">Yearly / Fixed</span>
                         </label>
                     </div>
                 </div>
 
-                <!-- Timing Selection -->
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Preferred Batch Timing</label>
+                <!-- Dynamic Blue Box -->
+                <div id="dynamic-fee-box" class="hidden bg-boxBg border border-boxBorder rounded-2xl p-6 mt-4 transition-all"></div>
+
+                <!-- Class Frequency & Timing -->
+                <div class="pt-6 border-t border-gray-100">
+                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-3">Class Frequency</label>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <label class="flex items-center gap-3 bg-gray-50 border border-gray-200 p-3.5 rounded-xl cursor-pointer hover:border-brandBlue transition">
+                            <input type="radio" name="frequency" value="Daily" required class="text-brandBlue w-4 h-4">
+                            <span class="text-sm font-bold text-gray-800">Daily</span>
+                        </label>
+                        <label class="flex items-center gap-3 bg-gray-50 border border-gray-200 p-3.5 rounded-xl cursor-pointer hover:border-brandBlue transition">
+                            <input type="radio" name="frequency" value="3 Days a Week" required class="text-brandBlue w-4 h-4">
+                            <span class="text-sm font-bold text-gray-800">3 Days a Week</span>
+                        </label>
+                    </div>
+
+                    <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Preferred Batch Timing</label>
                     <div class="relative">
                         <i class="fa-regular fa-clock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <select id="timing-select" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none transition appearance-none">
+                        <select id="timing-select" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 font-medium text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none appearance-none">
                             <option value="" disabled selected>-- Choose Batch Timing --</option>
-                            <option value="Morning (08:00 AM - 10:00 AM)">Morning Batch (08:00 AM - 10:00 AM)</option>
-                            <option value="Day (11:00 AM - 01:00 PM)">Day Batch (11:00 AM - 01:00 PM)</option>
-                            <option value="Afternoon (02:00 PM - 04:00 PM)">Afternoon Batch (02:00 PM - 04:00 PM)</option>
-                            <option value="Evening (04:00 PM - 06:00 PM)">Evening Batch (04:00 PM - 06:00 PM)</option>
+                            <optgroup label="Morning Batches">
+                                <option value="Morning 6:00 AM - 7:00 AM">6:00 AM - 7:00 AM</option>
+                                <option value="Morning 7:00 AM - 8:00 AM">7:00 AM - 8:00 AM</option>
+                                <option value="Morning 8:00 AM - 9:00 AM">8:00 AM - 9:00 AM</option>
+                                <option value="Morning 9:00 AM - 10:00 AM">9:00 AM - 10:00 AM</option>
+                                <option value="Morning 10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                                <option value="Morning 11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+                            </optgroup>
+                            <optgroup label="Evening Batches">
+                                <option value="Evening 3:00 PM - 4:00 PM">3:00 PM - 4:00 PM</option>
+                                <option value="Evening 4:00 PM - 5:00 PM">4:00 PM - 5:00 PM</option>
+                                <option value="Evening 5:00 PM - 6:00 PM">5:00 PM - 6:00 PM</option>
+                            </optgroup>
                         </select>
                         <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                     </div>
                 </div>
 
-                <!-- Submit Button -->
-                <button type="submit" class="w-full mt-6 text-white bg-brandBlue hover:bg-blue-800 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-bookmark"></i> Book Admission Seat
+                <button type="submit" id="submit-reg-btn" class="w-full mt-8 text-white bg-brandBlue hover:bg-blue-800 font-bold rounded-xl text-base px-5 py-4 text-center shadow-lg transition-all flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Application
                 </button>
-
             </form>
         </div>
+
+        <!-- SECTION 2: PENDING STATUS -->
+        <div id="pending-section" class="hidden bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center max-w-md mx-auto">
+            <div class="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center text-4xl mx-auto mb-4 text-amber-500 border-4 border-amber-100">
+                <i class="fa-solid fa-hourglass-half"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Application Pending</h2>
+            <p class="text-sm text-gray-500 mb-4">Your offline admission form has been received and is currently under review.</p>
+            <div class="bg-gray-50 p-4 rounded-xl text-xs font-semibold text-gray-600 border border-gray-200">
+                Please wait to verify your details via a phone call. After verification and approval, your dashboard will be unlocked.
+            </div>
+            <button onclick="location.reload()" class="mt-6 w-full bg-brandBlue text-white font-bold py-3 rounded-xl shadow-md"><i class="fa-solid fa-rotate-right mr-1"></i> Refresh Status</button>
+        </div>
+
+        <!-- SECTION 3: APPROVED VIP STUDENT PANEL -->
+        <div id="approved-section" class="hidden bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden w-full max-w-lg mx-auto">
+            <div class="bg-gradient-to-r from-[#0f4c81] to-[#1e3a8a] p-8 text-center text-white relative">
+                <i class="fa-solid fa-certificate absolute -right-6 -bottom-6 text-9xl text-white/10"></i>
+                <div class="relative z-10">
+                    <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-lg">
+                        <i class="fa-solid fa-user-check text-brandGold"></i>
+                    </div>
+                    <h2 class="text-2xl font-black tracking-wide mb-1">Admission Approved</h2>
+                    <p class="text-blue-200 text-xs uppercase tracking-widest font-bold">Welcome to Smart Tech</p>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8">
+                
+                <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-6 mb-6 shadow-inner">
+                    <h4 class="text-base font-black text-indigo-900 mb-1 leading-tight">Offline Students Dashboard</h4>
+                    <p class="text-[10px] text-indigo-600 mb-5 font-bold uppercase tracking-wider">Use these credentials to unlock your portal.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between bg-white border border-indigo-100 p-3.5 rounded-xl shadow-sm">
+                            <div>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase mb-0.5">Username</p>
+                                <p class="text-sm font-black text-gray-800" id="panel-username">-</p>
+                            </div>
+                            <button onclick="copyToClipboard('panel-username', this)" class="text-indigo-500 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 w-10 h-10 rounded-lg transition flex items-center justify-center">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between bg-white border border-indigo-100 p-3.5 rounded-xl shadow-sm">
+                            <div>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase mb-0.5">Password</p>
+                                <p class="text-sm font-black text-gray-800" id="panel-password">-</p>
+                            </div>
+                            <button onclick="copyToClipboard('panel-password', this)" class="text-indigo-500 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 w-10 h-10 rounded-lg transition flex items-center justify-center">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <a href="offline-dashboard.html" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-3.5 rounded-xl shadow-[0_5px_15px_rgba(79,70,229,0.3)] transition-all flex items-center justify-center gap-2 text-sm uppercase tracking-wider block text-center">
+                        Login to Dashboard <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    </a>
+                </div>
+
+                <h3 class="font-bold text-gray-800 text-lg mb-3" id="panel-name">Hello, Student!</h3>
+                <div class="bg-boxBg border border-boxBorder p-5 rounded-2xl space-y-3 text-sm font-semibold mb-6">
+                    <div class="flex justify-between border-b border-blue-100/50 pb-2">
+                        <span class="text-gray-500 uppercase text-[10px] tracking-wider">Course</span> 
+                        <span class="text-brandBlue font-black" id="panel-course">-</span>
+                    </div>
+                    <div class="flex justify-between border-b border-blue-100/50 pb-2">
+                        <span class="text-gray-500 uppercase text-[10px] tracking-wider">Duration</span> 
+                        <span class="text-gray-800" id="panel-duration">-</span>
+                    </div>
+                    <div class="flex justify-between border-b border-blue-100/50 pb-2">
+                        <span class="text-gray-500 uppercase text-[10px] tracking-wider">Timing</span> 
+                        <span class="text-gray-800" id="panel-timing">-</span>
+                    </div>
+                    <div class="flex justify-between pt-1">
+                        <span class="text-gray-500 uppercase text-[10px] tracking-wider">Fee Details</span> 
+                        <span class="text-brandGold font-black text-base" id="panel-fee">-</span>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-[#fdfbf7] to-[#fff8e7] border border-brandGold/30 p-5 rounded-2xl relative overflow-hidden shadow-sm">
+                    <i class="fa-solid fa-award absolute -right-3 -top-3 text-6xl text-brandGold/20 transform rotate-12"></i>
+                    <p class="text-sm font-bold text-gray-800 relative z-10 leading-relaxed">
+                        <span class="text-brandGold text-lg leading-none mr-1">"</span>Congratulations on taking the first step towards a brilliant career! We are thrilled to welcome you to the Smart Tech family. See you in class!
+                    </p>
+                    <p class="text-right text-[10px] font-black text-gray-500 uppercase mt-2 relative z-10">— Branch Head</p>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-400">
-        &copy; 2026 Smart Tech Computer Education. All rights reserved.
-    </footer>
-
-    <!-- SCRIPT FOR DYNAMIC FEE & SUBMISSION -->
+    <!-- UI INTERACTION SCRIPT -->
     <script>
         const courseSelect = document.getElementById('course-select');
-        const detailsBox = document.getElementById('course-details-box');
-        const displayFee = document.getElementById('display-fee');
-        const displayDuration = document.getElementById('display-duration');
+        const feeTypeContainer = document.getElementById('fee-type-container');
+        const feeRadios = document.querySelectorAll('input[name="fee-type"]');
+        const dynamicFeeBox = document.getElementById('dynamic-fee-box');
+        window.selectedCourseData = {};
 
-        // Automatic Fee & Duration calculation on course change
-        courseSelect.addEventListener('change', (e) => {
-            const selectedOption = courseSelect.options[courseSelect.selectedIndex];
-            const fee = selectedOption.getAttribute('data-fee');
-            const duration = selectedOption.getAttribute('data-duration');
+        courseSelect.addEventListener('change', () => {
+            const opt = courseSelect.options[courseSelect.selectedIndex];
+            window.selectedCourseData = {
+                dur: opt.getAttribute('data-dur'),
+                total: opt.getAttribute('data-total'),
+                adm: opt.getAttribute('data-adm'),
+                mon: opt.getAttribute('data-mon')
+            };
+            feeTypeContainer.classList.remove('hidden');
+            feeRadios.forEach(radio => radio.checked = false);
+            dynamicFeeBox.classList.add('hidden'); 
+        });
 
-            if (fee && fee !== "0") {
-                displayFee.textContent = fee;
-                displayDuration.textContent = duration;
-                detailsBox.classList.remove('hidden');
+        feeRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const feeType = e.target.value;
+                dynamicFeeBox.classList.remove('hidden');
+
+                if(feeType === 'Monthly') {
+                    dynamicFeeBox.innerHTML = `
+                        <div class="grid grid-cols-2 gap-4 mb-4 pb-4 border-b border-blue-200/60">
+                            <div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Duration</p><p class="font-extrabold text-xl text-brandBlue">${window.selectedCourseData.dur}</p></div>
+                            <div class="text-right"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Admission Fee</p><p class="font-extrabold text-xl text-green-600">₹${window.selectedCourseData.adm}</p></div>
+                        </div>
+                        <div class="text-center"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Monthly Fee</p><p class="font-black text-3xl text-orange-500">₹${window.selectedCourseData.mon}</p></div>
+                    `;
+                } else if (feeType === 'Yearly') {
+                    dynamicFeeBox.innerHTML = `
+                        <div class="grid grid-cols-2 gap-4 mb-4 pb-4 border-b border-blue-200/60">
+                            <div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Duration</p><p class="font-extrabold text-xl text-brandBlue">${window.selectedCourseData.dur}</p></div>
+                            <div class="text-right"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Admission Fee</p><p class="font-extrabold text-xl text-green-600">₹${window.selectedCourseData.adm}</p></div>
+                        </div>
+                        <div class="text-center"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Course Fee</p><p class="font-black text-3xl text-brandGold">₹${window.selectedCourseData.total}</p></div>
+                    `;
+                }
+            });
+        });
+
+        window.copyToClipboard = function(elementId, btnElement) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const icon = btnElement.querySelector('i');
+                icon.className = 'fa-solid fa-check text-green-500';
+                setTimeout(() => { icon.className = 'fa-regular fa-copy'; }, 2000);
+            });
+        }
+    </script>
+
+    <!-- FIREBASE MODULE LOGIC (Updated with Fallback & Safe Handling) -->
+    <script type="module">
+        import { app, auth } from './firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { 
+            initializeFirestore, 
+            collection, 
+            addDoc, 
+            query, 
+            where, 
+            getDocs 
+        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        
+        // Fix for network drops: forces long-polling fallback to bypass proxy/carrier blocks
+        const db = initializeFirestore(app, {
+            experimentalForceLongPolling: true,
+            useFetchStreams: false
+        });
+
+        const loader = document.getElementById('global-loader');
+        const formSection = document.getElementById('form-section');
+        const pendingSection = document.getElementById('pending-section');
+        const approvedSection = document.getElementById('approved-section');
+
+        async function checkStatusByEmail(email, name = "") {
+            try {
+                console.log("Checking status for:", email);
+                const q = query(collection(db, "offline_admissions"), where("email", "==", email));
+                const snap = await getDocs(q);
+
+                loader.classList.add('hidden');
+
+                if (snap.empty) {
+                    console.log("No previous application found. Showing registration form.");
+                    formSection.classList.remove('hidden');
+                    document.getElementById('student-email').value = email;
+                    if(name) document.getElementById('student-name').value = name;
+                } else {
+                    let studentData = null;
+                    snap.forEach(doc => {
+                        studentData = doc.data();
+                    });
+
+                    console.log("Student Record:", studentData);
+
+                    if (studentData && studentData.status === "Approved") {
+                        approvedSection.classList.remove('hidden');
+                        document.getElementById('panel-username').textContent = studentData.dashboardUser || 'Not Assigned';
+                        document.getElementById('panel-password').textContent = studentData.dashboardPass || 'Not Assigned';
+                        document.getElementById('panel-name').textContent = `Hello, ${studentData.name || 'Student'}!`;
+                        document.getElementById('panel-course').textContent = studentData.course || '-';
+                        document.getElementById('panel-duration').textContent = studentData.courseDetails?.dur || '-';
+                        document.getElementById('panel-timing').textContent = studentData.timing || '-';
+                        
+                        const feeText = studentData.feeType === 'Monthly' 
+                            ? `₹${studentData.courseDetails?.mon || '0'} / Month` 
+                            : `₹${studentData.courseDetails?.total || '0'} (Full Paid)`;
+                        document.getElementById('panel-fee').textContent = feeText;
+                    } else {
+                        pendingSection.classList.remove('hidden');
+                    }
+                }
+            } catch (error) {
+                console.error("Firestore Detailed Error:", error);
+                loader.classList.add('hidden');
+                alert("Error connecting to database: " + (error.message || "Unknown error"));
+            }
+        }
+
+        // Auth Check
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.email) {
+                checkStatusByEmail(user.email, user.displayName || "");
             } else {
-                detailsBox.classList.add('hidden');
+                alert("Please login to the Smart Tech website first to access the Student Portal.");
+                window.location.href = "login.html"; 
             }
         });
 
-        const form = document.getElementById('offline-reg-form');
-        const modal = document.getElementById('custom-modal');
+        // Submit Form
+        const regForm = document.getElementById('offline-reg-form');
+        const submitRegBtn = document.getElementById('submit-reg-btn');
 
-        form.addEventListener('submit', (e) => {
+        regForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const name = document.getElementById('student-name').value;
-            const phone = document.getElementById('student-phone').value;
-            const address = document.getElementById('student-address').value;
-            const course = courseSelect.value;
-            const frequency = document.querySelector('input[name="frequency"]:checked').value;
-            const timing = document.getElementById('timing-select').value;
+            submitRegBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+            submitRegBtn.disabled = true;
 
-            // Save booking data locally
-            const bookingData = { name, phone, address, course, frequency, timing, date: new Date().toISOString() };
-            let bookings = JSON.parse(localStorage.getItem('offlineBookings') || '[]');
-            bookings.push(bookingData);
-            localStorage.setItem('offlineBookings', JSON.stringify(bookings));
+            const admissionData = {
+                name: document.getElementById('student-name').value.trim(),
+                email: document.getElementById('student-email').value,
+                mobile: document.getElementById('student-phone').value,
+                address: document.getElementById('student-address').value.trim(),
+                state: "Jharkhand",
+                pin: "832101",
+                course: document.getElementById('course-select').value,
+                feeType: document.querySelector('input[name="fee-type"]:checked').value,
+                frequency: document.querySelector('input[name="frequency"]:checked').value,
+                timing: document.getElementById('timing-select').value,
+                courseDetails: window.selectedCourseData || {},
+                status: "Pending Visit",
+                submittedAt: new Date().toISOString()
+            };
 
-            // Show success modal
-            modal.classList.remove('hidden');
+            try {
+                await addDoc(collection(db, "offline_admissions"), admissionData);
+                formSection.classList.add('hidden');
+                pendingSection.classList.remove('hidden');
+            } catch (error) {
+                console.error("Submission Error:", error);
+                alert("Could not submit: " + (error.message || "Please check Firestore rules."));
+                submitRegBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Application';
+                submitRegBtn.disabled = false;
+            }
         });
-
-        function closeModal() {
-            modal.classList.add('hidden');
-            window.location.href = 'index.html';
-        }
     </script>
 </body>
 </html>
