@@ -6,6 +6,6 @@ export default function handler(req, res) {
     app: 'Smart Tech Computer Education',
     platform: 'Vercel Serverless',
     version: '1.0.0',
-    endpoints: ['/api/status', '/api/health']
+    timestamp: new Date().toISOString()
   });
 }
