@@ -63,7 +63,7 @@
                     </button>
                     
                     <a href="#home" class="flex items-center gap-2 cursor-pointer">
-                        <img src="logo.png" alt="Logo" class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.src='https://via.placeholder.com/150/ffffff/0f4c81?text=ST'">
+                        <img src="logo.png" alt="Logo" class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
                         <div class="flex flex-col leading-none shrink-0">
                             <span class="font-bold text-[16px] md:text-xl text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
                             <span class="text-[7px] md:text-[9px] text-gray-500 font-bold tracking-widest uppercase">Computer Education</span>
@@ -116,7 +116,7 @@
     <aside id="sidebar" class="fixed top-0 left-0 w-[80%] max-w-sm h-full bg-white z-50 shadow-2xl -translate-x-full overflow-y-auto flex flex-col transition-transform duration-300">
         <div class="p-4 flex justify-between items-center border-b border-gray-100 bg-[#f8fafc]">
             <a href="#home" class="flex items-center gap-2 sidebar-link">
-                <img src="logo.png" alt="Logo" class="h-9 w-9 rounded-full object-cover border border-brandGold" onerror="this.src='https://via.placeholder.com/50'">
+                <img src="logo.png" alt="Logo" class="h-9 w-9 rounded-full object-cover border border-brandGold" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle'%3EST%3C/text%3E%3C/svg%3E';">
                 <div class="flex flex-col leading-none">
                     <span class="font-bold text-[15px] text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
                 </div>
@@ -143,12 +143,12 @@
     </aside>
 
     <main>
-        <!-- HERO BANNER CAROUSEL -->
+        <!-- HERO BANNER CAROUSEL (Realtime Dynamic) -->
         <section class="max-w-7xl mx-auto px-4 mt-4 mb-10">
-            <div class="swiper mySwiper rounded-2xl overflow-hidden shadow-sm h-[200px] md:h-[400px]">
-                <div class="swiper-wrapper">
+            <div class="swiper mySwiper rounded-2xl overflow-hidden shadow-sm h-[200px] md:h-[400px] relative">
+                <div class="swiper-wrapper" id="hero-banner-wrapper">
                     <div class="swiper-slide relative bg-brandBlue flex items-center">
-                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 opacity-20 mix-blend-overlay">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 opacity-20 mix-blend-overlay w-full h-full object-cover">
                         <div class="relative z-10 px-6 md:px-16 text-white w-full">
                             <span class="bg-red-600 text-[9px] md:text-xs font-bold px-2.5 py-1 rounded-full w-max mb-3 animate-pulse uppercase block">Admission Open 2026</span>
                             <h2 class="text-xl md:text-5xl font-bold mb-3 leading-tight">Start Your IT Career<br><span class="text-brandGold" id="welcome-banner-name">Today!</span></h2>
@@ -156,6 +156,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="swiper-pagination"></div>
             </div>
         </section>
 
@@ -239,7 +240,7 @@
                 <!-- Brand -->
                 <div>
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="logo.png" alt="Smart Tech" class="h-9 w-9 rounded-full object-cover bg-white border border-brandGold p-0.5" onerror="this.src='https://via.placeholder.com/50'">
+                        <img src="logo.png" alt="Smart Tech" class="h-9 w-9 rounded-full object-cover bg-white border border-brandGold p-0.5" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle'%3EST%3C/text%3E%3C/svg%3E';">
                         <span class="font-bold text-xl text-white tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
                     </div>
                     <p class="text-gray-400 text-xs mb-4 leading-relaxed">
@@ -400,13 +401,82 @@
         </a>
     </div>
 
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
     <!-- FIREBASE AUTH & FIRESTORE LOGIC (VERSION 10.8.1) -->
     <script type="module">
         import { auth, db } from './firebase-config.js';
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { collection, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         
         window.isUserLoggedIn = false;
+        const svgFallbackLogo = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230f4c81' stroke='%23f59e0b' stroke-width='4'/%3E%3Ctext x='50' y='62' font-family='Arial, sans-serif' font-size='32' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EST%3C/text%3E%3C/svg%3E";
+
+        // Global logo fallback handler
+        window.handleLogoError = function(img) {
+            if (img && img.src !== svgFallbackLogo) {
+                img.src = svgFallbackLogo;
+            }
+        };
+
+        // Realtime State
+        let unsubscribeCourses = null;
+        let unsubscribeUnlocks = null;
+        let currentUnlockedCourses = {};
+        let latestCoursesSnapshot = null;
+
+        // 0. REAL-TIME HERO BANNER SYNC (NO REFRESH NEEDED)
+        let heroSwiperInstance = null;
+        function initHeroSwiper() {
+            if (heroSwiperInstance) {
+                try { heroSwiperInstance.destroy(true, true); } catch(e){}
+            }
+            heroSwiperInstance = new Swiper(".mySwiper", {
+                loop: true,
+                autoplay: { delay: 3500, disableOnInteraction: false },
+                pagination: { el: ".swiper-pagination", clickable: true }
+            });
+        }
+
+        function listenHeroBanners() {
+            const wrapper = document.getElementById('hero-banner-wrapper');
+            if (!wrapper) return;
+
+            onSnapshot(collection(db, "banners"), (snap) => {
+                if (!snap.empty) {
+                    wrapper.innerHTML = '';
+                    snap.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        const bannerUrl = data.url || data.imageUrl || data.image;
+                        if (bannerUrl) {
+                            const slide = document.createElement('div');
+                            slide.className = 'swiper-slide relative bg-brandBlue flex items-center';
+                            slide.innerHTML = `
+                                <img src="${bannerUrl}" class="w-full h-full object-cover">
+                                ${data.title ? `
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-6 md:p-12 text-white">
+                                    <div>
+                                        <h2 class="text-xl md:text-4xl font-bold text-white mb-2 leading-tight">${data.title}</h2>
+                                        ${data.subtitle ? `<p class="text-xs md:text-sm text-yellow-300 font-medium mb-3">${data.subtitle}</p>` : ''}
+                                        <a href="register-offline.html" class="inline-block bg-brandGold text-brandBlue px-4 py-2 rounded-full font-bold text-xs md:text-sm hover:scale-105 transition">Register Now</a>
+                                    </div>
+                                </div>` : ''}
+                            `;
+                            wrapper.appendChild(slide);
+                        }
+                    });
+                    initHeroSwiper();
+                } else {
+                    initHeroSwiper();
+                }
+            }, (err) => {
+                console.warn("Banner listener notice:", err?.message);
+                initHeroSwiper();
+            });
+        }
+
+        listenHeroBanners();
 
         // 1. LISTEN TO LOGIN STATE
         onAuthStateChanged(auth, async (user) => {
@@ -474,8 +544,8 @@
                 if(dropdownIcon) dropdownIcon.classList.remove('hidden');
             }
 
-            // Fetch the courses
-            await fetchCourses(userEmail);
+            // Real-time courses & unlocks setup
+            setupRealtimeCourses(userEmail);
         });
 
         // 2. LOGOUT FUNCTION
@@ -492,96 +562,114 @@
             btn.addEventListener('click', window.handleLogout);
         });
 
-        // 3. FETCH COURSES & HIDE SPINNER
-        async function fetchCourses(email) {
+        // 3. RENDER COURSES GRID (REAL-TIME REACTIVE)
+        function renderCoursesGrid() {
             const container = document.getElementById('dynamic-courses-container');
-            
-            try {
-                let unlockedCourses = {};
-                if (email) {
-                    try {
-                        const normalizedEmail = email.toLowerCase().trim();
-                        const unlockSnap = await getDoc(doc(db, "unlocked_courses", normalizedEmail));
-                        if (unlockSnap.exists()) {
-                            unlockedCourses = unlockSnap.data();
-                        }
-                    } catch (unlockErr) {
-                        console.warn("Notice: Student course unlock check bypassed:", unlockErr?.message);
-                    }
-                }
+            if (!container || !latestCoursesSnapshot) return;
 
-                const querySnapshot = await getDocs(collection(db, "courses"));
-                
-                // Clear spinner
-                container.innerHTML = '';
+            container.innerHTML = '';
 
-                if (querySnapshot.empty) {
-                    container.innerHTML = `
-                        <div class="col-span-full text-center py-12 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
-                            <i class="fa-solid fa-folder-open text-4xl mb-3 text-gray-300"></i>
-                            <p class="text-lg text-gray-700">No Courses Found</p>
-                            <p class="text-xs text-gray-400 mt-1">Courses will appear here once added by the admin.</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                // Render courses
-                querySnapshot.forEach((docSnap) => {
-                    const courseId = docSnap.id;
-                    const course = docSnap.data();
-                    const isUnlocked = unlockedCourses[courseId] === true;
-                    const lectureCount = course.videos ? course.videos.length : 15;
-
-                    const card = document.createElement('article');
-                    card.className = "bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all flex flex-col relative";
-
-                    if (isUnlocked) {
-                        card.innerHTML = `
-                            <div class="absolute top-2 right-2 bg-green-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10">Unlocked</div>
-                            <div class="h-36 bg-gray-200 relative"><img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover"></div>
-                            <div class="p-4 flex flex-col flex-grow">
-                                <h3 class="course-title font-bold text-base text-gray-800 mb-1">${course.title}</h3>
-                                <p class="course-desc text-[10px] text-brandBlue font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures</p>
-                                <div class="mt-auto border-t border-gray-50 pt-3 flex justify-between items-center">
-                                    <span class="text-base font-bold text-brandBlue">₹${course.price}</span>
-                                    <a href="my-courses.html" class="bg-green-600 text-white text-[11px] font-semibold px-4 py-2 rounded-lg">Watch Now</a>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        card.innerHTML = `
-                            <div class="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10">Locked</div>
-                            <div class="h-36 bg-gray-900 relative">
-                                <img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover opacity-40">
-                                <i class="fa-solid fa-lock absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl"></i>
-                            </div>
-                            <div class="p-4 flex flex-col flex-grow">
-                                <h3 class="course-title font-bold text-base text-gray-800 mb-1">${course.title}</h3>
-                                <p class="course-desc text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures</p>
-                                <div class="mt-auto border-t border-gray-50 pt-3 flex justify-between items-center">
-                                    <span class="text-base font-bold text-brandBlue">₹${course.price}</span>
-                                    <a href="payment.html?course=${courseId}" class="bg-brandBlue text-white text-[11px] font-semibold px-4 py-2 rounded-lg">Buy Now</a>
-                                </div>
-                            </div>
-                        `;
-                    }
-                    container.appendChild(card);
-                });
-
-                if(typeof window.performLiveSearch === 'function') {
-                    window.performLiveSearch();
-                }
-
-            } catch (error) {
-                console.error("Firestore Error: ", error);
+            if (latestCoursesSnapshot.empty) {
                 container.innerHTML = `
-                    <div class="col-span-full text-center py-12 text-red-500 font-semibold bg-white rounded-2xl shadow-sm border border-red-100">
-                        <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
-                        <p>Connection Error. Cannot load courses.</p>
+                    <div class="col-span-full text-center py-12 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
+                        <i class="fa-solid fa-folder-open text-4xl mb-3 text-gray-300"></i>
+                        <p class="text-lg text-gray-700">No Courses Found</p>
+                        <p class="text-xs text-gray-400 mt-1">Courses will appear here once published from the admin panel.</p>
                     </div>
                 `;
+                return;
             }
+
+            latestCoursesSnapshot.forEach((docSnap) => {
+                const courseId = docSnap.id;
+                const course = docSnap.data();
+                const isUnlocked = currentUnlockedCourses[courseId] === true;
+                const lectureCount = course.videos ? course.videos.length : 15;
+
+                const card = document.createElement('article');
+                card.className = "course-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all flex flex-col relative";
+
+                if (isUnlocked) {
+                    card.innerHTML = `
+                        <div class="absolute top-2 right-2 bg-green-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10 shadow flex items-center gap-1">
+                            <i class="fa-solid fa-unlock"></i> Unlocked
+                        </div>
+                        <div class="h-36 bg-gray-200 relative"><img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover"></div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="course-title font-bold text-base text-gray-800 mb-1">${course.title}</h3>
+                            <p class="course-desc text-[10px] text-brandBlue font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures</p>
+                            <div class="mt-auto border-t border-gray-50 pt-3 flex justify-between items-center">
+                                <span class="text-base font-bold text-green-700">₹${course.price} (Active)</span>
+                                <a href="my-courses.html" class="bg-green-600 hover:bg-green-700 text-white text-[11px] font-semibold px-4 py-2 rounded-lg shadow-sm transition">Watch Now</a>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <div class="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10 shadow flex items-center gap-1">
+                            <i class="fa-solid fa-lock"></i> Locked
+                        </div>
+                        <div class="h-36 bg-gray-900 relative">
+                            <img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover opacity-40">
+                            <i class="fa-solid fa-lock absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl"></i>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="course-title font-bold text-base text-gray-800 mb-1">${course.title}</h3>
+                            <p class="course-desc text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures</p>
+                            <div class="mt-auto border-t border-gray-50 pt-3 flex justify-between items-center">
+                                <span class="text-base font-bold text-brandBlue">₹${course.price}</span>
+                                <a href="payment.html?course=${courseId}" class="bg-brandBlue hover:bg-blue-800 text-white text-[11px] font-semibold px-4 py-2 rounded-lg shadow-sm transition">Buy Now</a>
+                            </div>
+                        </div>
+                    `;
+                }
+                container.appendChild(card);
+            });
+
+            if (typeof window.performLiveSearch === 'function') {
+                window.performLiveSearch();
+            }
+        }
+
+        // 4. REAL-TIME FIRESTORE LISTENER (NO REFRESH NEEDED)
+        function setupRealtimeCourses(email) {
+            // Clean old listeners
+            if (unsubscribeUnlocks) { unsubscribeUnlocks(); unsubscribeUnlocks = null; }
+            if (unsubscribeCourses) { unsubscribeCourses(); unsubscribeCourses = null; }
+
+            currentUnlockedCourses = {};
+
+            // Listen to student unlock status live
+            if (email) {
+                const normalizedEmail = email.toLowerCase().trim();
+                unsubscribeUnlocks = onSnapshot(doc(db, "unlocked_courses", normalizedEmail), (docSnap) => {
+                    if (docSnap.exists()) {
+                        currentUnlockedCourses = docSnap.data() || {};
+                    } else {
+                        currentUnlockedCourses = {};
+                    }
+                    renderCoursesGrid();
+                }, (err) => {
+                    console.warn("Realtime unlock listener notice:", err?.message);
+                });
+            }
+
+            // Listen to all courses live
+            unsubscribeCourses = onSnapshot(collection(db, "courses"), (snapshot) => {
+                latestCoursesSnapshot = snapshot;
+                renderCoursesGrid();
+            }, (error) => {
+                console.error("Firestore Courses Error: ", error);
+                const container = document.getElementById('dynamic-courses-container');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="col-span-full text-center py-12 text-red-500 font-semibold bg-white rounded-2xl shadow-sm border border-red-100">
+                            <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
+                            <p>Connection Error. Cannot load courses.</p>
+                        </div>
+                    `;
+                }
+            });
         }
     </script>
 

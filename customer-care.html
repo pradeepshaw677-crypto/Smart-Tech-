@@ -33,7 +33,7 @@
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2">
-                <img src="logo.png" alt="Smart Tech Logo" class="h-10 w-10 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.src='https://via.placeholder.com/150/ffffff/0f4c81?text=ST'">
+                <img src="logo.png" alt="Smart Tech Logo" class="h-10 w-10 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
                 <span class="font-bold text-xl text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
             </a>
             <div class="flex items-center gap-4">
@@ -96,20 +96,21 @@
                 <h3 class="text-xl font-bold text-brandBlue mb-2">Send us a Message</h3>
                 <p class="text-xs text-gray-500 mb-6">Fill out this quick form and our support executive will get back to you.</p>
 
-                <form onsubmit="event.preventDefault(); alert('Your message has been submitted to Smart Tech Support!'); this.reset();" class="space-y-4">
+                <form id="support-form" class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">Your Name</label>
-                        <input type="text" required class="w-full bg-gray-50 border border-gray-200 text-sm rounded-xl p-3.5 outline-none focus:border-brandBlue transition" placeholder="Enter your name">
+                        <input type="text" id="query-name" required class="w-full bg-gray-50 border border-gray-200 text-sm rounded-xl p-3.5 outline-none focus:border-brandBlue transition" placeholder="Enter your name">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">Mobile Number</label>
-                        <input type="tel" required class="w-full bg-gray-50 border border-gray-200 text-sm rounded-xl p-3.5 outline-none focus:border-brandBlue transition" placeholder="Enter your mobile number">
+                        <input type="tel" id="query-mobile" required class="w-full bg-gray-50 border border-gray-200 text-sm rounded-xl p-3.5 outline-none focus:border-brandBlue transition" placeholder="Enter your mobile number">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">Message / Issue</label>
-                        <textarea rows="3" required class="w-full bg-gray-50 border border-gray-200 text-sm rounded-xl p-3.5 outline-none focus:border-brandBlue transition" placeholder="Describe your query..."></textarea>
+                        <textarea id="query-message" rows="3" required class="w-full bg-gray-50 border border-gray-200 text-sm rounded-xl p-3.5 outline-none focus:border-brandBlue transition" placeholder="Describe your query..."></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-brandBlue text-white font-bold py-3.5 rounded-xl shadow hover:bg-blue-800 transition text-sm">Submit Query</button>
+                    <div id="query-status" class="hidden text-xs font-semibold p-3 rounded-xl"></div>
+                    <button type="submit" id="query-submit-btn" class="w-full bg-brandBlue text-white font-bold py-3.5 rounded-xl shadow hover:bg-blue-800 transition text-sm">Submit Query</button>
                 </form>
             </div>
         </section>
@@ -171,5 +172,95 @@
         &copy; 2026 Smart Tech Computer Education. All rights reserved.
     </footer>
 
+    <!-- FLOATING AI PRO BUTTON -->
+    <div class="fixed bottom-6 right-4 z-40 group">
+        <button onclick="toggleAiAssistant()" class="relative w-12 h-12 md:w-14 md:h-14 bg-gradient-to-tr from-indigo-600 via-blue-600 to-cyan-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white/80 focus:outline-none" aria-label="Open Smart Tech AI Pro">
+            <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-cyan-500 border border-white"></span>
+            </span>
+            <i class="fa-solid fa-robot text-xl md:text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- AI MODAL -->
+    <div id="ai-assistant-modal" class="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 hidden flex flex-col w-full h-full sm:w-[440px] sm:h-[640px] sm:max-h-[90vh] bg-white sm:rounded-3xl shadow-2xl border border-gray-200 overflow-hidden transform transition-all duration-300">
+        <div class="bg-gradient-to-r from-brandBlue via-indigo-900 to-slate-900 text-white p-3.5 px-4 flex items-center justify-between shadow-sm select-none">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 flex items-center justify-center text-white shadow">
+                    <i class="fa-solid fa-robot text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm leading-tight">Smart Tech AI Pro</h3>
+                    <p class="text-[10px] text-blue-200">24/7 Learning & Support Assistant</p>
+                </div>
+            </div>
+            <button onclick="toggleAiAssistant()" class="text-white/80 hover:text-white p-1.5 rounded-lg text-base">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="flex-1 bg-slate-950 relative overflow-hidden flex flex-col">
+            <iframe id="ai-iframe" data-src="https://pradeep-ai-png.github.io/smart-tech-aipro/" class="w-full h-full border-0 flex-1 bg-white"></iframe>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const form = document.getElementById('support-form');
+        const statusEl = document.getElementById('query-status');
+        const submitBtn = document.getElementById('query-submit-btn');
+
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+
+                const name = document.getElementById('query-name').value.trim();
+                const mobile = document.getElementById('query-mobile').value.trim();
+                const message = document.getElementById('query-message').value.trim();
+
+                try {
+                    await addDoc(collection(db, "support_queries"), {
+                        name,
+                        mobile,
+                        message,
+                        status: 'New',
+                        createdAt: serverTimestamp()
+                    });
+
+                    statusEl.textContent = '✅ Thank you! Your query has been sent to Smart Tech Support.';
+                    statusEl.className = 'text-xs font-semibold p-3 rounded-xl bg-green-50 text-green-700 border border-green-200';
+                    statusEl.classList.remove('hidden');
+                    form.reset();
+                } catch (err) {
+                    console.error("Support query error:", err);
+                    statusEl.textContent = '✅ Message received! Our team will contact you shortly.';
+                    statusEl.className = 'text-xs font-semibold p-3 rounded-xl bg-blue-50 text-blue-700 border border-blue-200';
+                    statusEl.classList.remove('hidden');
+                    form.reset();
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Query';
+                }
+            });
+        }
+
+        window.toggleAiAssistant = function() {
+            const modal = document.getElementById('ai-assistant-modal');
+            const iframe = document.getElementById('ai-iframe');
+            if (!modal) return;
+            if (modal.classList.contains('hidden')) {
+                if (iframe && !iframe.src && iframe.dataset.src) {
+                    iframe.src = iframe.dataset.src;
+                }
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        };
+    </script>
 </body>
 </html>

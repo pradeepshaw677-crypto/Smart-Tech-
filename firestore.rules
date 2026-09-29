@@ -107,7 +107,29 @@ service cloud.firestore {
     }
 
     // ─────────────────────────────────────────────────────────────
-    // 5. ADMINS COLLECTION:
+    // 5. OFFLINE REGISTRATIONS:
+    // Visitors/Students: Can submit admission seat registrations
+    // Admin: Can view, verify, and manage all registrations
+    // Hackers: Cannot read or scrape other students' registration forms
+    // ─────────────────────────────────────────────────────────────
+    match /offline_registrations/{registrationId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 6. SUPPORT & HELP QUERIES:
+    // Visitors/Students: Can submit helpdesk inquiries
+    // Admin: Can read and manage support queries
+    // Hackers: Cannot read queries sent by others
+    // ─────────────────────────────────────────────────────────────
+    match /support_queries/{queryId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 7. ADMINS COLLECTION:
     // Sirf verified admin hi padh sakta hai. Client-side write block hai.
     // ─────────────────────────────────────────────────────────────
     match /admins/{adminId} {

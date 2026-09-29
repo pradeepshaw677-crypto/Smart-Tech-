@@ -57,6 +57,29 @@
         "url": { "type": "string", "maxLength": 1000 }
       },
       "required": ["url"]
+    },
+    "OfflineRegistration": {
+      "title": "OfflineRegistration",
+      "description": "Student admission application for offline centre",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "course": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["name", "phone", "course"]
+    },
+    "SupportQuery": {
+      "title": "SupportQuery",
+      "description": "Customer care inquiry message",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "mobile": { "type": "string", "maxLength": 20 },
+        "message": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["name", "mobile", "message"]
     }
   },
   "firestore": {
@@ -83,6 +106,14 @@
     "/gallery/{galleryId}": {
       "schema": "Gallery",
       "description": "Photos of centre facilities and labs"
+    },
+    "/offline_registrations/{registrationId}": {
+      "schema": "OfflineRegistration",
+      "description": "Offline course seat bookings"
+    },
+    "/support_queries/{queryId}": {
+      "schema": "SupportQuery",
+      "description": "Customer care and helpdesk messages"
     }
   }
 }

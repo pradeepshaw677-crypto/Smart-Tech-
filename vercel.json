@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.js" },
+    { "source": "/customer-care", "destination": "/customer-care.html" },
+    { "source": "/demo", "destination": "/demo.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/my-courses", "destination": "/my-courses.html" },
+    { "source": "/offline-centre", "destination": "/offline-centre.html" },
+    { "source": "/offline-dashboard", "destination": "/offline-dashboard.html" },
+    { "source": "/payment", "destination": "/payment.html" },
+    { "source": "/register-offline", "destination": "/register-offline.html" },
+    { "source": "/verify", "destination": "/verify.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(logo\\.png|.*\\.(png|jpg|jpeg|gif|svg|ico|webp))",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=60, s-maxage=60, stale-while-revalidate=120" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    }
+  ]
+}
