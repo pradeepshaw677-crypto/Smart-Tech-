@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tech | Premium Computer Education</title>
+    
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="Smart Tech Computer Education Centre, Baharagora. Enroll now for offline classes in DCA, Tally, Python, and get 100% Job Assistance.">
+    <meta property="og:title" content="Smart Tech | Premium Computer Education">
+    <meta property="og:description" content="Smart Tech Computer Education Centre, Baharagora. Enroll now for offline classes in DCA, Tally, Python, and get 100% Job Assistance.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'], },
+                    colors: {
+                        brandBlue: '#0f4c81', 
+                        brandGold: '#f59e0b', 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #f8fafc; color: #334155; padding-bottom: 70px; }
+        @media (min-width: 768px) { body { padding-bottom: 0; } }
+
+        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .swiper-pagination-bullet-active { background-color: #f59e0b !important; }
+        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 15px 25px -5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="antialiased relative" id="home">
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-brandBlue text-white text-[10px] md:text-xs py-1.5 text-center font-medium tracking-wide">
+        <span class="text-brandGold">★</span> ISO 9001:2015 CERTIFIED ORGANISATION (GOVT. OF INDIA) <span class="text-brandGold">★</span>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex justify-between items-center mb-3 relative">
+                
+                <!-- LEFT SIDE: Hamburger & Circular Logo -->
+                <div class="flex items-center gap-2 md:gap-3 shrink-0">
+                    <button id="menu-btn" class="p-1 md:p-2 text-brandBlue hover:bg-gray-100 rounded-lg transition">
+                        <i class="fa-solid fa-bars text-2xl md:text-3xl"></i>
+                    </button>
+                    
+                    <a href="#home" class="flex items-center gap-2 cursor-pointer">
+                        <img src="logo.png" alt="Logo" class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
+                        <div class="flex flex-col leading-none shrink-0">
+                            <span class="font-bold text-[16px] md:text-xl text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
+                            <span class="text-[7px] md:text-[9px] text-gray-500 font-bold tracking-widest uppercase">Computer Education</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- RIGHT SIDE: Profile Container -->
+                <div class="flex items-center gap-3">
+                    <button id="profile-btn" class="w-9 h-9 md:w-10 md:h-10 rounded-full border-2 border-brandGold overflow-hidden hover:opacity-80 transition shadow-sm bg-gray-50 flex items-center justify-center relative focus:outline-none">
+                        <i id="header-user-icon" class="fa-solid fa-user text-brandBlue text-sm md:text-lg"></i>
+                        <img id="header-user-img" src="" class="w-full h-full object-cover hidden absolute inset-0">
+                    </button>
+
+                    <!-- PROFILE DROPDOWN -->
+                    <div id="profile-dropdown" class="absolute right-0 top-12 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 scale-95 pointer-events-none transition-all duration-200 z-50 overflow-hidden origin-top-right">
+                        <div class="p-4 bg-brandBlue text-white flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full border-2 border-brandGold bg-white flex items-center justify-center text-brandBlue overflow-hidden relative">
+                                <i id="dropdown-user-icon" class="fa-solid fa-user text-brandBlue text-sm"></i>
+                                <img id="dropdown-user-img" src="" class="w-full h-full object-cover hidden absolute inset-0">
+                            </div>
+                            <div class="truncate">
+                                <h4 id="user-display-name" class="font-bold text-sm leading-tight truncate max-w-[140px]">Guest User</h4>
+                                <p id="user-display-email" class="text-[10px] text-blue-200 mt-0.5 truncate max-w-[140px]">Not logged in</p>
+                            </div>
+                        </div>
+                        <ul class="py-1 text-gray-700 font-medium text-[13px]">
+                            <li id="nav-login-item"><a href="login.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 font-bold text-brandBlue"><i class="fa-solid fa-right-to-bracket w-4 text-center"></i> Login / Register</a></li>
+                            <li><a href="offline-dashboard.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-id-card text-brandGold w-4 text-center"></i> Offline Dashboard</a></li>
+                            <li><a href="my-courses.html" class="flex items-center gap-3 px-5 py-2.5 hover:bg-gray-50 transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code text-brandBlue w-4 text-center"></i> My Courses (Paid)</a></li>
+                            <li id="nav-logout-item" class="hidden border-t border-gray-50"><button class="global-logout-btn w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-500 transition font-medium"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Logout</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SMART LIVE SEARCH BAR -->
+            <div class="relative w-full max-w-3xl mx-auto">
+                <form id="search-form" class="flex items-center bg-gray-50 border border-gray-200 rounded-full shadow-inner focus-within:border-brandBlue transition-all">
+                    <div class="pl-4 text-gray-400"><i class="fa-solid fa-magnifying-glass text-sm"></i></div>
+                    <input type="text" id="search-input" autocomplete="off" placeholder="Search for Tally, Python, DCA..." class="w-full bg-transparent text-gray-700 py-2 px-3 outline-none text-[13px] md:text-sm font-medium">
+                    <button type="submit" class="bg-brandBlue text-white px-5 py-2 font-semibold text-[13px] md:text-sm hover:bg-blue-800 rounded-r-full transition">Search</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-50 hidden opacity-0 transition-opacity duration-300"></div>
+    <aside id="sidebar" class="fixed top-0 left-0 w-[80%] max-w-sm h-full bg-white z-50 shadow-2xl -translate-x-full overflow-y-auto flex flex-col transition-transform duration-300">
+        <div class="p-4 flex justify-between items-center border-b border-gray-100 bg-[#f8fafc]">
+            <a href="#home" class="flex items-center gap-2 sidebar-link">
+                <img src="logo.png" alt="Logo" class="h-9 w-9 rounded-full object-cover border border-brandGold" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle'%3EST%3C/text%3E%3C/svg%3E';">
+                <div class="flex flex-col leading-none">
+                    <span class="font-bold text-[15px] text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
+                </div>
+            </a>
+            <button id="close-menu-btn" class="text-gray-500 hover:text-red-500 transition text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div class="p-3 flex-grow">
+            <ul class="space-y-1 text-gray-600 font-medium text-[14px]">
+                <li><a href="#home" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-house w-5 text-center text-gray-400"></i> Home</a></li>
+                <li><a href="#courses" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-layer-group w-5 text-center text-gray-400"></i> Explore Courses</a></li>
+                <li><a href="javascript:void(0)" onclick="closeMenu(); toggleAiAssistant();" class="sidebar-link flex items-center gap-3 p-3 bg-gradient-to-r from-indigo-50 to-blue-50 text-indigo-700 font-bold rounded-lg transition hover:shadow-sm"><i class="fa-solid fa-robot w-5 text-center text-indigo-600"></i> Smart Tech AI Pro <span class="ml-auto text-[9px] bg-indigo-600 text-white px-2 py-0.5 rounded-full font-bold uppercase">AI</span></a></li>
+                <li><a href="demo.html" class="sidebar-link flex items-center gap-3 p-3 bg-yellow-50 text-brandGold font-bold rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-gift w-5 text-center"></i> Book Free Demo</a></li>
+                <li><a href="my-courses.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-laptop-code w-5 text-center text-gray-400"></i> My Courses</a></li>
+                <li><a href="offline-dashboard.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition" onclick="requireLogin(event, this.href)"><i class="fa-solid fa-user-graduate w-5 text-center text-brandGold"></i> Offline Student Dashboard</a></li>
+                <li><a href="offline-centre.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-map-location-dot w-5 text-center text-gray-400"></i> View Offline Centre</a></li>
+                <li><a href="register-offline.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-building w-5 text-center text-gray-400"></i> Offline Admission 2026</a></li>
+                <li><a href="verify.html" class="sidebar-link flex items-center gap-3 p-3 hover:bg-blue-50 hover:text-brandBlue rounded-lg transition"><i class="fa-solid fa-certificate w-5 text-center text-gray-400"></i> Verify Certificate</a></li>
+                <li id="sidebar-logout-item" class="hidden border-t border-gray-100 mt-2 pt-2">
+                    <button class="global-logout-btn sidebar-link w-full text-left flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout</button>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <!-- HERO BANNER CAROUSEL (Realtime Dynamic) -->
+        <section class="max-w-7xl mx-auto px-4 mt-4 mb-10">
+            <div class="swiper mySwiper rounded-2xl overflow-hidden shadow-sm h-[200px] md:h-[400px] relative">
+                <div class="swiper-wrapper" id="hero-banner-wrapper">
+                    <div class="swiper-slide relative bg-brandBlue flex items-center">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 opacity-20 mix-blend-overlay w-full h-full object-cover">
+                        <div class="relative z-10 px-6 md:px-16 text-white w-full">
+                            <span class="bg-red-600 text-[9px] md:text-xs font-bold px-2.5 py-1 rounded-full w-max mb-3 animate-pulse uppercase block">Admission Open 2026</span>
+                            <h2 class="text-xl md:text-5xl font-bold mb-3 leading-tight">Start Your IT Career<br><span class="text-brandGold" id="welcome-banner-name">Today!</span></h2>
+                            <a href="register-offline.html" class="inline-block bg-brandGold text-brandBlue px-4 py-2 md:px-6 md:py-3 rounded-full font-bold hover:scale-105 transition text-[11px] md:text-sm">Register Offline</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+        <!-- WHY CHOOSE US -->
+        <section class="max-w-7xl mx-auto px-4 mb-14">
+            <div class="text-center mb-6">
+                <span class="text-brandGold font-bold text-[10px] tracking-widest uppercase mb-1 block">Our Features</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-brandBlue mb-2">Why Students Choose Us?</h2>
+                <div class="w-12 h-1 bg-brandGold mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center hover-lift cursor-pointer">
+                    <div class="w-12 h-12 bg-blue-50 text-brandBlue rounded-full flex items-center justify-center text-xl mx-auto mb-2"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <h3 class="font-bold text-gray-800 text-[13px] md:text-base mb-1">Expert Faculty</h3>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-medium">Learn from verified Experts.</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center hover-lift cursor-pointer">
+                    <div class="w-12 h-12 bg-yellow-50 text-brandGold rounded-full flex items-center justify-center text-xl mx-auto mb-2"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3 class="font-bold text-gray-800 text-[13px] md:text-base mb-1">Practical Training</h3>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-medium">100% Hands-on projects.</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center hover-lift cursor-pointer">
+                    <div class="w-12 h-12 bg-blue-50 text-brandBlue rounded-full flex items-center justify-center text-xl mx-auto mb-2"><i class="fa-solid fa-award"></i></div>
+                    <h3 class="font-bold text-gray-800 text-[13px] md:text-base mb-1">Valid Certificate</h3>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-medium">ISO Certified verification.</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center hover-lift cursor-pointer">
+                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center text-xl mx-auto mb-2"><i class="fa-solid fa-briefcase"></i></div>
+                    <h3 class="font-bold text-gray-800 text-[13px] md:text-base mb-1">Job Assistance</h3>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-medium">Prepare for better jobs.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- COURSES GRID (Firestore Dynamic Load) -->
+        <section id="courses" class="max-w-7xl mx-auto px-4 mb-16 scroll-mt-24">
+            <div class="mb-6">
+                <h2 class="text-xl md:text-3xl font-bold text-brandBlue mb-2">Our Popular Courses</h2>
+                <div class="w-12 h-1 bg-brandGold rounded-full"></div>
+            </div>
+
+            <!-- Container for Courses / Spinner -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="dynamic-courses-container">
+                <p class="col-span-full text-center text-gray-400 py-12" id="loading-spinner">
+                    <i class="fa-solid fa-spinner fa-spin text-3xl mb-2"></i><br>Loading courses from database...
+                </p>
+            </div>
+
+            <!-- Dynamic Search / Empty Fail Message -->
+            <div id="no-results" class="hidden col-span-full text-center py-8 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
+                <i class="fa-solid fa-magnifying-glass text-2xl mb-2 text-gray-300"></i>
+                <p class="text-sm">No courses found matching your search.</p>
+            </div>
+        </section>
+
+        <!-- CTA REGISTRATION -->
+        <section class="max-w-7xl mx-auto px-4 mb-16 relative">
+            <div class="bg-gradient-to-r from-brandBlue via-blue-900 to-brandBlue rounded-2xl p-6 md:p-12 text-center text-white shadow-lg relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-xl md:text-3xl font-bold mb-2">Ready to Build Your Future?</h2>
+                    <p class="text-blue-200 text-xs md:text-base mb-6 max-w-xl mx-auto">Enrollments for the 2026 batches are now open. Secure your seat online.</p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
+                        <a href="register-offline.html" class="bg-brandGold text-brandBlue font-bold text-sm px-6 py-3 rounded-full hover:scale-105 transition w-full sm:w-auto shadow-md">
+                            Register Offline Now
+                        </a>
+                        <a href="demo.html" onclick="requireLogin(event, this.href)" class="border border-white text-white font-bold text-sm px-6 py-3 rounded-full hover:bg-white hover:text-brandBlue transition w-full sm:w-auto">
+                            Book Free Demo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#1e293b] text-white pt-12 pb-24 md:pb-8 border-t-4 border-brandGold">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 border-b border-gray-700 pb-8">
+                
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="logo.png" alt="Smart Tech" class="h-9 w-9 rounded-full object-cover bg-white border border-brandGold p-0.5" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle'%3EST%3C/text%3E%3C/svg%3E';">
+                        <span class="font-bold text-xl text-white tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
+                    </div>
+                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">
+                        Skill Today, Success Tomorrow. Quality computer education for a brighter future.
+                    </p>
+                    <ul class="space-y-3 text-xs text-gray-300">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-location-dot text-brandGold mt-0.5"></i> Near College Road, Baharagora</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone-volume text-brandGold"></i> 96613 56309, 70044 99194</li>
+                    </ul>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-bold text-sm mb-4 text-white">Quick Links</h4>
+                    <ul class="space-y-3 text-xs text-gray-400">
+                        <li><a href="offline-dashboard.html" onclick="requireLogin(event, this.href)" class="hover:text-brandGold transition">Offline Dashboard</a></li>
+                        <li><a href="register-offline.html" class="hover:text-brandGold transition">Offline Admission 2026</a></li>
+                        <li><a href="verify.html" class="hover:text-brandGold transition">Verify Certificate</a></li>
+                        <li><a href="demo.html" onclick="requireLogin(event, this.href)" class="hover:text-brandGold transition">Book Demo Class</a></li>
+                    </ul>
+                </div>
+
+                <!-- Top Courses -->
+                <div>
+                    <h4 class="font-bold text-sm mb-4 text-white">Top Courses</h4>
+                    <ul class="space-y-3 text-xs text-gray-400">
+                        <li><a href="#courses" class="hover:text-brandGold transition">ADCA / DCA</a></li>
+                        <li><a href="#courses" class="hover:text-brandGold transition">Tally Prime</a></li>
+                        <li><a href="#courses" class="hover:text-brandGold transition">Python & AI</a></li>
+                    </ul>
+                </div>
+
+                <!-- Facilities -->
+                <div>
+                    <h4 class="font-bold text-sm mb-4 text-white">Our Facilities</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 bg-gray-800/40 p-2 rounded-lg border border-gray-700/50">
+                            <i class="fa-solid fa-bolt text-yellow-400 text-sm w-4 text-center"></i>
+                            <span class="text-xs font-semibold text-gray-200">24 Hours Power Supply</span>
+                        </li>
+                        <li class="flex items-center gap-3 bg-gray-800/40 p-2 rounded-lg border border-gray-700/50">
+                            <i class="fa-solid fa-chalkboard-user text-blue-400 text-sm w-4 text-center"></i>
+                            <span class="text-xs font-semibold text-gray-200">Expert Teachers</span>
+                        </li>
+                        <li class="flex items-center gap-3 bg-gray-800/40 p-2 rounded-lg border border-gray-700/50">
+                            <i class="fa-solid fa-briefcase text-green-400 text-sm w-4 text-center"></i>
+                            <span class="text-xs font-semibold text-gray-200">100% Job Assistance</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center md:text-left text-gray-500 text-[10px] font-medium tracking-widest uppercase">
+                © 2026 SMART TECH COMPUTER EDUCATION. ALL RIGHTS RESERVED.
+            </div>
+        </div>
+    </footer>
+
+    <!-- MOBILE BOTTOM NAV (With Verify Certificate Added Back) -->
+    <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 flex justify-around items-center px-1 py-2.5 z-50 shadow-[0_-5px_15px_rgba(0,0,0,0.08)]">
+        <a href="#home" class="flex flex-col items-center gap-0.5 text-brandBlue font-bold w-1/4">
+            <i class="fa-solid fa-house text-[18px]"></i>
+            <span class="text-[9px]">Home</span>
+        </a>
+        <a href="demo.html" onclick="requireLogin(event, this.href)" class="flex flex-col items-center gap-0.5 text-gray-500 hover:text-brandBlue transition w-1/4">
+            <i class="fa-solid fa-gift text-[18px]"></i>
+            <span class="text-[9px]">Demo</span>
+        </a>
+        <a href="my-courses.html" onclick="requireLogin(event, this.href)" class="flex flex-col items-center gap-0.5 text-gray-500 hover:text-brandBlue transition w-1/4 relative">
+            <i class="fa-solid fa-laptop-code text-[18px]"></i>
+            <span class="absolute -top-1 right-4 w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span>
+            <span class="text-[9px]">Courses</span>
+        </a>
+        <a href="verify.html" class="flex flex-col items-center gap-0.5 text-gray-500 hover:text-brandBlue transition w-1/4">
+            <i class="fa-solid fa-certificate text-[18px]"></i>
+            <span class="text-[9px]">Verify</span>
+        </a>
+    </nav>
+
+    <!-- FLOATING AI PRO BUTTON -->
+    <div class="fixed bottom-[140px] md:bottom-24 right-4 z-40 group">
+        <!-- Tooltip on Desktop Hover -->
+        <div class="hidden md:flex absolute right-16 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none items-center gap-1.5 border border-slate-700">
+            <i class="fa-solid fa-sparkles text-amber-400"></i> Smart Tech AI Pro
+            <div class="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-900 rotate-45 border-r border-t border-slate-700"></div>
+        </div>
+        
+        <button id="ai-floating-btn" onclick="toggleAiAssistant()" class="relative w-12 h-12 md:w-14 md:h-14 bg-gradient-to-tr from-indigo-600 via-blue-600 to-cyan-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white/80 focus:outline-none" aria-label="Open Smart Tech AI Pro">
+            <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-cyan-500 border border-white"></span>
+            </span>
+            <i class="fa-solid fa-robot text-xl md:text-2xl animate-pulse"></i>
+        </button>
+    </div>
+
+    <!-- SMART TECH AI PRO MODAL / POPUP -->
+    <div id="ai-assistant-modal" class="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 hidden flex flex-col w-full h-full sm:w-[440px] sm:h-[640px] sm:max-h-[90vh] bg-white sm:rounded-3xl shadow-2xl border border-gray-200 overflow-hidden transform transition-all duration-300">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-brandBlue via-indigo-900 to-slate-900 text-white p-3.5 px-4 flex items-center justify-between shadow-sm select-none">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 flex items-center justify-center text-white shadow">
+                    <i class="fa-solid fa-robot text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm leading-tight flex items-center gap-1.5">
+                        Smart Tech AI Pro
+                        <span class="w-2 h-2 rounded-full bg-green-400 inline-block animate-pulse"></span>
+                    </h3>
+                    <p class="text-[10px] text-blue-200">24/7 Intelligent Course & Learning Helper</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-1.5">
+                <!-- Open in Full Tab -->
+                <a href="https://pradeep-ai-png.github.io/smart-tech-aipro/" target="_blank" rel="noopener noreferrer" title="Open Full Screen in New Tab" class="text-white/80 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition text-xs flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                <!-- Close Button -->
+                <button onclick="toggleAiAssistant()" class="text-white/80 hover:text-white hover:bg-red-500/80 p-1.5 rounded-lg transition text-base" aria-label="Close AI Assistant">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Iframe with loader -->
+        <div class="flex-1 bg-slate-950 relative overflow-hidden flex flex-col">
+            <div id="ai-loading" class="absolute inset-0 bg-slate-900 text-white flex flex-col items-center justify-center gap-3 z-10">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl text-cyan-400"></i>
+                <p class="text-xs text-slate-300 font-medium tracking-wide">Starting Smart Tech AI Pro...</p>
+            </div>
+
+            <iframe 
+                id="ai-iframe" 
+                data-src="https://pradeep-ai-png.github.io/smart-tech-aipro/" 
+                class="w-full h-full border-0 flex-1 bg-white"
+                allow="clipboard-read; clipboard-write; microphone; camera; web-share"
+                onload="document.getElementById('ai-loading')?.classList.add('hidden')">
+            </iframe>
+        </div>
+
+        <!-- Bottom bar -->
+        <div class="bg-gray-50 border-t border-gray-100 px-3 py-2 flex items-center justify-between text-[11px] text-gray-500">
+            <span class="flex items-center gap-1 text-[10px]">
+                <i class="fa-solid fa-shield-halved text-brandBlue"></i> Official Smart Tech AI
+            </span>
+            <a href="https://pradeep-ai-png.github.io/smart-tech-aipro/" target="_blank" rel="noopener noreferrer" class="text-brandBlue font-semibold hover:underline">
+                Open full page <i class="fa-solid fa-chevron-right text-[9px]"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- FLOATING WHATSAPP -->
+    <div class="fixed bottom-[75px] md:bottom-6 right-4 z-40">
+        <a href="https://wa.me/919661356309" target="_blank" class="w-12 h-12 md:w-14 md:h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg fab-pulse hover:scale-105 transition">
+            <i class="fa-brands fa-whatsapp text-2xl md:text-3xl"></i>
+        </a>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <!-- FIREBASE AUTH & FIRESTORE LOGIC (VERSION 10.8.1) -->
+    <script type="module">
+        import { auth, db } from './firebase-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { collection, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        
+        window.isUserLoggedIn = false;
+        const svgFallbackLogo = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230f4c81' stroke='%23f59e0b' stroke-width='4'/%3E%3Ctext x='50' y='62' font-family='Arial, sans-serif' font-size='32' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EST%3C/text%3E%3C/svg%3E";
+
+        // Global logo fallback handler
+        window.handleLogoError = function(img) {
+            if (img && img.src !== svgFallbackLogo) {
+                img.src = svgFallbackLogo;
+            }
+        };
+
+        // Realtime State
+        let unsubscribeCourses = null;
+        let unsubscribeUnlocks = null;
+        let currentUnlockedCourses = {};
+        let latestCoursesSnapshot = null;
+
+        // 0. REAL-TIME HERO BANNER SYNC (NO REFRESH NEEDED)
+        let heroSwiperInstance = null;
+        function initHeroSwiper() {
+            if (heroSwiperInstance) {
+                try { heroSwiperInstance.destroy(true, true); } catch(e){}
+            }
+            heroSwiperInstance = new Swiper(".mySwiper", {
+                loop: true,
+                autoplay: { delay: 3500, disableOnInteraction: false },
+                pagination: { el: ".swiper-pagination", clickable: true }
+            });
+        }
+
+        function listenHeroBanners() {
+            const wrapper = document.getElementById('hero-banner-wrapper');
+            if (!wrapper) return;
+
+            onSnapshot(collection(db, "banners"), (snap) => {
+                if (!snap.empty) {
+                    wrapper.innerHTML = '';
+                    snap.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        const bannerUrl = data.url || data.imageUrl || data.image;
+                        if (bannerUrl) {
+                            const slide = document.createElement('div');
+                            slide.className = 'swiper-slide relative bg-brandBlue flex items-center';
+                            slide.innerHTML = `
+                                <img src="${bannerUrl}" class="w-full h-full object-cover">
+                                ${data.title ? `
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-6 md:p-12 text-white">
+                                    <div>
+                                        <h2 class="text-xl md:text-4xl font-bold text-white mb-2 leading-tight">${data.title}</h2>
+                                        ${data.subtitle ? `<p class="text-xs md:text-sm text-yellow-300 font-medium mb-3">${data.subtitle}</p>` : ''}
+                                        <a href="register-offline.html" class="inline-block bg-brandGold text-brandBlue px-4 py-2 rounded-full font-bold text-xs md:text-sm hover:scale-105 transition">Register Now</a>
+                                    </div>
+                                </div>` : ''}
+                            `;
+                            wrapper.appendChild(slide);
+                        }
+                    });
+                    initHeroSwiper();
+                } else {
+                    initHeroSwiper();
+                }
+            }, (err) => {
+                console.warn("Banner listener notice:", err?.message);
+                initHeroSwiper();
+            });
+        }
+
+        listenHeroBanners();
+
+        // 1. LISTEN TO LOGIN STATE
+        onAuthStateChanged(auth, async (user) => {
+            const nameEl = document.getElementById('user-display-name');
+            const emailEl = document.getElementById('user-display-email');
+            const bannerNameEl = document.getElementById('welcome-banner-name');
+            
+            const navLoginItem = document.getElementById('nav-login-item');
+            const navLogoutItem = document.getElementById('nav-logout-item');
+            const sidebarLogoutItem = document.getElementById('sidebar-logout-item');
+            
+            const headerImg = document.getElementById('header-user-img');
+            const headerIcon = document.getElementById('header-user-icon');
+            const dropdownImg = document.getElementById('dropdown-user-img');
+            const dropdownIcon = document.getElementById('dropdown-user-icon');
+
+            let userEmail = '';
+
+            if (user) {
+                // User is logged in
+                window.isUserLoggedIn = true;
+                userEmail = user.email ? user.email.toLowerCase().trim() : '';
+                
+                // Set name
+                let displayName = 'Student';
+                if (user.displayName && user.displayName.trim() !== "") {
+                    displayName = user.displayName;
+                } else if (userEmail !== "") {
+                    displayName = userEmail.split('@')[0];
+                }
+                
+                // Update UI text
+                if(nameEl) nameEl.textContent = displayName;
+                if(bannerNameEl) bannerNameEl.textContent = `${displayName}!`;
+                if(emailEl) emailEl.textContent = userEmail;
+
+                // Toggle Login / Logout Links
+                if(navLoginItem) navLoginItem.classList.add('hidden');
+                if(navLogoutItem) navLogoutItem.classList.remove('hidden');
+                if(sidebarLogoutItem) sidebarLogoutItem.classList.remove('hidden');
+
+                // Profile Image
+                if (user.photoURL) {
+                    if(headerImg) { headerImg.src = user.photoURL; headerImg.classList.remove('hidden'); }
+                    if(headerIcon) headerIcon.classList.add('hidden');
+                    if(dropdownImg) { dropdownImg.src = user.photoURL; dropdownImg.classList.remove('hidden'); }
+                    if(dropdownIcon) dropdownIcon.classList.add('hidden');
+                }
+            } else {
+                // User is logged out
+                window.isUserLoggedIn = false;
+                userEmail = '';
+
+                if(nameEl) nameEl.textContent = 'Guest User';
+                if(emailEl) emailEl.textContent = 'Not logged in';
+                if(bannerNameEl) bannerNameEl.textContent = 'Today!';
+
+                if(navLoginItem) navLoginItem.classList.remove('hidden');
+                if(navLogoutItem) navLogoutItem.classList.add('hidden');
+                if(sidebarLogoutItem) sidebarLogoutItem.classList.add('hidden');
+
+                if(headerImg) headerImg.classList.add('hidden');
+                if(headerIcon) headerIcon.classList.remove('hidden');
+                if(dropdownImg) dropdownImg.classList.add('hidden');
+                if(dropdownIcon) dropdownIcon.classList.remove('hidden');
+            }
+
+            // Real-time courses & unlocks setup
+            setupRealtimeCourses(userEmail);
+        });
+
+        // 2. LOGOUT FUNCTION
+        window.handleLogout = function(e) {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.reload(); 
+            }).catch((error) => {
+                console.error('Logout error:', error);
+            });
+        }
+
+        document.querySelectorAll('.global-logout-btn').forEach(btn => {
+            btn.addEventListener('click', window.handleLogout);
+        });
+
+        // 3. RENDER COURSES GRID (REAL-TIME REACTIVE)
+        function renderCoursesGrid() {
+            const container = document.getElementById('dynamic-courses-container');
+            if (!container || !latestCoursesSnapshot) return;
+
+            container.innerHTML = '';
+
+            if (latestCoursesSnapshot.empty) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-gray-500 font-semibold bg-white rounded-2xl shadow-sm border border-gray-100">
+                        <i class="fa-solid fa-folder-open text-4xl mb-3 text-gray-300"></i>
+                        <p class="text-lg text-gray-700">No Courses Found</p>
+                        <p class="text-xs text-gray-400 mt-1">Courses will appear here once published from the admin panel.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            latestCoursesSnapshot.forEach((docSnap) => {
+                const courseId = docSnap.id;
+                const course = docSnap.data();
+                const isUnlocked = currentUnlockedCourses[courseId] === true;
+                const lectureCount = course.videos ? course.videos.length : 15;
+
+                const card = document.createElement('article');
+                card.className = "course-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all flex flex-col relative";
+
+                if (isUnlocked) {
+                    card.innerHTML = `
+                        <div class="absolute top-2 right-2 bg-green-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10 shadow flex items-center gap-1">
+                            <i class="fa-solid fa-unlock"></i> Unlocked
+                        </div>
+                        <div class="h-36 bg-gray-200 relative"><img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover"></div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="course-title font-bold text-base text-gray-800 mb-1">${course.title}</h3>
+                            <p class="course-desc text-[10px] text-brandBlue font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures</p>
+                            <div class="mt-auto border-t border-gray-50 pt-3 flex justify-between items-center">
+                                <span class="text-base font-bold text-green-700">₹${course.price} (Active)</span>
+                                <a href="my-courses.html" class="bg-green-600 hover:bg-green-700 text-white text-[11px] font-semibold px-4 py-2 rounded-lg shadow-sm transition">Watch Now</a>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <div class="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase z-10 shadow flex items-center gap-1">
+                            <i class="fa-solid fa-lock"></i> Locked
+                        </div>
+                        <div class="h-36 bg-gray-900 relative">
+                            <img src="${course.thumb || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'}" class="w-full h-full object-cover opacity-40">
+                            <i class="fa-solid fa-lock absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl"></i>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="course-title font-bold text-base text-gray-800 mb-1">${course.title}</h3>
+                            <p class="course-desc text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-video"></i> ${lectureCount} Lectures</p>
+                            <div class="mt-auto border-t border-gray-50 pt-3 flex justify-between items-center">
+                                <span class="text-base font-bold text-brandBlue">₹${course.price}</span>
+                                <a href="payment.html?course=${courseId}" class="bg-brandBlue hover:bg-blue-800 text-white text-[11px] font-semibold px-4 py-2 rounded-lg shadow-sm transition">Buy Now</a>
+                            </div>
+                        </div>
+                    `;
+                }
+                container.appendChild(card);
+            });
+
+            if (typeof window.performLiveSearch === 'function') {
+                window.performLiveSearch();
+            }
+        }
+
+        // 4. REAL-TIME FIRESTORE LISTENER (NO REFRESH NEEDED)
+        function setupRealtimeCourses(email) {
+            // Clean old listeners
+            if (unsubscribeUnlocks) { unsubscribeUnlocks(); unsubscribeUnlocks = null; }
+            if (unsubscribeCourses) { unsubscribeCourses(); unsubscribeCourses = null; }
+
+            currentUnlockedCourses = {};
+
+            // Listen to student unlock status live
+            if (email) {
+                const normalizedEmail = email.toLowerCase().trim();
+                unsubscribeUnlocks = onSnapshot(doc(db, "unlocked_courses", normalizedEmail), (docSnap) => {
+                    if (docSnap.exists()) {
+                        currentUnlockedCourses = docSnap.data() || {};
+                    } else {
+                        currentUnlockedCourses = {};
+                    }
+                    renderCoursesGrid();
+                }, (err) => {
+                    console.warn("Realtime unlock listener notice:", err?.message);
+                });
+            }
+
+            // Listen to all courses live
+            unsubscribeCourses = onSnapshot(collection(db, "courses"), (snapshot) => {
+                latestCoursesSnapshot = snapshot;
+                renderCoursesGrid();
+            }, (error) => {
+                console.error("Firestore Courses Error: ", error);
+                const container = document.getElementById('dynamic-courses-container');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="col-span-full text-center py-12 text-red-500 font-semibold bg-white rounded-2xl shadow-sm border border-red-100">
+                            <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
+                            <p>Connection Error. Cannot load courses.</p>
+                        </div>
+                    `;
+                }
+            });
+        }
+    </script>
+
+    <!-- UI INTERACTION SCRIPTS -->
+    <script>
+        window.requireLogin = function(event, targetUrl) {
+            event.preventDefault();
+            if(!window.isUserLoggedIn) {
+                alert("Please Login / Register first to access this feature.");
+                window.location.href = "login.html";
+            } else {
+                window.location.href = targetUrl;
+            }
+        }
+
+        const searchInput = document.getElementById('search-input');
+        const searchForm = document.getElementById('search-form');
+        const courseSection = document.getElementById('courses');
+        
+        window.performLiveSearch = function() {
+            if(!searchInput) return;
+            const filterText = searchInput.value.toLowerCase().trim();
+            const searchTerms = filterText.split(' ').filter(term => term.length > 0);
+            
+            const courseCards = document.querySelectorAll('.course-card');
+            let hasResults = false;
+            
+            courseCards.forEach(card => {
+                const title = card.querySelector('.course-title').textContent.toLowerCase();
+                const desc = card.querySelector('.course-desc').textContent.toLowerCase();
+                const combinedText = title + " " + desc;
+                
+                const matches = searchTerms.every(term => combinedText.includes(term));
+
+                if (matches || searchTerms.length === 0) {
+                    card.style.display = "flex";
+                    hasResults = true;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            const noRes = document.getElementById('no-results');
+            if(noRes) noRes.style.display = hasResults ? 'none' : 'block';
+        }
+
+        if(searchInput) searchInput.addEventListener('input', window.performLiveSearch);
+
+        if(searchForm) {
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault(); 
+                window.performLiveSearch();
+                searchInput.blur(); 
+                
+                const yOffset = -100; 
+                const y = courseSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            });
+        }
+
+        /* --- PROFILE AND MENU LOGIC --- */
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('opacity-0');
+            profileDropdown.classList.toggle('scale-95');
+            profileDropdown.classList.toggle('pointer-events-none');
+        });
+
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+
+        function openMenu() {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeMenu() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+            document.body.style.overflow = 'auto'; 
+        }
+
+        menuBtn.addEventListener('click', openMenu);
+        closeMenuBtn.addEventListener('click', closeMenu);
+        overlay.addEventListener('click', closeMenu);
+
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeMenu();
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+            }
+        });
+
+        /* --- SMART TECH AI PRO MODAL LOGIC --- */
+        window.toggleAiAssistant = function() {
+            const modal = document.getElementById('ai-assistant-modal');
+            const iframe = document.getElementById('ai-iframe');
+            if (!modal) return;
+            
+            if (modal.classList.contains('hidden')) {
+                if (iframe && !iframe.src && iframe.dataset.src) {
+                    iframe.src = iframe.dataset.src;
+                }
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        };
+    </script>
+</body>
+</html>

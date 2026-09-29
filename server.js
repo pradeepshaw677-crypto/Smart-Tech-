@@ -52,18 +52,33 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ ok: true, timestamp: Date.now() });
 });
 
+const publicDir = path.join(__dirname, 'public');
+
 // Clean URLs handler: /login -> /login.html, /demo -> /demo.html
 app.get('/:page', (req, res, next) => {
   if (req.params.page && !req.params.page.includes('.')) {
-    const candidateFile = path.join(__dirname, `${req.params.page}.html`);
-    if (fs.existsSync(candidateFile)) {
-      return res.sendFile(candidateFile);
+    const pageHtml = `${req.params.page}.html`;
+    const candidatePublic = path.join(publicDir, pageHtml);
+    if (fs.existsSync(candidatePublic)) {
+      return res.sendFile(candidatePublic);
+    }
+    const candidateRoot = path.join(__dirname, pageHtml);
+    if (fs.existsSync(candidateRoot)) {
+      return res.sendFile(candidateRoot);
     }
   }
   next();
 });
 
-// Serve static assets from root directory
+// Serve static assets from public/ if exists, and fallback to root
+if (fs.existsSync(publicDir)) {
+  app.use(express.static(publicDir, {
+    extensions: ['html', 'htm'],
+    etag: true,
+    lastModified: true,
+    maxAge: '1m'
+  }));
+}
 app.use(express.static(__dirname, {
   extensions: ['html', 'htm'],
   etag: true,
@@ -73,6 +88,10 @@ app.use(express.static(__dirname, {
 
 // Explicit root route
 app.get('/', (req, res) => {
+  const publicIndex = path.join(publicDir, 'index.html');
+  if (fs.existsSync(publicIndex)) {
+    return res.sendFile(publicIndex);
+  }
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -80,6 +99,10 @@ app.get('/', (req, res) => {
 app.use((req, res) => {
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ error: 'Endpoint not found' });
+  }
+  const publicIndex = path.join(publicDir, 'index.html');
+  if (fs.existsSync(publicIndex)) {
+    return res.status(404).sendFile(publicIndex);
   }
   res.status(404).sendFile(path.join(__dirname, 'index.html'));
 });

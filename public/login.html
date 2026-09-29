@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register | Smart Tech</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'], },
+                    colors: {
+                        brandBlue: '#0f4c81', 
+                        brandGold: '#f59e0b', 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        .input-field { transition: all 0.3s ease; }
+        .input-field:focus { border-color: #0f4c81; box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1); }
+        .form-section { display: none; opacity: 0; transition: opacity 0.4s ease; }
+        .form-section.active { display: block; opacity: 1; }
+    </style>
+</head>
+<body class="h-screen w-full flex overflow-hidden">
+
+    <!-- CUSTOM PREMIUM MODAL POPUP -->
+    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-80 text-center transform scale-95 transition-all duration-300" id="modal-content">
+            <div id="modal-icon" class="w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4"></div>
+            <h3 id="modal-title" class="text-xl font-bold text-gray-800 mb-2"></h3>
+            <p id="modal-message" class="text-sm text-gray-500 mb-6"></p>
+            <button onclick="closeModal()" class="w-full bg-brandBlue text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-800 transition">OK</button>
+        </div>
+    </div>
+
+    <!-- LEFT SIDE: Cinematic Branding -->
+    <div class="hidden lg:flex w-1/2 bg-brandBlue relative items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200')] opacity-20 bg-cover bg-center mix-blend-overlay"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-brandBlue via-transparent to-transparent opacity-90"></div>
+        
+        <div class="relative z-10 text-center px-12 text-white">
+            <img src="logo.png" alt="Smart Tech Logo" class="w-28 h-28 mx-auto rounded-full border-4 border-brandGold object-cover bg-white shadow-2xl mb-6" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
+            <h1 class="text-5xl font-bold mb-4">Welcome to <br><span class="text-brandGold">Smart Tech.</span></h1>
+            <p class="text-blue-200 text-lg max-w-md mx-auto">Access your premium courses, offline dashboard, and certificates all in one place.</p>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE: Auth Forms (Added pb-24 so buttons never cut off) -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center relative bg-white overflow-y-auto">
+        <a href="index.html" aria-label="Go Back" class="absolute top-6 left-6 text-gray-400 hover:text-brandBlue transition p-2 text-2xl z-20">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div class="w-full max-w-md px-8 py-12 pb-24">
+            
+            <div class="lg:hidden text-center mb-8 mt-4">
+                <img src="logo.png" alt="Smart Tech Logo" class="w-20 h-20 mx-auto rounded-full border-2 border-brandGold object-cover bg-white shadow-lg mb-3" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
+                <h2 class="text-2xl font-bold text-brandBlue">Smart Tech</h2>
+            </div>
+
+            <div class="flex bg-gray-100 p-1 rounded-xl mb-8">
+                <button id="btn-show-login" class="w-1/2 py-2.5 rounded-lg text-sm font-bold bg-white text-brandBlue shadow-sm transition-all">Login</button>
+                <button id="btn-show-register" class="w-1/2 py-2.5 rounded-lg text-sm font-bold text-gray-500 hover:text-brandBlue transition-all">Register</button>
+            </div>
+
+            <!-- 1. EMAIL LOGIN -->
+            <div id="login-form" class="form-section active">
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Welcome Back!</h3>
+                <p class="text-sm text-gray-500 mb-6">Please enter your details to sign in.</p>
+
+                <form id="firebase-login-form">
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Email Address</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="email" id="login-email" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-10 p-3.5" placeholder="student@example.com">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Password</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="password" id="login-password" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-10 p-3.5" placeholder="••••••••">
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end mb-6">
+                        <a href="#" class="text-xs font-semibold text-brandBlue hover:text-brandGold transition">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="w-full text-white bg-brandBlue hover:bg-blue-800 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all">Sign In</button>
+                </form>
+            </div>
+
+            <!-- 2. REGISTER -->
+            <div id="register-form" class="form-section">
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Create Account</h3>
+                <p class="text-sm text-gray-500 mb-6">Join Smart Tech to start learning.</p>
+
+                <form id="firebase-register-form">
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Full Name</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="reg-name" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-10 p-3.5" placeholder="John Doe">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Email Address</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="email" id="reg-email" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-10 p-3.5" placeholder="student@example.com">
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Password</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="password" id="reg-password" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-10 p-3.5" placeholder="Create a strong password">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full text-brandBlue bg-brandGold hover:bg-yellow-500 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all">Create Account</button>
+                </form>
+            </div>
+
+            <!-- 3. PHONE OTP -->
+            <div id="phone-form" class="form-section">
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Mobile Login</h3>
+                <p class="text-sm text-gray-500 mb-6">We will send you an OTP.</p>
+
+                <div id="phone-input-section">
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Phone Number</label>
+                        <div class="relative flex">
+                            <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-200 rounded-l-xl font-bold">+91</span>
+                            <input type="tel" id="phone-number" required class="input-field rounded-none rounded-r-xl bg-gray-50 border border-gray-200 text-gray-800 focus:ring-brandBlue block flex-1 min-w-0 w-full text-sm p-3.5" placeholder="9876543210">
+                        </div>
+                    </div>
+                    
+                    <div id="recaptcha-container" class="mb-4"></div>
+                    
+                    <button type="button" id="send-otp-btn" class="w-full text-white bg-green-600 hover:bg-green-700 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all">Send OTP</button>
+                </div>
+
+                <div id="otp-input-section" class="hidden">
+                    <div class="mb-6">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Enter 6-Digit OTP</label>
+                        <input type="text" id="otp-code" class="input-field w-full bg-gray-50 border border-gray-200 text-center text-xl tracking-[0.5em] font-bold rounded-xl focus:ring-brandBlue block p-3.5" placeholder="------">
+                    </div>
+                    <button type="button" id="verify-otp-btn" class="w-full text-white bg-brandBlue hover:bg-blue-800 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all">Verify & Login</button>
+                </div>
+            </div>
+
+            <!-- DIVIDER -->
+            <div class="flex items-center my-6">
+                <div class="flex-1 border-t border-gray-200"></div>
+                <span class="px-3 text-xs text-gray-400 font-semibold uppercase">Or continue with</span>
+                <div class="flex-1 border-t border-gray-200"></div>
+            </div>
+
+            <!-- SOCIAL LOGINS -->
+            <div class="grid grid-cols-2 gap-4">
+                <button id="google-login-btn" class="flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 font-bold py-3 px-4 rounded-xl shadow-sm transition-all">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google"> Google
+                </button>
+                <button id="btn-show-phone" class="flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 font-bold py-3 px-4 rounded-xl shadow-sm transition-all">
+                    <i class="fa-solid fa-mobile-screen-button text-brandBlue text-lg"></i> Mobile OTP
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // Premium Modal Functions
+        function showNotification(title, message, isSuccess = true) {
+            const modal = document.getElementById('custom-modal');
+            const icon = document.getElementById('modal-icon');
+            const titleEl = document.getElementById('modal-title');
+            const msgEl = document.getElementById('modal-message');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            if(isSuccess) {
+                icon.className = "w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4 bg-green-100 text-green-600";
+                icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+            } else {
+                icon.className = "w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4 bg-red-100 text-red-600";
+                icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+            if(window.redirectAfterModal) {
+                window.location.href = window.redirectAfterModal;
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { app, auth } from './firebase-config.js';
+        import { 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            GoogleAuthProvider, 
+            signInWithPopup,
+            RecaptchaVerifier,
+            signInWithPhoneNumber
+        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        const btnLogin = document.getElementById('btn-show-login');
+        const btnRegister = document.getElementById('btn-show-register');
+        const btnPhone = document.getElementById('btn-show-phone');
+        
+        const formLogin = document.getElementById('login-form');
+        const formRegister = document.getElementById('register-form');
+        const formPhone = document.getElementById('phone-form');
+
+        function resetTabs() {
+            btnLogin.className = "w-1/2 py-2.5 rounded-lg text-sm font-bold text-gray-500 hover:text-brandBlue transition-all";
+            btnRegister.className = "w-1/2 py-2.5 rounded-lg text-sm font-bold text-gray-500 hover:text-brandBlue transition-all";
+            formLogin.classList.remove('active');
+            formRegister.classList.remove('active');
+            formPhone.classList.remove('active');
+        }
+
+        btnLogin.addEventListener('click', () => {
+            resetTabs();
+            btnLogin.className = "w-1/2 py-2.5 rounded-lg text-sm font-bold bg-white text-brandBlue shadow-sm transition-all";
+            formLogin.classList.add('active');
+        });
+
+        btnRegister.addEventListener('click', () => {
+            resetTabs();
+            btnRegister.className = "w-1/2 py-2.5 rounded-lg text-sm font-bold bg-white text-brandBlue shadow-sm transition-all";
+            formRegister.classList.add('active');
+        });
+
+        btnPhone.addEventListener('click', () => {
+            resetTabs();
+            formPhone.classList.add('active');
+        });
+
+        // 1. Email Register
+        document.getElementById('firebase-register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const name = document.getElementById('reg-name').value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    window.redirectAfterModal = "index.html";
+                    showNotification("Success!", "Account Created Successfully! Welcome " + name, true);
+                })
+                .catch((error) => {
+                    showNotification("Registration Failed", error.message, false);
+                });
+        });
+
+        // 2. Email Login
+        document.getElementById('firebase-login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    window.redirectAfterModal = "index.html";
+                    showNotification("Success!", "Login Successful!", true);
+                })
+                .catch((error) => {
+                    showNotification("Login Failed", "Invalid Credentials. " + error.message, false);
+                });
+        });
+
+        // 3. Google Login
+        document.getElementById('google-login-btn').addEventListener('click', () => {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    window.redirectAfterModal = "index.html";
+                    showNotification("Success!", "Google Login Successful!", true);
+                }).catch((error) => {
+                    showNotification("Google Login Failed", error.message, false);
+                });
+        });
+
+        // 4. Mobile OTP
+        let confirmationResult; 
+        
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+            'size': 'normal',
+            'callback': (response) => {}
+        });
+
+        document.getElementById('send-otp-btn').addEventListener('click', () => {
+            const phoneNumber = "+91" + document.getElementById('phone-number').value;
+            const appVerifier = window.recaptchaVerifier;
+
+            signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+                .then((result) => {
+                    confirmationResult = result;
+                    showNotification("OTP Sent", "OTP Sent Successfully to " + phoneNumber, true);
+                    document.getElementById('phone-input-section').classList.add('hidden');
+                    document.getElementById('otp-input-section').classList.remove('hidden');
+                }).catch((error) => {
+                    showNotification("OTP Error", error.message, false);
+                    window.recaptchaVerifier.render().then(function(widgetId) {
+                        grecaptcha.reset(widgetId);
+                    });
+                });
+        });
+
+        document.getElementById('verify-otp-btn').addEventListener('click', () => {
+            const code = document.getElementById('otp-code').value;
+            confirmationResult.confirm(code).then((result) => {
+                localStorage.setItem('isLoggedIn', 'true');
+                window.redirectAfterModal = "index.html";
+                showNotification("Success!", "Mobile Verification Successful!", true);
+            }).catch((error) => {
+                showNotification("Verification Failed", "Invalid OTP! Try again.", false);
+            });
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment | Smart Tech</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts (Poppins) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        input[readonly] { background-color: #f1f5f9; cursor: not-allowed; opacity: 0.9; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Back Button -->
+    <div class="w-full max-w-md mb-4 flex justify-start">
+        <a href="javascript:history.back()" class="text-gray-500 hover:text-[#0f4c81] flex items-center gap-2 font-semibold transition">
+            <i class="fa-solid fa-arrow-left"></i> Back to Courses
+        </a>
+    </div>
+
+    <!-- Payment Container -->
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden relative">
+        
+        <!-- Header Section -->
+        <div class="bg-[#0f4c81] p-6 text-center text-white relative">
+            <div class="absolute top-0 right-0 p-4 opacity-20">
+                <i class="fa-solid fa-shield-halved text-6xl"></i>
+            </div>
+            <h1 class="text-2xl font-bold tracking-wide relative z-10">SMART TECH</h1>
+            <p class="text-blue-200 text-xs mt-1 relative z-10">100% Safe & Secure Payment Portal</p>
+        </div>
+
+        <!-- Warning Message (If Not Logged In) -->
+        <div id="login-warning" class="hidden bg-amber-50 border-l-4 border-amber-500 p-4 mx-6 mt-6 rounded text-amber-800 text-xs font-medium">
+            <i class="fa-solid fa-triangle-exclamation mr-1"></i> You are not logged in. Course will be unlocked for the email you enter below.
+        </div>
+
+        <!-- Form Section -->
+        <div class="p-6 sm:px-8 sm:pb-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center border-b border-gray-100 pb-4">Course Fee Payment</h2>
+            
+            <form id="paymentForm" class="space-y-4">
+                
+                <!-- Hidden Field for Course ID -->
+                <input type="hidden" id="courseId" value="">
+
+                <!-- Student Name -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Student Full Name</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-4 top-3.5 text-gray-400"></i>
+                        <input type="text" id="studentName" required placeholder="e.g. Rahul Kumar" class="w-full bg-gray-50 border border-gray-200 text-gray-800 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#0f4c81] focus:ring-1 focus:ring-[#0f4c81] transition">
+                    </div>
+                </div>
+
+                <!-- Email ID -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Registered Email ID</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-gray-400"></i>
+                        <input type="email" id="studentEmail" required placeholder="student@gmail.com" class="w-full bg-gray-50 border border-gray-200 text-gray-800 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#0f4c81] focus:ring-1 focus:ring-[#0f4c81] transition">
+                    </div>
+                    <p class="text-[9px] font-bold text-green-600 mt-1 pl-1" id="email-lock-text">*This email will be verified by admin to unlock your course.</p>
+                </div>
+
+                <!-- Course Name (Auto Fetched from Database) -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Course Title</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-book absolute left-4 top-3.5 text-gray-400"></i>
+                        <input type="text" id="courseName" required readonly placeholder="Loading course details..." class="w-full bg-gray-50 border border-gray-200 text-gray-600 rounded-xl py-3 pl-10 pr-4 outline-none font-semibold">
+                    </div>
+                </div>
+
+                <!-- Amount (Auto Fetched from Database) -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">Payment Amount (₹)</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-indian-rupee-sign absolute left-4 top-3.5 text-gray-400"></i>
+                        <input type="number" id="paymentAmount" required readonly placeholder="0" class="w-full bg-gray-50 border border-gray-200 text-[#0f4c81] rounded-xl py-3 pl-10 pr-4 outline-none font-black text-xl">
+                    </div>
+                </div>
+
+                <!-- WhatsApp Pay Button -->
+                <button type="submit" id="pay-btn" class="w-full mt-6 bg-[#25D366] hover:bg-[#1ebd5a] text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 transform hover:-translate-y-1">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    <span>Get QR Code on WhatsApp</span>
+                </button>
+            </form>
+
+            <!-- Trust Indicators -->
+            <div class="mt-8 pt-6 border-t border-gray-100">
+                <div class="flex items-center justify-center gap-6 text-gray-400">
+                    <div class="flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-lock text-xl"></i>
+                        <span class="text-[10px] uppercase font-bold text-center">End-to-End<br>Encrypted</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-qrcode text-xl"></i>
+                        <span class="text-[10px] uppercase font-bold text-center">QR Code<br>System</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span class="text-[10px] uppercase font-bold text-center">Direct<br>Verification</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FIREBASE AND JAVASCRIPT LOGIC -->
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // 1. AUTO-FILL LOGIN DETAILS
+        const savedName = localStorage.getItem('student_name');
+        const savedEmail = localStorage.getItem('student_email');
+        
+        const nameInput = document.getElementById('studentName');
+        const emailInput = document.getElementById('studentEmail');
+        
+        if(savedEmail && savedEmail !== "guest@smarttech.com") {
+            // Logged in: Auto-fill and lock email field
+            if(savedName) nameInput.value = savedName;
+            emailInput.value = savedEmail;
+            emailInput.setAttribute("readonly", true);
+        } else {
+            // Guest: Show warning
+            document.getElementById('login-warning').classList.remove('hidden');
+            document.getElementById('email-lock-text').textContent = "*Make sure to enter correct email to get access.";
+            document.getElementById('email-lock-text').classList.replace('text-green-600', 'text-amber-600');
+        }
+
+        // 2. SMART AUTO-FETCH COURSE DATA FROM FIREBASE
+        async function loadCourseDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            // Accept both ?course=ID and ?id=ID parameters
+            const courseId = urlParams.get('course') || urlParams.get('id');
+
+            const courseNameInput = document.getElementById('courseName');
+            const paymentAmountInput = document.getElementById('paymentAmount');
+            const courseIdInput = document.getElementById('courseId');
+            const payBtn = document.getElementById('pay-btn');
+
+            if (courseId) {
+                courseIdInput.value = courseId;
+                
+                try {
+                    // Fetch directly from Firebase to ensure correct Title and Price
+                    const docRef = doc(db, "courses", courseId);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        courseNameInput.value = data.title;
+                        paymentAmountInput.value = data.price;
+                    } else {
+                        courseNameInput.value = "Error: Course Not Found";
+                        paymentAmountInput.value = "0";
+                        payBtn.disabled = true;
+                        payBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    }
+                } catch (error) {
+                    console.error("Error fetching course data:", error);
+                    courseNameInput.value = "Connection Error";
+                    paymentAmountInput.value = "0";
+                }
+            } else {
+                courseNameInput.value = "No course selected";
+                paymentAmountInput.value = "0";
+                payBtn.disabled = true;
+                payBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+        
+        // Call the fetch function
+        loadCourseDetails();
+
+        // 3. EXACT WHATSAPP SUBMIT LOGIC AS REQUESTED
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            const email = document.getElementById('studentEmail').value.trim();
+            const course = document.getElementById('courseName').value.trim();
+            const amount = document.getElementById('paymentAmount').value.trim();
+            
+            // Updated WhatsApp Number with Country Code (91 + 9153352808)
+            const whatsappNumber = "919153352808"; 
+
+            // Exact formatting as requested by user
+            const message = `Hello sir,%0AMy email is: *${email}*%0ACourse title is: *${course}*%0AAmount is: *₹${amount}*%0A%0ASend your QR for payment.`;
+            
+            const whatsappLink = `https://wa.me/${whatsappNumber}?text=${message}`;
+            
+            // Open WhatsApp in a new tab
+            window.open(whatsappLink, '_blank');
+        });
+    </script>
+
+</body>
+</html>

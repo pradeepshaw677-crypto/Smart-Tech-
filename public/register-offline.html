@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Admission 2026 | Smart Tech</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'], },
+                    colors: {
+                        brandBlue: '#0f4c81', 
+                        brandGold: '#f59e0b', 
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col font-sans">
+
+    <!-- CUSTOM PREMIUM MODAL POPUP -->
+    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-80 text-center transform scale-95 transition-all duration-300">
+            <div id="modal-icon" class="w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4 bg-green-100 text-green-600">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 id="modal-title" class="text-xl font-bold text-gray-800 mb-2">Registration Booked!</h3>
+            <p id="modal-message" class="text-sm text-gray-500 mb-6">Your offline admission seat has been reserved successfully.</p>
+            <button onclick="closeModal()" class="w-full bg-brandBlue text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-800 transition">OK</button>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <img src="logo.png" alt="Smart Tech Logo" class="h-10 w-10 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
+                <span class="font-bold text-xl text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
+            </a>
+            <a href="index.html" class="text-sm font-semibold text-gray-600 hover:text-brandBlue transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN FORM CONTAINER -->
+    <main class="flex-1 max-w-2xl w-full mx-auto px-4 py-10">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 sm:p-10">
+            
+            <div class="text-center mb-8">
+                <span class="bg-brandGold/10 text-brandGold font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">Batch 2026</span>
+                <h1 class="text-2xl sm:text-3xl font-bold text-brandBlue">Offline Centre Admission</h1>
+                <p class="text-sm text-gray-500 mt-1">Book your seat at our Baharagora centre instantly.</p>
+            </div>
+
+            <form id="offline-reg-form" class="space-y-5">
+                
+                <!-- Full Name -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Full Name</label>
+                    <div class="relative">
+                        <i class="fa-regular fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="student-name" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none transition" placeholder="Enter your full name">
+                    </div>
+                </div>
+
+                <!-- Phone Number -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Mobile Number</label>
+                    <div class="relative flex">
+                        <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-200 rounded-l-xl font-bold">+91</span>
+                        <input type="tel" id="student-phone" required pattern="[0-9]{10}" class="rounded-none rounded-r-xl bg-gray-50 border border-gray-200 text-gray-800 focus:ring-brandBlue focus:border-brandBlue block flex-1 min-w-0 w-full text-sm p-3.5 outline-none transition" placeholder="9876543210">
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Residential Address / Village</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-location-dot absolute left-4 top-4 text-gray-400"></i>
+                        <textarea id="student-address" rows="2" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none transition" placeholder="Enter your village, post, or area"></textarea>
+                    </div>
+                </div>
+
+                <!-- Course Selection -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Select Computer Course</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-graduation-cap absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <select id="course-select" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none transition appearance-none">
+                            <option value="" disabled selected data-fee="0" data-duration="--">-- Choose a Course --</option>
+                            <option value="ADCA" data-fee="₹3,499" data-duration="12 Months">ADCA (Advance Diploma in Computer Application)</option>
+                            <option value="DCA" data-fee="₹2,499" data-duration="6 Months">DCA (Diploma in Computer Application)</option>
+                            <option value="Tally Prime" data-fee="₹1,999" data-duration="3 Months">Tally Prime with GST & Accounting</option>
+                            <option value="Python" data-fee="₹2,999" data-duration="3 Months">Python Programming & Development</option>
+                            <option value="Web Development" data-fee="₹3,499" data-duration="4 Months">Web Development (HTML, CSS, JS)</option>
+                            <option value="Graphic Design" data-fee="₹2,499" data-duration="3 Months">Graphic Design (Photoshop, CorelDRAW)</option>
+                            <option value="Basic Computer" data-fee="₹1,499" data-duration="2 Months">Basic Computer & Typing</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <!-- Automatic Fee & Duration Display Box -->
+                <div id="course-details-box" class="hidden bg-blue-50 border border-blue-100 rounded-2xl p-4 flex justify-between items-center text-brandBlue">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase">Course Duration</p>
+                        <p id="display-duration" class="font-bold text-base">-</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-semibold text-gray-500 uppercase">Total Course Fee</p>
+                        <p id="display-fee" class="font-bold text-xl text-brandGold">-</p>
+                    </div>
+                </div>
+
+                <!-- Frequency Option (Daily / 3 Days a Week) -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Class Frequency</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="flex items-center gap-3 bg-gray-50 border border-gray-200 p-3.5 rounded-xl cursor-pointer hover:border-brandBlue transition">
+                            <input type="radio" name="frequency" value="Daily (Mon - Sat)" required class="text-brandBlue focus:ring-brandBlue">
+                            <span class="text-sm font-semibold text-gray-800">Daily (Mon - Sat)</span>
+                        </label>
+                        <label class="flex items-center gap-3 bg-gray-50 border border-gray-200 p-3.5 rounded-xl cursor-pointer hover:border-brandBlue transition">
+                            <input type="radio" name="frequency" value="3 Days a Week" required class="text-brandBlue focus:ring-brandBlue">
+                            <span class="text-sm font-semibold text-gray-800">3 Days a Week</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Timing Selection -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Preferred Batch Timing</label>
+                    <div class="relative">
+                        <i class="fa-regular fa-clock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <select id="timing-select" required class="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue focus:border-brandBlue block pl-10 p-3.5 outline-none transition appearance-none">
+                            <option value="" disabled selected>-- Choose Batch Timing --</option>
+                            <option value="Morning (08:00 AM - 10:00 AM)">Morning Batch (08:00 AM - 10:00 AM)</option>
+                            <option value="Day (11:00 AM - 01:00 PM)">Day Batch (11:00 AM - 01:00 PM)</option>
+                            <option value="Afternoon (02:00 PM - 04:00 PM)">Afternoon Batch (02:00 PM - 04:00 PM)</option>
+                            <option value="Evening (04:00 PM - 06:00 PM)">Evening Batch (04:00 PM - 06:00 PM)</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full mt-6 text-white bg-brandBlue hover:bg-blue-800 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-bookmark"></i> Book Admission Seat
+                </button>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-400">
+        &copy; 2026 Smart Tech Computer Education. All rights reserved.
+    </footer>
+
+    <!-- SCRIPT FOR DYNAMIC FEE & SUBMISSION -->
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const courseSelect = document.getElementById('course-select');
+        const detailsBox = document.getElementById('course-details-box');
+        const displayFee = document.getElementById('display-fee');
+        const displayDuration = document.getElementById('display-duration');
+
+        // Automatic Fee & Duration calculation on course change
+        courseSelect.addEventListener('change', (e) => {
+            const selectedOption = courseSelect.options[courseSelect.selectedIndex];
+            const fee = selectedOption.getAttribute('data-fee');
+            const duration = selectedOption.getAttribute('data-duration');
+
+            if (fee && fee !== "0") {
+                displayFee.textContent = fee;
+                displayDuration.textContent = duration;
+                detailsBox.classList.remove('hidden');
+            } else {
+                detailsBox.classList.add('hidden');
+            }
+        });
+
+        const form = document.getElementById('offline-reg-form');
+        const modal = document.getElementById('custom-modal');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('student-name').value.trim();
+            const phone = document.getElementById('student-phone').value.trim();
+            const address = document.getElementById('student-address').value.trim();
+            const course = courseSelect.value;
+            const frequency = document.querySelector('input[name="frequency"]:checked')?.value || 'Daily';
+            const timing = document.getElementById('timing-select').value;
+
+            // Save booking data locally
+            const bookingData = { name, phone, address, course, frequency, timing, date: new Date().toISOString() };
+            try {
+                let bookings = JSON.parse(localStorage.getItem('offlineBookings') || '[]');
+                bookings.push(bookingData);
+                localStorage.setItem('offlineBookings', JSON.stringify(bookings));
+            } catch(e) {}
+
+            // Save booking to Firestore collection in background
+            try {
+                await addDoc(collection(db, "offline_registrations"), {
+                    name,
+                    phone,
+                    address,
+                    course,
+                    frequency,
+                    timing,
+                    status: 'Pending',
+                    createdAt: serverTimestamp()
+                });
+            } catch (err) {
+                console.warn("Notice: Firestore registration saved locally:", err?.message);
+            }
+
+            // Show success modal
+            modal.classList.remove('hidden');
+        });
+
+        window.closeModal = function() {
+            modal.classList.add('hidden');
+            window.location.href = 'index.html';
+        };
+    </script>
+</body>
+</html>

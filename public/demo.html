@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Classes | Smart Tech</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'], },
+                    colors: {
+                        brandBlue: '#0f4c81', 
+                        brandGold: '#f59e0b', 
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col font-sans">
+
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <img src="logo.png" alt="Smart Tech Logo" class="h-10 w-10 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
+                <span class="font-bold text-xl text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
+            </a>
+            <a href="index.html" class="text-sm font-semibold text-gray-600 hover:text-brandBlue transition flex items-center gap-1">
+                <i class="fa-solid fa-arrow-left"></i> Home
+            </a>
+        </div>
+    </header>
+
+    <div id="video-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md hidden p-2 sm:p-6">
+        <div id="video-modal-box" class="bg-slate-900 rounded-[28px] shadow-2xl w-full max-w-6xl relative border border-slate-700 flex flex-col transition-all duration-300">
+            
+            <div class="p-3 bg-slate-800 text-white flex justify-between items-center rounded-t-[28px] border-b border-slate-700">
+                <h3 id="modal-video-title" class="font-bold text-sm sm:text-base truncate text-brandGold">Demo Video</h3>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleYouTubeFullscreen()" class="bg-brandGold text-brandBlue hover:bg-yellow-500 font-bold text-xs px-3.5 py-2 rounded-lg shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-expand" id="fs-icon"></i> <span id="fs-text">Full Screen</span>
+                    </button>
+                    <button onclick="closeVideoModal()" class="text-gray-300 hover:text-white text-lg px-2.5 py-0.5 transition bg-slate-700 rounded-full">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="video-container-wrapper" class="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden">
+                <iframe id="youtube-player" class="w-full h-full border-0 hidden" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <video id="html5-player" class="w-full h-full object-contain hidden" controls playsinline></video>
+                <iframe id="social-player" class="w-full h-full border-0 hidden" allowfullscreen></iframe>
+
+                <div id="video-poster" class="absolute inset-0 z-30 bg-black flex items-center justify-center cursor-pointer rounded-b-[28px]" onclick="startPlayback()">
+                    <img id="poster-img" src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200" class="w-full h-full object-cover opacity-90">
+                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <div class="w-20 h-20 bg-brandGold text-brandBlue rounded-full flex items-center justify-center text-3xl shadow-2xl transform hover:scale-110 transition animate-pulse">
+                            <i class="fa-solid fa-play ml-1.5"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-2.5 bg-slate-800 border-t border-slate-700 flex justify-between items-center rounded-b-[28px] text-white">
+                <span class="text-xs text-gray-400 font-medium px-2">Smart Tech Secure Player</span>
+                <span class="text-xs text-brandGold font-semibold px-2">HD Quality</span>
+            </div>
+
+        </div>
+    </div>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 space-y-8">
+        
+        <section class="swiper mySwiper rounded-3xl overflow-hidden shadow-sm h-[180px] sm:h-[340px]">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide relative bg-brandBlue flex items-center">
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                    <div class="relative z-10 px-6 sm:px-12 text-white">
+                        <span class="bg-brandGold text-brandBlue text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase mb-2 inline-block">Free Learning</span>
+                        <h2 class="text-xl sm:text-4xl font-bold mb-2">Watch Free Demo Classes</h2>
+                        <p class="text-xs sm:text-sm text-blue-100 max-w-md">Learn basics before taking offline admission at Smart Tech Baharagora.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </section>
+
+        <section class="max-w-3xl mx-auto w-full">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="search-input" placeholder="Search demo lectures by title..." class="w-full bg-white border border-gray-200 text-gray-800 text-sm rounded-full py-3.5 pl-11 pr-5 shadow-sm outline-none focus:border-brandBlue transition">
+            </div>
+        </section>
+
+        <section>
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-brandBlue">Available Demo Lectures</h2>
+                <span id="video-count" class="text-xs text-gray-400 font-semibold">Loading...</span>
+            </div>
+
+            <div id="demos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+
+            <div id="no-results" class="hidden text-center py-12 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <i class="fa-solid fa-triangle-exclamation text-3xl text-yellow-500 mb-2"></i>
+                <h3 class="font-bold text-gray-800 text-base">No Lectures Found</h3>
+                <p class="text-xs text-gray-400 mt-1">Try searching with a different keyword.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-400 mt-12">
+        &copy; 2026 Smart Tech Computer Education. All rights reserved.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const swiper = new Swiper(".mySwiper", {
+            loop: true,
+            autoplay: { delay: 3500, disableOnInteraction: false },
+            pagination: { el: ".swiper-pagination", clickable: true },
+        });
+
+        let allDemos = [];
+
+        function listenDemosRealtime() {
+            const grid = document.getElementById('demos-grid');
+            grid.innerHTML = '<p class="text-xs text-gray-400 col-span-3 text-center py-6">Connecting to database...</p>';
+            
+            onSnapshot(collection(db, "demos"), (querySnapshot) => {
+                allDemos = [];
+                querySnapshot.forEach((doc) => {
+                    allDemos.push(doc.data());
+                });
+
+                renderDemos(document.getElementById('search-input')?.value?.trim() || '');
+            }, (error) => {
+                console.error("Error fetching lectures: ", error);
+                grid.innerHTML = '<p class="text-xs text-red-500 col-span-3 text-center py-6">Failed to load lectures from database.</p>';
+            });
+        }
+
+        window.renderDemos = function(filterText = '') {
+            const grid = document.getElementById('demos-grid');
+            grid.innerHTML = '';
+
+            const filteredDemos = allDemos.filter(demo => demo.title.toLowerCase().includes(filterText.toLowerCase()));
+            document.getElementById('video-count').textContent = `${filteredDemos.length} Lectures`;
+
+            if (filteredDemos.length === 0) {
+                document.getElementById('no-results').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('no-results').classList.add('hidden');
+            }
+
+            filteredDemos.forEach((demo) => {
+                const card = document.createElement('div');
+                card.className = "demo-card bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition flex flex-col";
+                card.innerHTML = `
+                    <div class="h-44 bg-slate-900 relative cursor-pointer group" onclick="openVideoModal('${encodeURIComponent(demo.url)}', '${demo.title.replace(/'/g, "\\'")}', '${encodeURIComponent(demo.thumbnail)}')">
+                        <img src="${demo.thumbnail}" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition" onerror="this.src='https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-12 h-12 bg-brandGold text-brandBlue rounded-full flex items-center justify-center text-xl shadow-lg transform group-hover:scale-110 transition">
+                                <i class="fa-solid fa-play ml-1"></i>
+                            </div>
+                        </div>
+                        <span class="absolute bottom-2 right-2 bg-black/75 text-white text-[10px] font-bold px-2.5 py-1 rounded-md">Free Demo</span>
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h3 class="font-bold text-sm sm:text-base text-gray-800 mb-3 line-clamp-2">${demo.title}</h3>
+                        <div class="flex items-center justify-between mt-auto pt-3 border-t border-gray-50">
+                            <span class="text-xs text-brandBlue font-semibold"><i class="fa-solid fa-video mr-1"></i> Smart Tech</span>
+                            <button onclick="openVideoModal('${encodeURIComponent(demo.url)}', '${demo.title.replace(/'/g, "\\'")}', '${encodeURIComponent(demo.thumbnail)}')" class="bg-brandBlue text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-blue-800 transition shadow-sm">Play Video</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            renderDemos(e.target.value.trim());
+        });
+
+        let activeType = '';
+        let isTrueFullscreen = false;
+
+        function extractYouTubeId(url) {
+            if (url.includes('youtu.be/')) {
+                return url.split('youtu.be/')[1].split('?')[0];
+            } else if (url.includes('watch?v=')) {
+                return url.split('watch?v=')[1].split('&')[0];
+            } else if (url.includes('embed/')) {
+                return url.split('embed/')[1].split('?')[0];
+            }
+            return '';
+        }
+
+        window.openVideoModal = function(encodedUrl, title, encodedThumb) {
+            const url = decodeURIComponent(encodedUrl);
+            const thumb = decodeURIComponent(encodedThumb);
+            document.getElementById('modal-video-title').textContent = title;
+            document.getElementById('poster-img').src = thumb || 'thumbnail.jpg';
+            document.getElementById('video-poster').classList.remove('hidden');
+            document.getElementById('video-modal').classList.remove('hidden');
+
+            const ytEl = document.getElementById('youtube-player');
+            const html5El = document.getElementById('html5-player');
+            const socialEl = document.getElementById('social-player');
+
+            ytEl.classList.add('hidden');
+            html5El.classList.add('hidden');
+            socialEl.classList.add('hidden');
+            ytEl.src = '';
+            html5El.src = '';
+            socialEl.src = '';
+
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                activeType = 'youtube';
+                const videoId = extractYouTubeId(url);
+                ytEl.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+            } else if (url.endsWith('.mp4') || url.includes('cloudinary.com') || url.includes('.mp4?')) {
+                activeType = 'html5';
+                html5El.src = url;
+            } else {
+                activeType = 'social';
+                socialEl.src = url;
+            }
+        }
+
+        window.startPlayback = function() {
+            document.getElementById('video-poster').classList.add('hidden');
+            const ytEl = document.getElementById('youtube-player');
+            const html5El = document.getElementById('html5-player');
+            const socialEl = document.getElementById('social-player');
+
+            if (activeType === 'youtube') {
+                ytEl.classList.remove('hidden');
+            } else if (activeType === 'html5') {
+                html5El.classList.remove('hidden');
+                html5El.play().catch(e => console.log(e));
+            } else {
+                socialEl.classList.remove('hidden');
+            }
+        }
+
+        window.closeVideoModal = function() {
+            if (isTrueFullscreen) {
+                toggleYouTubeFullscreen();
+            }
+            document.getElementById('youtube-player').src = '';
+            const h = document.getElementById('html5-player');
+            h.pause();
+            h.src = '';
+            document.getElementById('social-player').src = '';
+            document.getElementById('video-modal').classList.add('hidden');
+        }
+
+        window.toggleYouTubeFullscreen = async function() {
+            const modalBox = document.getElementById('video-modal-box');
+            const wrapper = document.getElementById('video-container-wrapper');
+            const fsIcon = document.getElementById('fs-icon');
+            const fsText = document.getElementById('fs-text');
+
+            if (!isTrueFullscreen) {
+                try {
+                    if (modalBox.requestFullscreen) {
+                        await modalBox.requestFullscreen();
+                    } else if (modalBox.webkitRequestFullscreen) {
+                        await modalBox.webkitRequestFullscreen();
+                    }
+                    if (screen.orientation && screen.orientation.lock) {
+                        await screen.orientation.lock('landscape').catch(() => {});
+                    }
+                } catch (err) {
+                    console.log("Fullscreen request error:", err);
+                }
+
+                modalBox.style.position = 'fixed';
+                modalBox.style.inset = '0';
+                modalBox.style.maxWidth = 'none';
+                modalBox.style.maxHeight = 'none';
+                modalBox.style.width = '100vw';
+                modalBox.style.height = '100vh';
+                modalBox.style.borderRadius = '0px';
+                wrapper.style.height = 'calc(100vh - 50px)';
+                
+                fsIcon.className = "fa-solid fa-compress";
+                fsText.textContent = "Exit Full";
+                isTrueFullscreen = true;
+            } else {
+                try {
+                    if (document.exitFullscreen) {
+                        await document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        await document.webkitExitFullscreen();
+                    }
+                    if (screen.orientation && screen.orientation.unlock) {
+                        screen.orientation.unlock();
+                    }
+                } catch (err) {
+                    console.log("Exit fullscreen error:", err);
+                }
+
+                modalBox.style.position = 'relative';
+                modalBox.style.inset = 'auto';
+                modalBox.style.maxWidth = '72rem';
+                modalBox.style.width = '100%';
+                modalBox.style.height = 'auto';
+                modalBox.style.borderRadius = '28px';
+                wrapper.style.height = '';
+                
+                fsIcon.className = "fa-solid fa-expand";
+                fsText.textContent = "Full Screen";
+                isTrueFullscreen = false;
+            }
+        }
+
+        listenDemosRealtime();
+
+        window.toggleAiAssistant = function() {
+            const modal = document.getElementById('ai-assistant-modal');
+            const iframe = document.getElementById('ai-iframe');
+            if (!modal) return;
+            if (modal.classList.contains('hidden')) {
+                if (iframe && !iframe.src && iframe.dataset.src) {
+                    iframe.src = iframe.dataset.src;
+                }
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        };
+    </script>
+
+    <!-- FLOATING AI PRO BUTTON -->
+    <div class="fixed bottom-6 right-4 z-40 group">
+        <button onclick="toggleAiAssistant()" class="relative w-12 h-12 md:w-14 md:h-14 bg-gradient-to-tr from-indigo-600 via-blue-600 to-cyan-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white/80 focus:outline-none" aria-label="Open Smart Tech AI Pro">
+            <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-cyan-500 border border-white"></span>
+            </span>
+            <i class="fa-solid fa-robot text-xl md:text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- AI MODAL -->
+    <div id="ai-assistant-modal" class="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-50 hidden flex flex-col w-full h-full sm:w-[440px] sm:h-[640px] sm:max-h-[90vh] bg-white sm:rounded-3xl shadow-2xl border border-gray-200 overflow-hidden transform transition-all duration-300">
+        <div class="bg-gradient-to-r from-brandBlue via-indigo-900 to-slate-900 text-white p-3.5 px-4 flex items-center justify-between shadow-sm select-none">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 flex items-center justify-center text-white shadow">
+                    <i class="fa-solid fa-robot text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm leading-tight">Smart Tech AI Pro</h3>
+                    <p class="text-[10px] text-blue-200">24/7 Demo & Learning Assistant</p>
+                </div>
+            </div>
+            <button onclick="toggleAiAssistant()" class="text-white/80 hover:text-white p-1.5 rounded-lg text-base">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="flex-1 bg-slate-950 relative overflow-hidden flex flex-col">
+            <iframe id="ai-iframe" data-src="https://pradeep-ai-png.github.io/smart-tech-aipro/" class="w-full h-full border-0 flex-1 bg-white"></iframe>
+        </div>
+    </div>
+</body>
+</html>
