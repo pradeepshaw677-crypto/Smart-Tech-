@@ -443,9 +443,14 @@
             const wrapper = document.getElementById('hero-banner-wrapper');
             if (!wrapper) return;
 
+            // Preserve original default banner slide so it is never lost
+            const originalBannerHtml = wrapper.innerHTML;
+
             onSnapshot(collection(db, "banners"), (snap) => {
+                // Start with original banner slide
+                wrapper.innerHTML = originalBannerHtml;
+
                 if (!snap.empty) {
-                    wrapper.innerHTML = '';
                     snap.forEach((docSnap) => {
                         const data = docSnap.data();
                         const bannerUrl = data.url || data.imageUrl || data.image;
@@ -454,24 +459,23 @@
                             slide.className = 'swiper-slide relative bg-brandBlue flex items-center';
                             slide.innerHTML = `
                                 <img src="${bannerUrl}" class="w-full h-full object-cover">
-                                ${data.title ? `
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-6 md:p-12 text-white">
-                                    <div>
-                                        <h2 class="text-xl md:text-4xl font-bold text-white mb-2 leading-tight">${data.title}</h2>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-6 md:px-16 text-white">
+                                    <div class="relative z-10 w-full">
+                                        <span class="bg-red-600 text-[9px] md:text-xs font-bold px-2.5 py-1 rounded-full w-max mb-2 animate-pulse uppercase inline-block">Official Centre Banner</span>
+                                        <h2 class="text-xl md:text-4xl font-bold text-white mb-2 leading-tight">${data.title || 'Smart Tech Computer Education'}</h2>
                                         ${data.subtitle ? `<p class="text-xs md:text-sm text-yellow-300 font-medium mb-3">${data.subtitle}</p>` : ''}
-                                        <a href="register-offline.html" class="inline-block bg-brandGold text-brandBlue px-4 py-2 rounded-full font-bold text-xs md:text-sm hover:scale-105 transition">Register Now</a>
+                                        <a href="register-offline.html" class="inline-block bg-brandGold text-brandBlue px-4 py-2 rounded-full font-bold text-xs md:text-sm hover:scale-105 transition">Register Offline</a>
                                     </div>
-                                </div>` : ''}
+                                </div>
                             `;
                             wrapper.appendChild(slide);
                         }
                     });
-                    initHeroSwiper();
-                } else {
-                    initHeroSwiper();
                 }
+                initHeroSwiper();
             }, (err) => {
                 console.warn("Banner listener notice:", err?.message);
+                wrapper.innerHTML = originalBannerHtml;
                 initHeroSwiper();
             });
         }

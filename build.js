@@ -37,4 +37,25 @@ for (const file of files) {
   }
 }
 
-console.log(`[Smart Tech Build] Success! Prepared ${copied} static assets in public/ directory.`);
+// Ensure entrypoint files exist in public/ and src/ for Vercel deployment detection
+const entrypointContent = "import app from '../server.js';\nexport default app;\n";
+const entryFiles = ['index.js', 'app.js', 'server.js'];
+
+const publicSrcDir = path.join(publicDir, 'src');
+if (!fs.existsSync(publicSrcDir)) {
+  fs.mkdirSync(publicSrcDir, { recursive: true });
+}
+for (const ef of entryFiles) {
+  fs.writeFileSync(path.join(publicDir, ef), entrypointContent, 'utf8');
+  fs.writeFileSync(path.join(publicSrcDir, ef), entrypointContent, 'utf8');
+}
+
+const srcDir = path.join(__dirname, 'src');
+if (!fs.existsSync(srcDir)) {
+  fs.mkdirSync(srcDir, { recursive: true });
+}
+for (const ef of entryFiles) {
+  fs.writeFileSync(path.join(srcDir, ef), entrypointContent, 'utf8');
+}
+
+console.log(`[Smart Tech Build] Success! Prepared ${copied} static assets and server entrypoints in public/ and src/.`);
