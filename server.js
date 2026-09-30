@@ -17,12 +17,53 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Security & Performance Headers middleware
+// Security & High-Performance Headers middleware (tuned for 60 requests/sec concurrency)
+const requestCounts = new Map();
+const RATE_LIMIT_WINDOW_MS = 1000; // 1 second sliding window
+const MAX_REQUESTS_PER_SECOND = 60; // 60 requests per second limit
+
+// Cleanup stale rate limit records every 10 seconds
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, data] of requestCounts.entries()) {
+    if (now - data.timestamp > 5000) {
+      requestCounts.delete(ip);
+    }
+  }
+}, 10000);
+
 app.use((req, res, next) => {
+  // High-concurrency Keep-Alive headers
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Keep-Alive', 'timeout=65, max=1000');
+  
   // Security headers
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+
+  // Rate Limiter: Up to 60 requests per second per IP
+  const clientIp = req.headers['x-forwarded-for']?.toString().split(',')[0].trim() || req.socket.remoteAddress || 'unknown';
+  const now = Date.now();
+  
+  let clientData = requestCounts.get(clientIp);
+  if (!clientData || now - clientData.timestamp >= RATE_LIMIT_WINDOW_MS) {
+    clientData = { timestamp: now, count: 1 };
+    requestCounts.set(clientIp, clientData);
+  } else {
+    clientData.count++;
+  }
+
+  // Set rate-limit info headers
+  res.setHeader('X-RateLimit-Limit', MAX_REQUESTS_PER_SECOND);
+  res.setHeader('X-RateLimit-Remaining', Math.max(0, MAX_REQUESTS_PER_SECOND - clientData.count));
+
+  if (clientData.count > MAX_REQUESTS_PER_SECOND) {
+    return res.status(429).json({
+      error: 'Too Many Requests',
+      message: 'Rate limit of 60 requests/second exceeded. Please wait a second and retry.'
+    });
+  }
   
   // Cache headers for static assets: allow fast live updates (no long 1-year freeze)
   if (req.url.match(/\.(css|js|woff|woff2|ttf)$/)) {
@@ -128,9 +169,12 @@ app.use((req, res) => {
 
 // Only bind port when not imported as a serverless module (e.g., on Vercel)
 if (!process.env.VERCEL) {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[Smart Tech] Secure server running at http://0.0.0.0:${PORT}`);
+  const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[Smart Tech] High-performance server (60 req/s tuned) running at http://0.0.0.0:${PORT}`);
   });
+  server.keepAliveTimeout = 65000;
+  server.headersTimeout = 66000;
+  server.maxRequestsPerSocket = 0; // Unlimited requests per socket
 }
 
 export default app;

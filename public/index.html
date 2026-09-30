@@ -77,11 +77,11 @@
                         <i class="fa-solid fa-bars text-2xl md:text-3xl"></i>
                     </button>
                     
-                    <a href="#home" class="flex items-center gap-2 cursor-pointer">
-                        <img src="/logo.png" alt="Logo" class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover border-2 border-brandGold shadow-sm" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
+                    <a href="#home" class="flex items-center gap-2.5 cursor-pointer">
+                        <img src="/logo.png" alt="Logo" class="h-12 w-12 md:h-14 md:w-14 rounded-full object-cover border-2 border-brandGold shadow-md transition-transform hover:scale-105" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
                         <div class="flex flex-col leading-none shrink-0">
-                            <span class="font-bold text-[16px] md:text-xl text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
-                            <span class="text-[7px] md:text-[9px] text-gray-500 font-bold tracking-widest uppercase">Computer Education</span>
+                            <span class="font-bold text-[17px] md:text-2xl text-brandBlue tracking-tight">SMART <span class="text-brandGold">TECH</span></span>
+                            <span class="text-[8px] md:text-[10px] text-gray-500 font-bold tracking-widest uppercase">Computer Education</span>
                         </div>
                     </a>
                 </div>
@@ -523,6 +523,8 @@
                 let displayName = 'Student';
                 if (user.displayName && user.displayName.trim() !== "") {
                     displayName = user.displayName;
+                } else if (user.phoneNumber) {
+                    displayName = user.phoneNumber;
                 } else if (userEmail !== "") {
                     displayName = userEmail.split('@')[0];
                 }
@@ -530,7 +532,13 @@
                 // Update UI text
                 if(nameEl) nameEl.textContent = displayName;
                 if(bannerNameEl) bannerNameEl.textContent = `${displayName}!`;
-                if(emailEl) emailEl.textContent = userEmail;
+                if(emailEl) emailEl.textContent = userEmail || user.phoneNumber || 'Verified Student';
+
+                // Sync localStorage
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userName', displayName);
+                if (userEmail) localStorage.setItem('userEmail', userEmail);
+                if (user.phoneNumber) localStorage.setItem('userPhone', user.phoneNumber);
 
                 // Toggle Login / Logout Links
                 if(navLoginItem) navLoginItem.classList.add('hidden');
