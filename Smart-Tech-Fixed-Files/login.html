@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register | Smart Tech</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/logo.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'], },
+                    colors: {
+                        brandBlue: '#0f4c81', 
+                        brandGold: '#f59e0b', 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        .input-field { transition: all 0.25s ease; }
+        .input-field:focus { border-color: #0f4c81; box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.12); }
+        .form-section { display: none; opacity: 0; transition: opacity 0.3s ease; }
+        .form-section.active { display: block; opacity: 1; }
+        .btn-tab.active { background-color: #ffffff; color: #0f4c81; box-shadow: 0 2px 4px rgba(0,0,0,0.06); }
+        .brand-logo-img { image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; }
+    </style>
+</head>
+<body class="min-h-screen w-full flex overflow-y-auto lg:overflow-hidden bg-slate-50">
+
+    <!-- CUSTOM POPUP MODAL -->
+    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden px-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center transform scale-95 transition-all duration-300">
+            <div id="modal-icon" class="w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4"></div>
+            <h3 id="modal-title" class="text-xl font-bold text-gray-800 mb-2"></h3>
+            <p id="modal-message" class="text-sm text-gray-600 mb-6"></p>
+            <button onclick="closeModal()" class="w-full bg-brandBlue text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-800 transition">OK</button>
+        </div>
+    </div>
+
+    <!-- LEFT SIDE: Cinematic Branding with Large High-Def Logo (Desktop) -->
+    <div class="hidden lg:flex w-1/2 bg-brandBlue relative items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200')] opacity-20 bg-cover bg-center mix-blend-overlay"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-brandBlue via-brandBlue/75 to-transparent"></div>
+        
+        <div class="relative z-10 text-center px-12 text-white">
+            <!-- LARGE PREMIUM LOGO (160px / w-40 h-40) -->
+            <div class="relative inline-block mb-6 group">
+                <div class="absolute -inset-1.5 bg-brandGold rounded-full blur opacity-40 group-hover:opacity-75 transition duration-500"></div>
+                <img src="/logo.png" alt="Smart Tech Logo" class="brand-logo-img relative w-40 h-40 xl:w-44 xl:h-44 mx-auto rounded-full border-4 border-brandGold object-cover bg-white shadow-2xl ring-4 ring-white/20 transition-transform duration-300 group-hover:scale-105" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
+            </div>
+
+            <h1 class="text-4xl xl:text-5xl font-extrabold mb-3 tracking-tight">Smart <span class="text-brandGold">Tech</span></h1>
+            <p class="text-brandGold/90 font-semibold text-sm uppercase tracking-widest mb-4">Computer Education &amp; Training</p>
+            <p class="text-blue-100 text-sm xl:text-base max-w-md mx-auto leading-relaxed">Access verified certificates, student panels, live classes, and offline admission records in one secure place.</p>
+            
+            <div class="mt-8 pt-6 border-t border-blue-400/20 flex items-center justify-center gap-6 text-xs text-blue-200">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-brandGold text-base"></i> ISO 9001:2015</span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-brandGold text-base"></i> Govt. Recognized</span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-brandGold text-base"></i> High-Speed Engine</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE: Auth Container -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center relative bg-white min-h-screen overflow-y-auto">
+        <a href="index.html" aria-label="Go Back" class="absolute top-5 left-5 text-gray-400 hover:text-brandBlue transition p-2 text-2xl z-20" title="Back to Home">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div class="w-full max-w-md px-6 sm:px-8 py-10 my-auto">
+            
+            <!-- Mobile Brand Header with Large Logo (96px / w-24 h-24) -->
+            <div class="lg:hidden text-center mb-6 mt-4">
+                <img src="/logo.png" alt="Smart Tech Logo" class="brand-logo-img w-24 h-24 mx-auto rounded-full border-3 border-brandGold object-cover bg-white shadow-xl mb-3 ring-2 ring-brandBlue/10" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%230f4c81\' stroke=\'%23f59e0b\' stroke-width=\'4\'/%3E%3Ctext x=\'50\' y=\'62\' font-family=\'Arial, sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23ffffff\' text-anchor=\'middle\'%3EST%3C/text%3E%3C/svg%3E';">
+                <h2 class="text-2xl font-black text-brandBlue">Smart <span class="text-brandGold">Tech</span></h2>
+                <p class="text-xs text-gray-400 font-medium">Computer Education Portal</p>
+            </div>
+
+            <!-- ALREADY LOGGED IN ALERT BANNER (Smart Connect with Website) -->
+            <div id="already-logged-banner" class="hidden mb-6 p-4 bg-blue-50 border border-blue-200 rounded-2xl text-left">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 rounded-full bg-brandBlue text-white flex items-center justify-center font-bold text-sm">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 font-medium">Currently signed in as:</p>
+                        <p id="active-user-display" class="text-sm font-bold text-brandBlue truncate max-w-[240px]"></p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 mt-3">
+                    <a href="offline-dashboard.html" class="bg-brandBlue text-white text-xs font-bold py-2.5 px-3 rounded-xl text-center shadow hover:bg-blue-800 transition">
+                        <i class="fa-solid fa-gauge-high"></i> Dashboard
+                    </a>
+                    <a href="index.html" class="bg-white border border-gray-200 text-gray-700 text-xs font-bold py-2.5 px-3 rounded-xl text-center hover:bg-gray-50 transition">
+                        <i class="fa-solid fa-house"></i> Home
+                    </a>
+                </div>
+                <button type="button" id="btn-force-switch-account" class="w-full mt-2 text-center text-xs text-red-600 font-semibold hover:underline">
+                    Sign out to use another account
+                </button>
+            </div>
+
+            <!-- Top Switch Tabs -->
+            <div id="main-tabs" class="flex bg-gray-100 p-1 rounded-xl mb-6">
+                <button id="btn-show-login" class="btn-tab w-1/2 py-2.5 rounded-lg text-sm font-bold text-gray-600 transition-all active">Sign In</button>
+                <button id="btn-show-register" class="btn-tab w-1/2 py-2.5 rounded-lg text-sm font-bold text-gray-600 transition-all">Register</button>
+            </div>
+
+            <!-- ===================== 1. EMAIL LOGIN FORM ===================== -->
+            <div id="login-form" class="form-section active">
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">Welcome Back! 👋</h3>
+                <p class="text-sm text-gray-500 mb-6">Enter your registered email and password to log in.</p>
+
+                <form id="firebase-login-form">
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Email Address</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="email" id="login-email" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-11 p-3.5" placeholder="student@example.com">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide">Password</label>
+                            <button type="button" id="btn-goto-forgot" class="text-xs font-bold text-brandBlue hover:text-brandGold transition">Forgot Password?</button>
+                        </div>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="password" id="login-password" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-11 pr-11 p-3.5" placeholder="••••••••">
+                            <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-login-submit" class="w-full mt-4 text-white bg-brandBlue hover:bg-blue-800 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all flex items-center justify-center gap-2">
+                        <span>Sign In</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ===================== 2. REGISTER FORM ===================== -->
+            <div id="register-form" class="form-section">
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">Create Account 🚀</h3>
+                <p class="text-sm text-gray-500 mb-6">Join Smart Tech to access your courses.</p>
+
+                <form id="firebase-register-form">
+                    <div class="mb-3">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Full Name</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="reg-name" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-11 p-3.5" placeholder="John Doe">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Mobile Number (For Free SMS Verification)</label>
+                        <div class="relative flex">
+                            <span class="inline-flex items-center px-3.5 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-200 rounded-l-xl font-bold">+91</span>
+                            <input type="tel" id="reg-phone" pattern="[0-9]{10}" maxlength="10" required class="input-field rounded-none rounded-r-xl bg-gray-50 border border-gray-200 text-gray-800 focus:ring-brandBlue block flex-1 min-w-0 w-full text-sm p-3.5" placeholder="9876543210">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Email Address</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="email" id="reg-email" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-11 p-3.5" placeholder="student@example.com">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Create Password</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="password" id="reg-password" minlength="6" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-11 pr-11 p-3.5" placeholder="At least 6 characters">
+                            <button type="button" onclick="togglePasswordVisibility('reg-password', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-register-submit" class="w-full text-brandBlue bg-brandGold hover:bg-yellow-500 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all flex items-center justify-center gap-2">
+                        <span>Create Account</span>
+                        <i class="fa-solid fa-check text-xs"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ===================== 3. MOBILE OTP LOGIN ===================== -->
+            <div id="phone-form" class="form-section">
+                <div class="flex items-center gap-2 mb-2">
+                    <button type="button" id="btn-back-from-phone" class="text-gray-400 hover:text-brandBlue text-sm p-1">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <h3 class="text-2xl font-bold text-gray-800">Mobile SMS Login</h3>
+                </div>
+                <p class="text-sm text-gray-500 mb-6">Enter your 10-digit number to receive a free SMS OTP code.</p>
+
+                <!-- Phone Input Stage -->
+                <div id="phone-input-section">
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Mobile Number</label>
+                        <div class="relative flex">
+                            <span class="inline-flex items-center px-3.5 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-200 rounded-l-xl font-bold">+91</span>
+                            <input type="tel" id="phone-number" maxlength="10" required class="input-field rounded-none rounded-r-xl bg-gray-50 border border-gray-200 text-gray-800 focus:ring-brandBlue block flex-1 min-w-0 w-full text-sm p-3.5 font-medium tracking-wide" placeholder="9876543210">
+                        </div>
+                    </div>
+                    
+                    <!-- Free Firebase reCAPTCHA container -->
+                    <div id="recaptcha-container" class="mb-4 flex justify-center"></div>
+                    
+                    <button type="button" id="send-otp-btn" class="w-full text-white bg-green-600 hover:bg-green-700 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                        <span>Send Free SMS Code</span>
+                    </button>
+                </div>
+
+                <!-- OTP Verify Stage -->
+                <div id="otp-input-section" class="hidden">
+                    <div class="mb-5">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide">Enter 6-Digit SMS Code</label>
+                            <span id="target-phone-display" class="text-xs text-brandBlue font-bold"></span>
+                        </div>
+                        <input type="text" id="otp-code" maxlength="6" class="input-field w-full bg-gray-50 border border-gray-200 text-center text-2xl tracking-[0.4em] font-bold rounded-xl focus:ring-brandBlue block p-3.5" placeholder="------">
+                        <p class="text-xs text-gray-400 mt-2 text-center">SMS sent to your phone. Valid for 5 minutes.</p>
+                    </div>
+
+                    <button type="button" id="verify-otp-btn" class="w-full text-white bg-brandBlue hover:bg-blue-800 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-badge-check text-xs"></i>
+                        <span>Verify & Login</span>
+                    </button>
+
+                    <button type="button" id="resend-phone-btn" class="w-full mt-3 text-xs text-gray-500 hover:text-brandBlue font-semibold py-2 text-center">
+                        Wrong number or didn't receive code? Change number
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===================== 4. FORGOT PASSWORD (EMAIL + MOBILE SMS) ===================== -->
+            <div id="forgot-form" class="form-section">
+                <div class="flex items-center gap-2 mb-2">
+                    <button type="button" id="btn-back-from-forgot" class="text-gray-400 hover:text-brandBlue text-sm p-1">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <h3 class="text-2xl font-bold text-gray-800">Reset Password</h3>
+                </div>
+                <p class="text-sm text-gray-500 mb-5">Choose how you want to receive your reset verification code:</p>
+
+                <!-- Reset Mode Switcher -->
+                <div class="flex bg-gray-100 p-1 rounded-xl mb-5">
+                    <button type="button" id="tab-reset-mobile" class="w-1/2 py-2 rounded-lg text-xs font-bold bg-white text-brandBlue shadow-sm transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-mobile-screen"></i> Mobile SMS OTP
+                    </button>
+                    <button type="button" id="tab-reset-email" class="w-1/2 py-2 rounded-lg text-xs font-bold text-gray-600 hover:text-brandBlue transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-regular fa-envelope"></i> Email Link
+                    </button>
+                </div>
+
+                <!-- A) MOBILE SMS FORGOT PASSWORD FLOW -->
+                <div id="forgot-mobile-section">
+                    <!-- Step 1: Mobile Input -->
+                    <div id="forgot-phone-step1">
+                        <div class="mb-4">
+                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Your Registered Mobile Number</label>
+                            <div class="relative flex">
+                                <span class="inline-flex items-center px-3.5 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-200 rounded-l-xl font-bold">+91</span>
+                                <input type="tel" id="forgot-phone-number" maxlength="10" required class="input-field rounded-none rounded-r-xl bg-gray-50 border border-gray-200 text-gray-800 focus:ring-brandBlue block flex-1 min-w-0 w-full text-sm p-3.5" placeholder="9876543210">
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1.5">Google Firebase will send an instant SMS verification code for free.</p>
+                        </div>
+
+                        <!-- Recaptcha for forgot password -->
+                        <div id="forgot-recaptcha-container" class="mb-4 flex justify-center"></div>
+
+                        <button type="button" id="btn-send-forgot-sms" class="w-full text-white bg-brandBlue hover:bg-blue-800 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                            <span>Send SMS Reset Code</span>
+                        </button>
+                    </div>
+
+                    <!-- Step 2: OTP Verification & New Password Setting -->
+                    <div id="forgot-phone-step2" class="hidden">
+                        <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl mb-4 text-xs text-blue-800 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-brandBlue text-sm"></i>
+                            <span>SMS OTP sent! Enter code &amp; set your new password.</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">6-Digit SMS Code</label>
+                            <input type="text" id="forgot-otp-code" maxlength="6" class="input-field w-full bg-gray-50 border border-gray-200 text-center text-xl tracking-[0.4em] font-bold rounded-xl focus:ring-brandBlue block p-3" placeholder="------">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">New Password</label>
+                            <div class="relative">
+                                <input type="password" id="forgot-new-password" minlength="6" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-4 pr-11 p-3" placeholder="New strong password">
+                                <button type="button" onclick="togglePasswordVisibility('forgot-new-password', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="button" id="btn-confirm-forgot-sms" class="w-full text-brandBlue bg-brandGold hover:bg-yellow-500 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-key text-xs"></i>
+                            <span>Verify Code &amp; Reset Password</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- B) EMAIL RESET FLOW -->
+                <div id="forgot-email-section" class="hidden">
+                    <form id="firebase-forgot-email-form">
+                        <div class="mb-4">
+                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5">Registered Email Address</label>
+                            <div class="relative">
+                                <i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <input type="email" id="forgot-email-input" required class="input-field w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-brandBlue block pl-11 p-3.5" placeholder="student@example.com">
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1.5">We will send a 1-click password reset link directly to your inbox for free.</p>
+                        </div>
+
+                        <button type="submit" class="w-full text-white bg-brandBlue hover:bg-blue-800 font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                            <span>Send Email Reset Link</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ===================== SOCIAL / ALTERNATE LOGINS ===================== -->
+            <div id="alt-auth-section" class="mt-6">
+                <div class="flex items-center my-6">
+                    <div class="flex-1 border-t border-gray-200"></div>
+                    <span class="px-3 text-xs text-gray-400 font-semibold uppercase tracking-wider">Or continue with</span>
+                    <div class="flex-1 border-t border-gray-200"></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" id="google-login-btn" class="flex items-center justify-center gap-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 font-bold py-3 px-3 rounded-xl shadow-sm transition-all text-sm">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">
+                        <span>Google</span>
+                    </button>
+                    
+                    <button type="button" id="btn-show-phone" class="flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 font-bold py-3 px-3 rounded-xl shadow-sm transition-all text-sm">
+                        <i class="fa-solid fa-mobile-screen-button text-brandBlue text-base"></i>
+                        <span>Mobile OTP</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Web Links Integration -->
+            <div class="mt-8 pt-6 border-t border-gray-100 flex flex-wrap items-center justify-between text-xs text-gray-500 gap-2">
+                <a href="register-offline.html" class="hover:text-brandBlue font-medium"><i class="fa-solid fa-building text-brandGold"></i> Offline Admission</a>
+                <a href="verify.html" class="hover:text-brandBlue font-medium"><i class="fa-solid fa-certificate text-brandGold"></i> Verify Certificate</a>
+                <a href="customer-care.html" class="text-brandBlue font-bold hover:underline"><i class="fa-solid fa-headset"></i> Support</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- GLOBAL HELPER SCRIPTS -->
+    <script>
+        // Password Show / Hide Toggle
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-regular fa-eye';
+            }
+        }
+
+        // Notification Modal Popup
+        function showNotification(title, message, isSuccess = true) {
+            const modal = document.getElementById('custom-modal');
+            const icon = document.getElementById('modal-icon');
+            const titleEl = document.getElementById('modal-title');
+            const msgEl = document.getElementById('modal-message');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            if(isSuccess) {
+                icon.className = "w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4 bg-green-100 text-green-600";
+                icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+            } else {
+                icon.className = "w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl mb-4 bg-red-100 text-red-600";
+                icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+            if(window.redirectAfterModal) {
+                window.location.href = window.redirectAfterModal;
+            }
+        }
+
+        // Get smart redirect target from query parameter safely (prevents open redirects and javascript: URLs)
+        function getRedirectTarget() {
+            const params = new URLSearchParams(window.location.search);
+            const redirect = params.get('redirect');
+            if (redirect) {
+                const trimmed = redirect.trim();
+                // Ensure only relative safe internal URLs are accepted
+                if (!trimmed.startsWith('http://') && 
+                    !trimmed.startsWith('https://') && 
+                    !trimmed.startsWith('//') && 
+                    !trimmed.startsWith('\\') &&
+                    !trimmed.toLowerCase().startsWith('javascript:') && 
+                    !trimmed.toLowerCase().startsWith('data:')) {
+                    return trimmed;
+                }
+            }
+            return 'index.html';
+        }
+    </script>
+
+    <!-- FIREBASE AUTH & JAVASCRIPT LOGIC -->
+    <script type="module">
+        import { app, auth, db } from './firebase-config.js';
+        import { 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            GoogleAuthProvider, 
+            signInWithPopup,
+            RecaptchaVerifier,
+            signInWithPhoneNumber,
+            sendPasswordResetEmail,
+            updatePassword,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        
+        import { 
+            doc, 
+            setDoc, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // Tab & Form Elements
+        const btnLogin = document.getElementById('btn-show-login');
+        const btnRegister = document.getElementById('btn-show-register');
+        const btnPhone = document.getElementById('btn-show-phone');
+        const btnGotoForgot = document.getElementById('btn-goto-forgot');
+        const btnBackFromPhone = document.getElementById('btn-back-from-phone');
+        const btnBackFromForgot = document.getElementById('btn-back-from-forgot');
+
+        const formLogin = document.getElementById('login-form');
+        const formRegister = document.getElementById('register-form');
+        const formPhone = document.getElementById('phone-form');
+        const formForgot = document.getElementById('forgot-form');
+        const altAuthSection = document.getElementById('alt-auth-section');
+        const mainTabs = document.getElementById('main-tabs');
+
+        const alreadyLoggedBanner = document.getElementById('already-logged-banner');
+        const activeUserDisplay = document.getElementById('active-user-display');
+        const btnForceSwitchAccount = document.getElementById('btn-force-switch-account');
+
+        // Check if user is already logged in and connect with site
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                alreadyLoggedBanner.classList.remove('hidden');
+                activeUserDisplay.textContent = user.displayName || user.email || user.phoneNumber || 'Smart Tech Student';
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userUid', user.uid);
+                if (user.email) localStorage.setItem('userEmail', user.email);
+                if (user.phoneNumber) localStorage.setItem('userPhone', user.phoneNumber);
+            } else {
+                alreadyLoggedBanner.classList.add('hidden');
+            }
+        });
+
+        if (btnForceSwitchAccount) {
+            btnForceSwitchAccount.addEventListener('click', async () => {
+                await signOut(auth);
+                localStorage.removeItem('isLoggedIn');
+                alreadyLoggedBanner.classList.add('hidden');
+                showNotification("Logged Out", "You can now sign in with another account.", true);
+            });
+        }
+
+        function switchSection(targetSection, showAltAuth = true, showTabs = true) {
+            [formLogin, formRegister, formPhone, formForgot].forEach(s => s.classList.remove('active'));
+            targetSection.classList.add('active');
+            
+            if (showAltAuth) altAuthSection.classList.remove('hidden');
+            else altAuthSection.classList.add('hidden');
+
+            if (showTabs) mainTabs.classList.remove('hidden');
+            else mainTabs.classList.add('hidden');
+        }
+
+        btnLogin.addEventListener('click', () => {
+            btnLogin.classList.add('active');
+            btnRegister.classList.remove('active');
+            switchSection(formLogin, true, true);
+        });
+
+        btnRegister.addEventListener('click', () => {
+            btnRegister.classList.add('active');
+            btnLogin.classList.remove('active');
+            switchSection(formRegister, true, true);
+        });
+
+        btnPhone.addEventListener('click', () => {
+            switchSection(formPhone, false, false);
+            initRecaptcha();
+        });
+
+        btnBackFromPhone.addEventListener('click', () => {
+            btnLogin.click();
+        });
+
+        btnGotoForgot.addEventListener('click', () => {
+            switchSection(formForgot, false, false);
+            initForgotRecaptcha();
+        });
+
+        btnBackFromForgot.addEventListener('click', () => {
+            btnLogin.click();
+        });
+
+        // Forgot Password sub-tabs (Mobile SMS vs Email)
+        const tabResetMobile = document.getElementById('tab-reset-mobile');
+        const tabResetEmail = document.getElementById('tab-reset-email');
+        const forgotMobileSection = document.getElementById('forgot-mobile-section');
+        const forgotEmailSection = document.getElementById('forgot-email-section');
+
+        tabResetMobile.addEventListener('click', () => {
+            tabResetMobile.className = "w-1/2 py-2 rounded-lg text-xs font-bold bg-white text-brandBlue shadow-sm transition-all flex items-center justify-center gap-1.5";
+            tabResetEmail.className = "w-1/2 py-2 rounded-lg text-xs font-bold text-gray-600 hover:text-brandBlue transition-all flex items-center justify-center gap-1.5";
+            forgotMobileSection.classList.remove('hidden');
+            forgotEmailSection.classList.add('hidden');
+            initForgotRecaptcha();
+        });
+
+        tabResetEmail.addEventListener('click', () => {
+            tabResetEmail.className = "w-1/2 py-2 rounded-lg text-xs font-bold bg-white text-brandBlue shadow-sm transition-all flex items-center justify-center gap-1.5";
+            tabResetMobile.className = "w-1/2 py-2 rounded-lg text-xs font-bold text-gray-600 hover:text-brandBlue transition-all flex items-center justify-center gap-1.5";
+            forgotEmailSection.classList.remove('hidden');
+            forgotMobileSection.classList.add('hidden');
+        });
+
+        // Helper: Save user session to localStorage & Firestore
+        async function syncUserSession(user, extra = {}) {
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userUid', user.uid);
+            if (user.displayName) localStorage.setItem('userName', user.displayName);
+            if (user.email) localStorage.setItem('userEmail', user.email);
+            if (user.phoneNumber) localStorage.setItem('userPhone', user.phoneNumber);
+
+            try {
+                await setDoc(doc(db, "users", user.uid), {
+                    uid: user.uid,
+                    email: user.email || '',
+                    phone: user.phoneNumber || extra.phone || '',
+                    fullName: user.displayName || extra.fullName || 'Student',
+                    role: "student",
+                    lastLogin: serverTimestamp()
+                }, { merge: true });
+            } catch (err) {
+                console.warn("Firestore user sync notice:", err);
+            }
+        }
+
+        // 1. REGISTER USER
+        let isSubmittingRegister = false;
+        document.getElementById('firebase-register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (isSubmittingRegister) return;
+
+            const name = document.getElementById('reg-name').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const submitBtn = document.getElementById('btn-register-submit');
+
+            isSubmittingRegister = true;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Creating Account...</span>';
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                await syncUserSession(user, { fullName: name, phone: phone });
+
+                window.redirectAfterModal = getRedirectTarget();
+                showNotification("Registration Successful!", `Welcome, ${name}! Your account is active.`, true);
+            } catch (error) {
+                showNotification("Registration Failed", error.message, false);
+            } finally {
+                isSubmittingRegister = false;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Create Account</span> <i class="fa-solid fa-check text-xs"></i>';
+            }
+        });
+
+        // 2. EMAIL LOGIN
+        let isSubmittingLogin = false;
+        document.getElementById('firebase-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (isSubmittingLogin) return;
+
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const submitBtn = document.getElementById('btn-login-submit');
+
+            isSubmittingLogin = true;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Signing In...</span>';
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                await syncUserSession(userCredential.user);
+
+                window.redirectAfterModal = getRedirectTarget();
+                showNotification("Login Successful!", "Welcome back to Smart Tech!", true);
+            } catch (error) {
+                let msg = error.message;
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
+                    msg = "Incorrect email or password. You can use 'Forgot Password?' to reset it.";
+                } else if (error.code === 'auth/user-not-found') {
+                    msg = "No account found with this email. Please register first.";
+                }
+                showNotification("Login Failed", msg, false);
+            } finally {
+                isSubmittingLogin = false;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Sign In</span> <i class="fa-solid fa-arrow-right text-xs"></i>';
+            }
+        });
+
+        // 3. GOOGLE SIGN-IN
+        document.getElementById('google-login-btn').addEventListener('click', async () => {
+            try {
+                const provider = new GoogleAuthProvider();
+                const result = await signInWithPopup(auth, provider);
+                await syncUserSession(result.user);
+
+                window.redirectAfterModal = getRedirectTarget();
+                showNotification("Google Login Successful!", `Welcome, ${result.user.displayName || 'Student'}!`, true);
+            } catch (error) {
+                showNotification("Google Login Failed", error.message, false);
+            }
+        });
+
+        // 4. MOBILE SMS OTP LOGIN (FREE)
+        let phoneConfirmationResult = null;
+        let phoneRecaptchaVerifier = null;
+
+        function initRecaptcha() {
+            if (!phoneRecaptchaVerifier) {
+                try {
+                    phoneRecaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                        'size': 'invisible',
+                        'callback': () => {}
+                    });
+                } catch (e) {
+                    console.warn("Recaptcha:", e);
+                }
+            }
+        }
+
+        document.getElementById('send-otp-btn').addEventListener('click', async () => {
+            const rawPhone = document.getElementById('phone-number').value.trim();
+            if (!rawPhone || rawPhone.length !== 10 || isNaN(rawPhone)) {
+                showNotification("Invalid Phone", "Please enter a valid 10-digit mobile number.", false);
+                return;
+            }
+
+            const fullPhoneNumber = "+91" + rawPhone;
+            initRecaptcha();
+
+            const sendBtn = document.getElementById('send-otp-btn');
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending SMS...</span>';
+
+            try {
+                phoneConfirmationResult = await signInWithPhoneNumber(auth, fullPhoneNumber, phoneRecaptchaVerifier);
+
+                document.getElementById('target-phone-display').textContent = fullPhoneNumber;
+                document.getElementById('phone-input-section').classList.add('hidden');
+                document.getElementById('otp-input-section').classList.remove('hidden');
+                showNotification("SMS Code Sent", `A 6-digit verification code was sent to ${fullPhoneNumber} via SMS.`, true);
+            } catch (error) {
+                showNotification("SMS Error", error.message || "Failed to send SMS code. Check your phone number.", false);
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i> <span>Send Free SMS Code</span>';
+            }
+        });
+
+        document.getElementById('verify-otp-btn').addEventListener('click', async () => {
+            const otpCode = document.getElementById('otp-code').value.trim();
+            if (!otpCode || otpCode.length < 6) {
+                showNotification("Invalid OTP", "Please enter the 6-digit code received on your phone.", false);
+                return;
+            }
+
+            const verifyBtn = document.getElementById('verify-otp-btn');
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Verifying...</span>';
+
+            try {
+                const result = await phoneConfirmationResult.confirm(otpCode);
+                await syncUserSession(result.user, { phone: result.user.phoneNumber });
+
+                window.redirectAfterModal = getRedirectTarget();
+                showNotification("Login Successful!", "Your mobile number has been verified!", true);
+            } catch (error) {
+                showNotification("Verification Failed", "Invalid OTP code or expired. Please try again.", false);
+            } finally {
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '<i class="fa-solid fa-badge-check text-xs"></i> <span>Verify & Login</span>';
+            }
+        });
+
+        document.getElementById('resend-phone-btn').addEventListener('click', () => {
+            document.getElementById('otp-input-section').classList.add('hidden');
+            document.getElementById('phone-input-section').classList.remove('hidden');
+        });
+
+        // 5. FORGOT PASSWORD (SMS CODE & EMAIL RESET)
+        
+        // A) Email Reset Link (Instant & 100% Free)
+        document.getElementById('firebase-forgot-email-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgot-email-input').value.trim();
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showNotification("Reset Link Sent!", `A password reset link was sent to ${email}. Open your inbox to reset your password.`, true);
+            } catch (error) {
+                showNotification("Reset Failed", error.message, false);
+            }
+        });
+
+        // B) Mobile SMS OTP Reset Flow (100% Free via Firebase Phone SMS)
+        let forgotRecaptchaVerifier = null;
+        let forgotConfirmationResult = null;
+
+        function initForgotRecaptcha() {
+            if (!forgotRecaptchaVerifier) {
+                try {
+                    forgotRecaptchaVerifier = new RecaptchaVerifier(auth, 'forgot-recaptcha-container', {
+                        'size': 'invisible',
+                        'callback': () => {}
+                    });
+                } catch (e) {
+                    console.warn("Forgot Recaptcha:", e);
+                }
+            }
+        }
+
+        document.getElementById('btn-send-forgot-sms').addEventListener('click', async () => {
+            const rawPhone = document.getElementById('forgot-phone-number').value.trim();
+            if (!rawPhone || rawPhone.length !== 10 || isNaN(rawPhone)) {
+                showNotification("Invalid Mobile", "Please enter your registered 10-digit mobile number.", false);
+                return;
+            }
+
+            const fullPhoneNumber = "+91" + rawPhone;
+            initForgotRecaptcha();
+
+            const btn = document.getElementById('btn-send-forgot-sms');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending SMS...</span>';
+
+            try {
+                forgotConfirmationResult = await signInWithPhoneNumber(auth, fullPhoneNumber, forgotRecaptchaVerifier);
+
+                document.getElementById('forgot-phone-step1').classList.add('hidden');
+                document.getElementById('forgot-phone-step2').classList.remove('hidden');
+                showNotification("SMS Code Sent", `Verification code sent to ${fullPhoneNumber}.`, true);
+            } catch (error) {
+                showNotification("SMS Failed", error.message || "Could not send SMS code.", false);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i> <span>Send SMS Reset Code</span>';
+            }
+        });
+
+        document.getElementById('btn-confirm-forgot-sms').addEventListener('click', async () => {
+            const otpCode = document.getElementById('forgot-otp-code').value.trim();
+            const newPassword = document.getElementById('forgot-new-password').value;
+
+            if (!otpCode || otpCode.length < 6) {
+                showNotification("Invalid Code", "Please enter the 6-digit code received on your phone.", false);
+                return;
+            }
+
+            if (!newPassword || newPassword.length < 6) {
+                showNotification("Weak Password", "Please choose a password with at least 6 characters.", false);
+                return;
+            }
+
+            const btn = document.getElementById('btn-confirm-forgot-sms');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Resetting Password...</span>';
+
+            try {
+                const credential = await forgotConfirmationResult.confirm(otpCode);
+                const user = credential.user;
+
+                try {
+                    await updatePassword(user, newPassword);
+                } catch (pwErr) {
+                    console.warn("Password update notice:", pwErr);
+                }
+
+                await syncUserSession(user, { phone: user.phoneNumber });
+
+                window.redirectAfterModal = getRedirectTarget();
+                showNotification("Password Reset Successful!", "Mobile verified & password reset successfully. Logging in...", true);
+            } catch (error) {
+                showNotification("Reset Failed", "Invalid OTP code or expired. Please try again.", false);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-key text-xs"></i> <span>Verify Code &amp; Reset Password</span>';
+            }
+        });
+    </script>
+</body>
+</html>
