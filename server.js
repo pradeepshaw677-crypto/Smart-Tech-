@@ -54,6 +54,25 @@ app.get('/api/health', (req, res) => {
 
 const publicDir = path.join(__dirname, 'public');
 
+// Explicit favicon and logo routes
+app.get('/favicon.ico', (req, res) => {
+  const f1 = path.join(__dirname, 'favicon.ico');
+  if (fs.existsSync(f1)) return res.sendFile(f1);
+  const f2 = path.join(publicDir, 'favicon.ico');
+  if (fs.existsSync(f2)) return res.sendFile(f2);
+  const f3 = path.join(__dirname, 'logo.png');
+  if (fs.existsSync(f3)) return res.sendFile(f3);
+  res.status(204).end();
+});
+
+app.get('/logo.png', (req, res) => {
+  const f1 = path.join(__dirname, 'logo.png');
+  if (fs.existsSync(f1)) return res.sendFile(f1);
+  const f2 = path.join(publicDir, 'logo.png');
+  if (fs.existsSync(f2)) return res.sendFile(f2);
+  res.status(404).end();
+});
+
 // Clean URLs handler: /login -> /login.html, /demo -> /demo.html
 app.get('/:page', (req, res, next) => {
   if (req.params.page && !req.params.page.includes('.')) {
